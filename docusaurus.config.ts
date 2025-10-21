@@ -15,7 +15,7 @@ const config: Config = {
       tagName: 'meta',
       attributes: {
         name: 'algolia-site-verification',
-        content: 'C4C6E8463C52DB0B',
+        content: '153334437E571506',
       },
     },
   ],
