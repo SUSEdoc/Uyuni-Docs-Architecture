@@ -94,7 +94,7 @@ const config: Config = {
     algolia: {
     appId: 'TUSPP0C84U',
     apiKey: '9fe57ddc22a4b0ef865a88f6af4c957c',
-    indexName: 'Uyuni Architecture Documentation',
+    indexName: 'uyuni-architecture-docs',
 
     // Optional but recommended:
     contextualSearch: true,
