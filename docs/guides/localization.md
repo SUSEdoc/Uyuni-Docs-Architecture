@@ -1,0 +1,142 @@
+# Localization Guide
+
+This guide explains how to add and manage translations for the Uyuni Documentation Architecture site.
+
+## Supported Languages
+
+The site currently supports the following languages:
+
+- **English (en)** - Default
+- **German (de)** - Deutsch
+- **Spanish (es)** - Español
+- **French (fr)** - Français
+- **Japanese (ja)** - 日本語
+- **Chinese Simplified (zh-Hans)** - 简体中文
+
+## Directory Structure
+
+Docusaurus uses a specific directory structure for translations:
+
+```
+i18n/
+├── de/
+│   ├── docusaurus-plugin-content-docs/
+│   │   └── current/
+│   │       └── (translated docs)
+│   └── docusaurus-theme-classic/
+│       ├── footer.json
+│       └── navbar.json
+├── es/
+│   └── ...
+└── fr/
+    └── ...
+```
+
+## Adding Translations
+
+### Step 1: Initialize Translation Files
+
+To initialize translation files for a specific locale (e.g., German):
+
+```bash
+npm run write-translations -- --locale de
+```
+
+This creates the necessary JSON files for UI elements.
+
+### Step 2: Translate Documentation
+
+Copy your documentation files to the appropriate locale folder:
+
+```bash
+mkdir -p i18n/de/docusaurus-plugin-content-docs/current
+cp -r docs/* i18n/de/docusaurus-plugin-content-docs/current/
+```
+
+Then translate the content in these files.
+
+### Step 3: Translate UI Elements
+
+Edit the generated JSON files:
+
+- `i18n/{locale}/docusaurus-theme-classic/navbar.json` - Navigation bar text
+- `i18n/{locale}/docusaurus-theme-classic/footer.json` - Footer text
+- `i18n/{locale}/code.json` - React component strings
+
+### Step 4: Test Locally
+
+Start the development server for a specific locale:
+
+```bash
+npm run start -- --locale de
+```
+
+### Step 5: Build for Production
+
+Build all locales:
+
+```bash
+npm run build
+```
+
+Or build a specific locale:
+
+```bash
+npm run build -- --locale de
+```
+
+## Using Weblate for Translations
+
+[Weblate](https://weblate.org/) is recommended for collaborative translation management:
+
+1. **Set up a Weblate project** for your documentation
+2. **Connect your Git repository** to Weblate
+3. **Configure components** for each documentation section
+4. **Invite translators** to contribute
+5. **Review and merge** translations back to your repository
+
+## Locale Switcher
+
+A locale dropdown will automatically appear in the navbar when multiple locales are configured. Users can switch between languages dynamically.
+
+## Best Practices
+
+1. **Keep English as source**: Always update English documentation first
+2. **Use translation keys**: For UI elements, use consistent translation keys
+3. **Maintain structure**: Keep the same file structure across all locales
+4. **Version translations**: Sync translations with documentation versions
+5. **Regular updates**: Keep translations up-to-date with source changes
+
+## Translation Workflow with Git
+
+```bash
+# 1. Create a branch for translations
+git checkout -b translations/german
+
+# 2. Add translated files
+git add i18n/de/
+
+# 3. Commit changes
+git commit -m "Add German translations"
+
+# 4. Push and create pull request
+git push origin translations/german
+```
+
+## Automated Translation Updates
+
+Consider setting up automated workflows using:
+
+- **GitHub Actions** for CI/CD
+- **Weblate integration** for automatic pull requests
+- **Translation memory** to reuse previous translations
+
+## Resources
+
+- [Docusaurus i18n Documentation](https://docusaurus.io/docs/i18n/introduction)
+- [Weblate Documentation](https://docs.weblate.org/)
+- [Crowdin Integration](https://docusaurus.io/docs/i18n/crowdin)
+
+## Need Help?
+
+For questions about localization, please open an issue in the repository or contact the documentation team.
