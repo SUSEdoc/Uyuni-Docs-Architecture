@@ -92,9 +92,9 @@ const config: Config = {
   themeConfig: {
 
     algolia: {
-    appId: 'YOUR_APP_ID',
-    apiKey: 'YOUR_SEARCH_API_KEY',
-    indexName: 'YOUR_INDEX_NAME',
+    appId: 'TUSPP0C84U',
+    apiKey: '9fe57ddc22a4b0ef865a88f6af4c957c',
+    indexName: 'Uyuni Architecture Documentation',
 
     // Optional but recommended:
     contextualSearch: true,
