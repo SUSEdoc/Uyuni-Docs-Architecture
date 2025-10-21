@@ -5,6 +5,7 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
 import Heading from '@theme/Heading';
+import Translate, {translate} from '@docusaurus/Translate';
 
 import styles from './index.module.css';
 
@@ -16,12 +17,22 @@ function HomepageHeader() {
         <Heading as="h1" className="hero__title">
           {siteConfig.title}
         </Heading>
-        <p className="hero__subtitle">{siteConfig.tagline}</p>
+        <p className="hero__subtitle">
+          <Translate
+            id="homepage.tagline"
+            description="The homepage tagline">
+            Documenting the system that documents.
+          </Translate>
+        </p>
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
             to="/docs/intro">
-            Toolchain Guides 🚀
+            <Translate
+              id="homepage.toolchain.button"
+              description="The homepage button to toolchain guides">
+              Toolchain Guides 🚀
+            </Translate>
           </Link>
         </div>
       </div>
@@ -33,8 +44,16 @@ export default function Home(): ReactNode {
   const {siteConfig} = useDocusaurusContext();
   return (
     <Layout
-      title={`Hello from ${siteConfig.title}`}
-      description="Description will go into a meta tag in <head />">
+      title={translate({
+        id: 'homepage.title',
+        message: 'Hello from Uyuni Documentation Architecture',
+        description: 'The homepage title'
+      })}
+      description={translate({
+        id: 'homepage.description',
+        message: 'Description will go into a meta tag in <head />',
+        description: 'The homepage description'
+      })}>
       <HomepageHeader />
       <main>
         <HomepageFeatures />

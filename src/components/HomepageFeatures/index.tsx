@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import Heading from '@theme/Heading';
 import styles from './styles.module.css';
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import Translate from '@docusaurus/Translate';
 
 type FeatureItem = {
   title: string;
@@ -10,38 +11,46 @@ type FeatureItem = {
   description: ReactNode;
 };
 
-const FeatureList: FeatureItem[] = [
-  {
-    title: 'AsciiDoc',
-    imagePath: '/img/asciidoc-logo.png',
-    description: (
-      <>
-        Uyuni and Multi-Linux Manager documentation is written in AsciiDoc, a lightweight markup language designed
-        for writing technical documentation with powerful features for complex documents.
-      </>
-    ),
-  },
-  {
-    title: 'Antora',
-    imagePath: '/img/antora-logo.png',
-    description: (
-      <>
-        The documentation for Uyuni and Multi-Linux manager are built using Antora,
-        the multi-repository documentation site generator.
-      </>
-    ),
-  },
-  {
-    title: 'Weblate',
-    imagePath: '/img/weblate-logo.png',
-    description: (
-      <>
-        Uyuni and Multi-Linux Manager rely on Weblate, a web-based continuous
-        localization platform for managing documentation translations.
-      </>
-    ),
-  },
-];
+function getFeatureList(): FeatureItem[] {
+  return [
+    {
+      title: 'AsciiDoc',
+      imagePath: '/img/asciidoc-logo.png',
+      description: (
+        <Translate
+          id="homepage.features.asciidoc.description"
+          description="Description for AsciiDoc feature">
+          Uyuni and Multi-Linux Manager documentation is written in AsciiDoc, a lightweight markup language designed
+          for writing technical documentation with powerful features for complex documents.
+        </Translate>
+      ),
+    },
+    {
+      title: 'Antora',
+      imagePath: '/img/antora-logo.png',
+      description: (
+        <Translate
+          id="homepage.features.antora.description"
+          description="Description for Antora feature">
+          The documentation for Uyuni and Multi-Linux manager are built using Antora,
+          the multi-repository documentation site generator.
+        </Translate>
+      ),
+    },
+    {
+      title: 'Weblate',
+      imagePath: '/img/weblate-logo.png',
+      description: (
+        <Translate
+          id="homepage.features.weblate.description"
+          description="Description for Weblate feature">
+          Uyuni and Multi-Linux Manager rely on Weblate, a web-based continuous
+          localization platform for managing documentation translations.
+        </Translate>
+      ),
+    },
+  ];
+}
 
 function Feature({title, imagePath, description}: FeatureItem) {
   const imgUrl = useBaseUrl(imagePath);
@@ -59,6 +68,7 @@ function Feature({title, imagePath, description}: FeatureItem) {
 }
 
 export default function HomepageFeatures(): ReactNode {
+  const FeatureList = getFeatureList();
   return (
     <section className={styles.features}>
       <div className="container">

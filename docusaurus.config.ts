@@ -82,6 +82,7 @@ const config: Config = {
           editUrl:
             'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
         },
+        blog: false, // Disable the blog plugin
         theme: {
           customCss: './src/css/custom.css',
         },
@@ -108,7 +109,7 @@ const config: Config = {
     searchPagePath: 'search',
   },
     // Replace with your project's social card
-    image: 'img/docusaurus-social-card.jpg',
+    image: 'img/uyuni-architecture-og.svg',
     colorMode: {
       defaultMode: 'light',
       disableSwitch: false,
@@ -126,6 +127,10 @@ const config: Config = {
           sidebarId: 'tutorialSidebar',
           position: 'left',
           label: 'Toolchain Guides',
+        },
+        {
+          type: 'localeDropdown',
+          position: 'right',
         },
         {
           href: 'https://github.com/facebook/docusaurus',
