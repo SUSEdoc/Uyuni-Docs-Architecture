@@ -9,13 +9,27 @@ const config: Config = {
   tagline: 'Documenting the system that documents.',
   favicon: 'img/favicon.ico',
 
-  // Add meta tags for Algolia site verification
+  // Add meta tags for Algolia site verification and SEO
   headTags: [
     {
       tagName: 'meta',
       attributes: {
         name: 'algolia-site-verification',
         content: '153334437E571506',
+      },
+    },
+    {
+      tagName: 'meta',
+      attributes: {
+        name: 'robots',
+        content: 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
+      },
+    },
+    {
+      tagName: 'meta',
+      attributes: {
+        name: 'googlebot',
+        content: 'index, follow',
       },
     },
   ],
@@ -43,6 +57,7 @@ const config: Config = {
   i18n: {
     defaultLocale: 'en',
     locales: ['en', 'de', 'es', 'fr', 'ja', 'zh-Hans'],
+    path: 'i18n',
     localeConfigs: {
       en: {
         label: 'English',
@@ -91,6 +106,11 @@ const config: Config = {
           priority: 0.5,
           ignorePatterns: ['/tags/**'],
           filename: 'sitemap.xml',
+          createSitemapItems: async (params) => {
+            const {defaultCreateSitemapItems, ...rest} = params;
+            const items = await defaultCreateSitemapItems(rest);
+            return items.filter((item) => !item.url.includes('/page/'));
+          },
         },
       } satisfies Preset.Options,
     ],
