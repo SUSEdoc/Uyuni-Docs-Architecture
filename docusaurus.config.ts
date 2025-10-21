@@ -9,6 +9,17 @@ const config: Config = {
   tagline: 'Documenting the system that documents.',
   favicon: 'img/favicon.ico',
 
+  // Add meta tags for Algolia site verification
+  headTags: [
+    {
+      tagName: 'meta',
+      attributes: {
+        name: 'algolia-site-verification',
+        content: 'C4C6E8463C52DB0B',
+      },
+    },
+  ],
+
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
     v4: true, // Improve compatibility with the upcoming Docusaurus v4
