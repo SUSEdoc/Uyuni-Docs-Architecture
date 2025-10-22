@@ -1,0 +1,214 @@
+---
+id: documentation-container
+title: Uyuni Documentation Container
+sidebar_label: Container setup
+description: Guide to using the pre-configured Uyuni documentation container with all tools and dependencies included for quick development setup.
+tags: [container, docker, toolchain, deployment, quick-start, development, environment]
+---
+
+# Uyuni Documentation Container
+
+**Author:** Joseph Cayouette  
+**Version:** v1.0 (2018-05-03)
+
+
+This document provides a complete overview of how to use the **Uyuni Documentation Build System** through the container script.
+It explains all command-line options, parameters, and examples for building and serving Uyuni or SUSE documentation.
+
+---
+
+## Overview
+
+The **Uyuni Documentation Build System** helps automate the process of building, packaging, and validating Uyuni and SUSE documentation using containerized environments.
+
+You can build from either:
+- A **remote Git repository**, or
+- A **local Git clone**.
+
+It also supports serving the documentation for preview using a local HTTP server.
+
+---
+
+## Basic Syntax
+
+```bash
+uyuni-doc-container.sh [OPTIONS]
+```
+
+Example:
+```bash
+./uyuni-doc-container.sh -p uyuni -c html-uyuni-en -g uyuni-project -r master
+```
+
+---
+
+## Mandatory Arguments
+
+| Option | Long Option | Description |
+|---------|--------------|-------------|
+| `-p` | `--product <uyuni\|mlm\|suma>` | Choose the product to build. |
+| `-c` | `--command <make target>` | Specify which documentation target to build (see [Command Reference](#command-reference) below). |
+
+---
+
+## Remote Git Repository Options
+
+| Option | Long Option | Description |
+|---------|--------------|-------------|
+| `-g` | `--gitrepo <REPO>` | Git repository URL or GitHub user/org (defaults to `https://github.com/uyuni-project/uyuni-docs.git`). |
+| `-r` | `--gitref <BRANCH>` | Git branch or reference (default: `master`). |
+| `-o` | `--output <PATH>` | Path where output will be stored (inside a new `build/` directory). |
+
+Example:
+```bash
+./uyuni-doc-container.sh -p uyuni -c html-uyuni-en -g uyuni-project -r master -o ~/builds
+```
+
+---
+
+## Local Git Repository Options
+
+| Option | Long Option | Description |
+|---------|--------------|-------------|
+| `-l` | `--localclone <PATH>` | Path to a local git repository clone. Output is placed inside `<PATH>/build`. |
+
+Example:
+```bash
+./uyuni-doc-container.sh -p mlm -c pdf-all-mlm-en -l ~/projects/uyuni-docs
+```
+
+> **Warning:** You cannot use `-l` (local clone) and `-o` (output) together.
+
+---
+
+## Optional Arguments
+
+| Option | Long Option | Description |
+|---------|--------------|-------------|
+| `-t` | `--tag <TAG>` | Container image tag (default: `main`). |
+| `-j` | `--project <PROJECT>` | GitHub project (used if using forked or custom repos). |
+| `-s` | `--serve` | Serve the documentation via HTTP on port 8000 after build completion. |
+
+Example (Serve build):
+```bash
+./uyuni-doc-container.sh -p uyuni -c html-uyuni-en -l ~/projects/uyuni-docs -s
+```
+
+This will build the documentation and serve it locally on `http://localhost:8000`.
+
+---
+
+## Command Reference
+
+| Command | Description |
+|----------|--------------|
+| `make html-uyuni` | Build Uyuni HTML for all languages. |
+| `make html-uyuni-en` | Build Uyuni HTML only (English). |
+| `make antora-uyuni-en` | Build Uyuni HTML + PDF (English). |
+| `make obs-packages-uyuni` | Build complete Uyuni docs (HTML + PDF) for all languages. |
+| `make clean-en` | Clean English build artifacts. |
+| `make pdf-all-uyuni-en` | Build all Uyuni PDF guides. |
+| `make validate-uyuni-en` | Validate Uyuni documentation structure. |
+| `make checkstyle` | Check AsciiDoc style compliance. |
+| `make checkstyle-autofix` | Auto-fix AsciiDoc style issues. |
+| `make clean` | Remove all build artifacts. |
+| `make debug-help` | Show debug and color test options. |
+
+---
+
+## Example Workflows
+
+### 1. Build and serve Uyuni documentation
+```bash
+./uyuni-doc-container.sh -p uyuni -c html-uyuni-en -l ~/projects/uyuni-docs -s
+```
+
+### 2. Build PDF for SUSE MLM docs
+```bash
+./uyuni-doc-container.sh -p mlm -c pdf-all-mlm-en -g uyuni-project -r master
+```
+
+### 3. Validate and check documentation styles
+```bash
+./uyuni-doc-container.sh -p uyuni -c validate-uyuni-en -l ~/projects/uyuni-docs
+./uyuni-doc-container.sh -p uyuni -c checkstyle -l ~/projects/uyuni-docs
+```
+
+### 4. Clean build artifacts
+```bash
+./uyuni-doc-container.sh -p uyuni -c clean -l ~/projects/uyuni-docs
+```
+
+---
+
+## Debug & Logging Options
+
+| Variable | Description |
+|-----------|--------------|
+| `DEBUG=1` | Enable verbose build output. |
+| `VERBOSE_LOG=1` | Enable colored progress messages. |
+
+Example:
+```bash
+DEBUG=1 ./uyuni-doc-container.sh -p uyuni -c html-uyuni-en -l ~/projects/uyuni-docs
+```
+
+---
+
+## Configuration Targets
+
+| Command | Description |
+|----------|-------------|
+| `configure-uyuni` | Configure Uyuni documentation build system. |
+| `configure-mlm` | Configure SUSE MLM documentation build system. |
+| `translations` | Update translation files. |
+| `pot` | Generate translation templates. |
+
+---
+
+## Available Languages
+
+| Code | Language |
+|-------|-----------|
+| `en` | English |
+| `ja` | Japanese |
+| `ko` | Korean |
+| `zh_CN` | Chinese |
+
+---
+
+## Available PDF Sections
+
+`installation-and-upgrade`, `client-configuration`, `administration`, `reference`, `retail`, `common-workflows`, `specialized-guides`, `legal`
+
+---
+
+## Example Outputs
+
+After running the script, output can be found under one of the following paths:
+
+- For remote Git builds: `<output_path>/build`
+- For local Git builds: `<local_clone>/build`
+
+---
+
+## Example: Full Build with Packaging
+
+```bash
+./uyuni-doc-container.sh -p uyuni -c obs-packages-uyuni -g uyuni-project -r master -o ~/builds
+```
+
+---
+
+## Notes
+
+- The script automatically validates product input (`uyuni`, `mlm`, or `suma`).
+- If SELinux is enabled, it adds the `:Z` flag to Podman volume mounts.
+- Default container image: `ghcr.io/uyuni-project/uyuni-docs-helper:main`
+
+---
+
+
+**Author:** Uyuni Project  
+**Container Repository:** [https://github.com/uyuni-project/uyuni-docs](https://github.com/uyuni-project/uyuni-docs)
+

@@ -1,17 +1,21 @@
 ---
 id: install-and-configure-visual-studio-code
-title: Install and configure Visual Studio Code for documentation development
+title: Install and configure Visual Studio Code
 sidebar_label: Visual Studio Code setup
 description: A step-by-step guide to installing and configuring Visual Studio Code for technical writing and documentation toolchains.
 tags: [visual-studio-code, vscode, documentation, setup, guide]
 ---
 
-# Install and configure Visual Studio Code for documentation development
+# Install and configure Visual Studio Code
+
+**Author:** Joseph Cayouette  
+**Version:** v1.0 (2018-05-03)
 
 **Applies to:**  
 - OpenSUSE Leap 15.6
 - OpenSUSE Tumbleweed  
-- Ubuntu 24.04 LTS  
+- Ubuntu 24.04 LTS
+- WSL2 on Windows  
 
 ---
 
@@ -20,6 +24,7 @@ tags: [visual-studio-code, vscode, documentation, setup, guide]
 - [Install Visual Studio Code](#install-visual-studio-code)
   - [On OpenSUSE Leap 15.6 or Tumbleweed](#on-opensuse-leap-156-or-tumbleweed)
   - [On Ubuntu 24.04](#on-ubuntu-2404)
+  - [WSL2 on Windows](#wsl2-on-windows)
 - [Install recommended extensions](#install-recommended-extensions)
 - [Configure VS Code for documentation development](#configure-vs-code-for-documentation-development)
   - [Asciidoctor and Antora](#asciidoctor-and-antora)
@@ -38,7 +43,7 @@ This guide walks through installing **Visual Studio Code** (VS Code) and configu
 It applies to both **OpenSUSE (Leap or Tumbleweed)** and **Ubuntu 24.04** systems.
 
 :::tip Windows Users
-If you're on Windows, consider setting up **WSL2** first for the best documentation development experience. WSL2 provides a full Linux environment that works seamlessly with VS Code. See our [WSL2 Setup Guide](/docs/Guides/Uyuni-MLM-toolchain/Deployment-and-Installation/Set-Up-WSL2-for-Documentation-Development) for detailed instructions.
+If you're on Windows, consider setting up **WSL2** first for the best documentation development experience. WSL2 provides a full Linux environment that works seamlessly with VS Code. See our [WSL2 Setup Guide](/docs/Uyuni-MLM-toolchain/Deployment-and-Installation/Set-Up-WSL2-for-Documentation-Development) for detailed instructions.
 :::
 
 ---
@@ -93,6 +98,118 @@ If you're on Windows, consider setting up **WSL2** first for the best documentat
 
 ---
 
+## WSL2 on Windows
+
+This guide explains how to install and configure Visual Studio Code (VS Code) on Windows to work seamlessly with your WSL2 Linux distributions for development.
+
+---
+
+### 1. Prerequisites
+
+- Ensure **WSL2** is installed and a Linux distribution is set up.
+- Ensure Windows is updated to a version that supports WSL2.
+- Enable **Virtual Machine Platform** and **Windows Subsystem for Linux** features.
+- **Install VS Code on Windows** (not inside WSL).
+- See our [WSL2 Setup Guide](/docs/Uyuni-MLM-toolchain/Deployment-and-Installation/Set-Up-WSL2-for-Documentation-Development) for complete setup instructions.
+
+During the VS Code installation, check the **"Add to PATH"** option to enable the `code` command in WSL.
+
+For more details, see the [official VS Code WSL documentation](https://code.visualstudio.com/docs/remote/wsl).
+
+---
+
+### 2. Install VS Code and the WSL Extension
+
+1. Download and install [Visual Studio Code](https://code.visualstudio.com/Download) on Windows.
+2. Open VS Code and install the **Remote – WSL** extension (or the **Remote Development** pack).
+3. (Optional) In WSL, update packages and install dependencies:
+
+   ```bash
+   sudo apt update && sudo apt install -y wget ca-certificates
+   ```
+
+---
+
+### 3. Opening Your WSL Folder in VS Code
+
+#### Option A — From WSL Terminal
+
+1. Open your WSL terminal (Ubuntu, Debian, etc.).
+2. Navigate to your project directory:
+
+   ```bash
+   cd ~/projects/myapp
+   ```
+
+3. Launch VS Code connected to WSL:
+
+   ```bash
+   code .
+   ```
+
+VS Code will open in Windows but connect to your WSL environment automatically. You’ll see the **WSL: [Distro Name]** indicator in the bottom-left corner.
+
+#### Option B — From Within VS Code
+
+1. Press `Ctrl+Shift+P` (or `F1`) to open the Command Palette.
+2. Type **“WSL: Connect to WSL”** or **“Remote-WSL: New Window”**.
+3. Select your Linux distribution.
+4. Open your desired folder inside WSL using `File → Open Folder…`.
+
+---
+
+### 4. Developing Inside WSL
+
+- The VS Code terminal runs **inside WSL**, not Windows.
+- Extensions that run on the Linux side will be installed in the WSL environment.
+- Use Linux-native tools, file paths, and compilers while keeping the Windows UI.
+
+---
+
+### 5. Tips & Best Practices
+
+- Store your code inside the **WSL file system** (e.g., `~/projects`) for better performance than using `/mnt/c/`.
+- Ensure consistent line endings when using Git across Windows and Linux.
+- Uninstall any Linux-native VS Code installs inside WSL if you previously installed them:
+
+  ```bash
+  sudo apt remove code
+  ```
+
+- If `code .` doesn’t work, ensure VS Code was installed with the **Add to PATH** option enabled.
+
+---
+
+### 6. Example Workflow
+
+```bash
+# 1. Launch WSL
+wsl
+
+# 2. Go to your project
+cd ~/projects/uyuni-docs
+
+# 3. Open in VS Code
+code .
+```
+
+Inside VS Code:
+- Terminal runs in WSL.
+- Install dependencies (`npm install`, `pip install`, etc.).
+- Run, debug, and test applications.
+
+To disconnect, choose **Remote: Close Remote Connection**.
+
+---
+
+### 7. References
+
+- [Using VS Code with WSL2 (Microsoft Docs)](https://learn.microsoft.com/en-us/windows/wsl/tutorials/wsl-vscode)
+- [Official VS Code WSL Documentation](https://code.visualstudio.com/docs/remote/wsl)
+- [Troubleshooting VS Code WSL](https://code.visualstudio.com/docs/remote/troubleshooting)
+
+
+
 ## Install recommended extensions
 
 Once VS Code is installed, open a terminal or the command palette (**Ctrl+Shift+P**) and install the following extensions:
@@ -102,6 +219,7 @@ Once VS Code is installed, open a terminal or the command palette (**Ctrl+Shift+
 code --install-extension mhutchie.git-graph
 code --install-extension streetsidesoftware.code-spell-checker
 code --install-extension github.vscode-github-actions
+
 # AsciiDoc tooling
 code --install-extension asciidoctor.asciidoctor-vscode
 code --install-extension yzhang.markdown-all-in-one
