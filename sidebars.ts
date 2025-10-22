@@ -16,6 +16,7 @@ const sidebars: SidebarsConfig = {
   // Manual sidebar to ensure intro appears first, then autogenerate the rest
   tutorialSidebar: [
     'intro',
+    'first-contribution',
     {
       type: 'category', 
       label: 'Uyuni documentation toolchain',
