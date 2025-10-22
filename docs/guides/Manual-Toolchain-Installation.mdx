@@ -1,0 +1,160 @@
+# Install the Documentation Toolchain
+
+**Version:** 2025
+
+---
+
+## Table of Contents
+- [About this Page](#about-this-page)
+- [OpenSUSE Leap 15.6](#opensuse-leap-156)
+- [Ubuntu 24.04](#ubuntu-2404)
+- [Install NVM and Node.js](#install-nvm-and-nodejs)
+- [Install Antora 3.1 and Lunr.js Extension](#install-antora-31-and-lunrjs-extension)
+- [Install Asciidoctor](#install-asciidoctor)
+- [Install Asciidoctor PDF](#install-asciidoctor-pdf)
+
+---
+
+## About this Page
+
+This installation guide explains how to set up the **2025** version of the local documentation toolchain on a clean **OpenSUSE Leap 15.6** or **Ubuntu 24.04** system.
+
+> **TIP**  
+> This method is for **tooling development and maintenance**.  
+> For regular documentation contributions, use the container:  
+> [Uyuni Docs Helper](https://github.com/uyuni-project/uyuni-docs-helper/blob/main/README.md)
+
+---
+
+## OpenSUSE Leap 15.6
+
+### System Preparation
+
+```bash
+sudo zypper refresh
+sudo zypper install -y git GraphicsMagick GraphicsMagick-devel   libyaml-devel sqlite3-devel readline-devel libopenssl-devel   python3-Jinja2 python3-PyYAML po4a
+sudo zypper in -t pattern devel_C_C++ devel_python3 devel_perl
+```
+
+> **NOTE:**  
+> Check available patterns using:  
+> `sudo zypper search -t pattern`
+
+### Clone Documentation Repository
+
+```bash
+git clone git@github.com:uyuni-project/uyuni-docs.git
+```
+
+### Ruby Setup
+
+```bash
+git clone https://github.com/rbenv/rbenv.git ~/.rbenv
+echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
+echo 'eval "$(rbenv init -)"' >> ~/.bashrc
+source ~/.bashrc
+git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
+rbenv install 3.4.6
+rbenv global 3.4.6
+```
+
+> **NOTE:**  
+> If Ruby installation fails, ensure `libopenssl 1.0.0` and `libopenssl-devel 1.0.0` are installed.
+
+### Install Po4a Perl Libraries
+
+```bash
+sudo cpan install Locale::gettext Text::WrapI18N Term::ReadKey Unicode::GCString
+```
+
+### Locales
+
+```bash
+sudo locale-gen ja_JP.UTF-8 zh_CN.UTF-8 ko_KR.UTF-8
+sudo update-locale
+locale -a | grep -E "ja_JP|zh_CN|ko_KR"
+```
+
+---
+
+## Ubuntu 24.04
+
+### System Preparation
+
+```bash
+sudo apt update
+sudo apt install -y git build-essential python3-dev libperl-dev libssl-dev libyaml-dev libsqlite3-dev libreadline-dev graphicsmagick graphicsmagick-libmagick-dev-compat python3-jinja2 python3-yaml po4a
+```
+
+### Clone Documentation Repository
+
+```bash
+git clone git@github.com:uyuni-project/uyuni-docs.git
+```
+
+### Ruby Setup
+
+```bash
+git clone https://github.com/rbenv/rbenv.git ~/.rbenv
+echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bashrc
+echo 'eval "$(rbenv init -)"' >> ~/.bashrc
+source ~/.bashrc
+git clone https://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
+rbenv install 3.4.6
+rbenv global 3.4.6
+```
+
+### Install Po4a Perl Libraries
+
+```bash
+sudo cpan install Locale::gettext Text::WrapI18N Term::ReadKey Unicode::GCString
+```
+
+### Locales
+
+```bash
+sudo locale-gen ja_JP.UTF-8 zh_CN.UTF-8 ko_KR.UTF-8
+sudo update-locale
+locale -a | grep -E "ja_JP|zh_CN|ko_KR"
+```
+
+---
+
+## Install NVM and Node.js
+
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
+source ~/.bashrc
+nvm install --lts
+nvm use --lts
+```
+
+---
+
+## Install Antora 3.1 and Lunr.js Extension
+
+```bash
+npm i -g @antora/cli@3.1 @antora/site-generator@3.1 @antora/lunr-extension
+```
+
+---
+
+## Install Asciidoctor
+
+```bash
+gem install asciidoctor -v 2.0.25
+npm i -g @asciidoctor/tabs
+```
+
+---
+
+## Install Asciidoctor PDF
+
+```bash
+gem install asciidoctor-pdf -v 2.3.21
+gem install rouge coderay rb-pygments concurrent-ruby asciidoctor-diagram prawn-gmagick -v 0.0.9
+```
+
+---
+
+**End of Installation Guide**
