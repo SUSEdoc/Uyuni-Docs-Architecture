@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://susedoc.github.io/Uyuni-Docs-Architecture/sitemap.xml
