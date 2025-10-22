@@ -1,0 +1,240 @@
+---
+id: deprecating-a-file
+title: Deprecating documentation files
+sidebar_label: File deprecation process
+description: Guidelines and procedures for safely deprecating and removing files from the Uyuni documentation suite using Antora best practices.
+tags: [deprecation, file-management, antora, documentation-process, content-lifecycle]
+---
+
+# Deprecating documentation files
+
+**Process Type:** Content Lifecycle Management  
+**Applies to:** All documentation files in Antora-based repositories  
+**Review Cycle:** 12 months for deletion eligibility  
+
+---
+
+## Overview
+
+The documentation is contained in a series of files, which loosely correspond to chapters within the books. In some cases, you might need to delete an entire file, either because a feature no longer exists, or because the content has moved into another location in the docs suite.
+
+We avoid deleting files immediately to ensure that:
+- Useful information isn't permanently lost
+- We can recover from accidental deletions
+- Historical context is preserved during transition periods
+- Search engines and external links have time to update
+
+---
+
+## Deprecation Methods
+
+### Method 1: Antora Underscore Prefix (Recommended)
+
+Antora provides a built-in mechanism for excluding files from the content catalog by prefixing filenames with an underscore (`_`).
+
+**Advantages:**
+- **Native Antora feature** - Uses built-in functionality
+- **Automatic exclusion** - File is not included in site generation
+- **Preserved in repository** - File remains accessible in Git history
+- **Simple implementation** - Just rename the file
+- **Reversible** - Easy to undo by removing underscore
+
+**Implementation:**
+```bash
+# Rename the file to add underscore prefix
+mv modules/administration/pages/feature-setup.adoc modules/administration/pages/_feature-setup.adoc
+```
+
+### Method 2: Manual Navigation Exclusion
+
+Alternative approach for cases where you need more control over the deprecation process.
+
+**Use cases:**
+- When you want to keep the original filename
+- For gradual content migration scenarios  
+- When coordinating with external documentation links
+
+---
+
+## Standard Deprecation Process
+
+Follow this step-by-step process when deprecating any documentation file:
+
+### Step 1: Prepare the File
+
+1. **Leave the file in place** in the directory structure
+2. **Add deprecation notice** at the top of the file
+3. **Document the reason** for deprecation
+4. **Specify replacement content** (if applicable)
+
+### Step 2: Update Navigation
+
+**Remove the link** to the file from the navigation file (`nav.adoc` or equivalent):
+
+### Step 3: Add Deprecation Header
+
+Add a comprehensive comment at the top of the deprecated file:
+
+```adoc
+////
+DEPRECATED: 2024-10-22
+AUTHOR: Your Name <your.email@domain.com>
+REASON: Feature removed in Uyuni 5.0 release
+REPLACEMENT: See xref:new-feature-guide.adoc[New Feature Guide] 
+NOTES: Configuration examples moved to Administration Guide
+ELIGIBLE FOR DELETION: 2025-10-22 (12 months from deprecation)
+////
+
+= Feature Setup (DEPRECATED)
+
+[WARNING]
+====
+This page is deprecated and will be removed in a future release.
+The feature described here was removed in Uyuni 5.0.
+
+For current setup procedures, see xref:new-feature-guide.adoc[New Feature Guide].
+====
+```
+
+### Step 4: Alternative - Use Underscore Method
+
+For immediate removal from content catalog:
+
+1. **Rename the file** with underscore prefix:
+   ```bash
+   mv feature-setup.adoc _feature-setup.adoc
+   ```
+
+2. **Remove from navigation** (no need to comment out):
+   ```adoc
+   * xref:new-feature-guide.adoc[New Feature Guide]
+   ```
+
+3. **Add deprecation header** in the renamed file for future reference
+
+---
+
+## Deprecation Notice Template
+
+Use this template for consistent deprecation notices:
+
+```adoc
+////
+DEPRECATED: YYYY-MM-DD
+AUTHOR: [Your Name] <[email@domain.com]>
+REASON: [Brief explanation of why deprecated]
+REPLACEMENT: [Link to replacement content or "None" if no replacement]
+MIGRATION NOTES: [Any important information for users]
+ELIGIBLE FOR DELETION: YYYY-MM-DD (12 months from deprecation date)
+////
+
+= [Page Title] (DEPRECATED)
+
+[WARNING]
+====
+This page is deprecated and will be removed in a future release.
+
+[Reason for deprecation]
+
+[Information about replacement content or migration path]
+====
+
+[Original content follows...]
+```
+
+---
+
+## Impact of Deprecation Methods
+
+### Using Underscore Prefix (`_filename.adoc`)
+
+**User Experience:**
+- **Not in navigation** structure
+- **Still findable** via site search (if implemented)
+- **Cross-references** still work but lead to deprecated content
+- **Direct URLs** continue to function
+
+**SEO/External Impact:**
+- **Search engines** will eventually remove from indexes
+- **External links** will result in 404 errors
+- **Bookmarks** will no longer work
+
+
+## Timeline and Deletion Policy
+
+### Deprecation Period
+
+- **Minimum deprecation period**: 12 months
+- **Deletion eligibility**: After 12 months from deprecation date
+- **Review requirement**: Must be reviewed before deletion
+
+### Deletion Criteria
+
+A file is eligible for deletion when:
+- **12+ months** have passed since deprecation
+- **Replacement content** is stable and complete
+
+### Pre-Deletion Checklist
+
+Before deleting a deprecated file:
+
+- [ ] Verify 12-month period has elapsed
+- [ ] Confirm replacement content is adequate
+
+
+---
+
+## Best Practices
+
+### Planning Deprecation
+
+1. **Coordinate with product teams** when features are removed
+2. **Plan replacement content** before deprecating
+3. **Consider gradual migration** for complex content
+
+### Documentation Standards
+
+1. **Always include deprecation date** in notices
+2. **Provide clear replacement paths** when available
+3. **Use consistent formatting** for deprecation notices
+4. **Maintain deprecation logs** for tracking purposes
+
+### Communication
+
+1. **Inform the documentation team** of deprecations
+2. **Update project boards** and issue trackers
+3. **Coordinate with release notes** for user-facing changes
+4. **Consider changelog entries** for significant deprecations
+
+---
+
+## Troubleshooting Common Issues
+
+### Broken Cross-References
+
+**Problem**: Other files still reference deprecated content  
+**Solution**: Use global search to find and update all references
+
+```bash
+# Search for references to deprecated file
+grep -r "feature-setup" modules/
+```
+
+
+## Tools and Automation
+
+### Helpful Commands
+
+```bash
+# Find all deprecated files (with underscore)
+find modules/ -name "_*.adoc"
+
+# Search for potential orphaned references
+grep -r "xref:.*deprecated-file" modules/
+
+# List files not referenced in navigation
+# (requires custom script or manual verification)
+```
+
+
+*This process ensures that content changes are managed safely while maintaining the integrity and usability of the documentation suite.*
