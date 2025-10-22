@@ -58,6 +58,9 @@ const config: Config = {
     locales: ['en'],
   },
 
+  // Force trailing slashes for all URLs
+  trailingSlash: true,
+
   presets: [
     [
       'classic',
