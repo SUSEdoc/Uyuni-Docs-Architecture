@@ -2,46 +2,55 @@
 sidebar_position: 1
 ---
 
-# Tutorial Intro
+# Welcome to Uyuni Documentation Architecture
 
-Let's discover **Docusaurus in less than 5 minutes**.
+Welcome to the comprehensive guide for the **Uyuni and SUSE Multi-Linux Manager documentation toolchain**. This site serves as the central resource for understanding, contributing to, and maintaining the documentation infrastructure that powers these enterprise-grade systems management solutions.
+
+## What You'll Find Here
+
+This documentation architecture site covers the complete toolchain and processes used to create, manage, and deploy documentation for:
+
+- **Uyuni** - The open-source systems management platform
+- **SUSE Multi-Linux Manager** - The enterprise systems management solution
+
+## Our Documentation Ecosystem
+
+The Uyuni documentation ecosystem is built on industry-standard tools and practices:
+
+### 📝 **Content Creation**
+- **AsciiDoc** markup language for writing technical documentation
+- Structured authoring with semantic markup
+- Cross-references, includes, and modular content organization
+
+### 🏗️ **Build & Publishing**
+- **Antora** static site generator for multi-repository documentation
+- Automated build processes and continuous integration
+- Version management and release workflows
+
+### 🌍 **Localization & Translation**
+- **Weblate** platform for community-driven translations
+- Multi-language support and localization workflows
+- Translation memory and consistency tools
 
 ## Getting Started
 
-Get started by **creating a new site**.
+Whether you're a:
+- **Content contributor** looking to write or improve documentation
+- **Developer** working on the documentation infrastructure  
+- **Translator** helping to localize content for global audiences
+- **Maintainer** managing the documentation ecosystem
 
-Or **try Docusaurus immediately** with **[docusaurus.new](https://docusaurus.new)**.
+You'll find guides, best practices, and technical references to help you contribute effectively to the Uyuni documentation project.
 
-### What you'll need
+## What's Next?
 
-- [Node.js](https://nodejs.org/en/download/) version 20.0 or above:
-  - When installing Node.js, you are recommended to check all checkboxes related to dependencies.
+Explore the sections in this guide to learn about:
+- Setting up your authoring environment
+- Understanding our content standards and style guide
+- Contributing to translations and localization
+- Working with the build and deployment pipeline
+- Maintaining documentation infrastructure
 
-## Generate a new site
+---
 
-Generate a new Docusaurus site using the **classic template**.
-
-The classic template will automatically be added to your project after you run the command:
-
-```bash
-npm init docusaurus@latest my-website classic
-```
-
-You can type this command into Command Prompt, Powershell, Terminal, or any other integrated terminal of your code editor.
-
-The command also installs all necessary dependencies you need to run Docusaurus.
-
-## Start your site
-
-Run the development server:
-
-```bash
-cd my-website
-npm run start
-```
-
-The `cd` command changes the directory you're working with. In order to work with your newly created Docusaurus site, you'll need to navigate the terminal there.
-
-The `npm run start` command builds your website locally and serves it through a development server, ready for you to view at http://localhost:3000/.
-
-Open `docs/intro.md` (this page) and edit some lines: the site **reloads automatically** and displays your changes.
+*This site documents the tools, processes, and practices that keep Uyuni documentation comprehensive, accessible, and up-to-date for our global community.*

@@ -31,7 +31,7 @@ function HomepageHeader() {
             <Translate
               id="homepage.toolchain.button"
               description="The homepage button to toolchain guides">
-              Toolchain Guides 🚀
+              Docs 🚀
             </Translate>
           </Link>
         </div>
