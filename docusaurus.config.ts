@@ -125,9 +125,7 @@ const config: Config = {
 
       // Optional but recommended:
       contextualSearch: true,
-      searchParameters: {
-        facetFilters: ['language:$LOCALE']
-      },
+      searchParameters: {},
       searchPagePath: 'search',
     },
     // Replace with your project's social card
