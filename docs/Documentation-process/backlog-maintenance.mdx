@@ -1,0 +1,188 @@
+---
+id: backlog-maintenance
+title: Backlog maintenance and grooming
+sidebar_label: Backlog grooming process
+description: Weekly procedures for maintaining the documentation backlog, triaging issues, and managing workflow for the Uyuni documentation team.
+authors: [Joseph Cayouette, Ornela Maric]
+tags: [backlog, maintenance, grooming, workflow, project-management, documentation-process]
+---
+
+# Backlog maintenance and grooming
+
+**Process Type:** Project Management  
+**Applies to:** Uyuni documentation repository  
+**Frequency:** Weekly (minimum)  
+**Timing:** Immediately before issuing weekly report  
+
+---
+
+## Overview
+
+The squad coordinator grooms the backlog at least weekly. It should happen immediately before issuing the weekly report, and whenever otherwise required (for example, after returning from leave, or when there has been a lot of activity or new issues created).
+
+Effective backlog grooming ensures that:
+- Issues are properly triaged and labeled
+- Work is prioritized appropriately
+- Team members have clear understanding of pending tasks
+- Project momentum is maintained
+
+---
+
+## Setup and Configuration
+
+### Repository Watching
+
+Configure GitHub to watch the **uyuni-docs** repository for notifications and updates.
+
+**Additional repositories to consider watching** (low traffic):
+- `uyuni-project.github.io`
+- `doc-styleguide` 
+- `uyuni-docs-toolchain-vm`
+
+**Note:** There is no need to watch the spacewalk repository directly, as you will receive notifications through the project board or in meetings. Watching it directly will overwhelm you with notifications.
+
+### Notification Management
+
+**Daily routine:**
+1. Check and clear your GitHub notifications each morning
+2. This makes grooming much easier and improves situational awareness
+3. Consider using browser extensions like "Notifier for GitHub" to help manage notifications
+
+---
+
+## Grooming Procedures
+
+### 1. Backlog Column Review
+
+**Location:** https://github.com/SUSE/spacewalk/projects/31
+
+**Steps:**
+1. Open the project board and focus on the **Backlog column**
+2. Scan through all items, looking for anything new or unfamiliar
+3. Open and review new items to understand context
+4. Refile or update labels as required
+
+**Requirements for Backlog items:**
+- Must have at least the `docs-squad` label
+- Should **not** be assigned to anyone in the docs squad
+- Consider re-sorting by issue number if backlog has 8-10+ items
+
+### 2. Toolchain Backlog Review
+
+**Requirements for Toolchain Backlog items:**
+- Must have at least `docs-squad` and `doc-process` labels
+- Review and update as needed
+
+### 3. Priority Escalation
+
+**Move items above backlog waterlines if they:**
+- Are related to urgent, customer-facing bugs
+- Have been reported by external Uyuni community members
+- Are release tracking issues
+- Are urgent for other reasons (e.g., last minute pre-release changes)
+
+### 4. Active Work Review (Doing Column)
+
+**Organization:**
+1. Re-sort issues by issue number for easier report writing
+2. Open every issue in the column
+
+**Check each issue for:**
+- **Assignee:** Does the issue have an assignee?
+- **Active work:** Is the assignee actively working on it (related PR should exist)?
+- **Outstanding actions:** Are there any pending tasks on the issue?
+
+### 5. Pull Request Review
+
+**For each related PR, verify:**
+- **Recent activity:** Recent commits indicating active work
+- **Proper formation:** 
+  - Proper description included
+  - Backports properly marked
+  - Clean commit history
+  - Changelog updated appropriately
+- **Review status:** Outstanding comments or reviews
+- **Backport requirements:** Backports needed?
+- **Review readiness:** Can you review the PR?
+- **Merge readiness:** Can you merge the PR and handle backports?
+
+### 6. Comprehensive PR Check
+
+**Double-check process:**
+1. Visit https://github.com/uyuni-project/uyuni-docs/pulls
+2. Review every open PR using the same criteria as step 5
+3. This catches any PRs not associated with board issues
+
+### 7. Blocked Column Review
+
+**Process:**
+- Review the **Blocked column** regularly
+- This column changes infrequently but requires attention
+- Move items along when blockers are resolved
+- Keep issues from stagnating
+
+---
+
+## Additional Checks
+
+### Release Planning
+
+**Regular review:**
+- Check the release calendar for upcoming milestones
+- Align backlog priorities with release schedules
+- Identify release-critical documentation needs
+
+### Backlog Analytics
+
+**Monitoring dashboard:**
+- View backlog statistics: http://grafana.mgr.suse.de/d/6YWZltSZz/overview?orgId=1
+- Track trends in issue volume and resolution
+- Identify bottlenecks in the workflow
+
+---
+
+## Best Practices
+
+### Timing Considerations
+
+- **Weekly minimum:** Groom at least once per week
+- **Pre-report timing:** Always groom immediately before weekly reports
+- **Event-driven grooming:** After leave, high activity periods, or major issue influx
+- **Morning routine:** Clear GitHub notifications daily
+
+### Quality Standards
+
+- **Consistent labeling:** Ensure all issues have appropriate labels
+- **Clear descriptions:** Issues should have sufficient context
+- **Proper assignment:** Avoid assigning backlog items to team members
+- **Regular communication:** Keep stakeholders informed of priority changes
+
+### Efficiency Tips
+
+- **Sort by issue number:** Makes tracking and reporting easier
+- **Browser extensions:** Use GitHub notification tools
+- **Systematic approach:** Follow the same sequence each time
+- **Documentation:** Note any process improvements or issues
+
+---
+
+## Troubleshooting
+
+### Common Issues
+
+- **Notification overload:** Reduce repository watching scope
+- **Stale backlog items:** Regular review and cleanup required
+- **Missing labels:** Implement systematic labeling review
+- **Blocked items:** Proactive follow-up on blockers needed
+
+### Escalation
+
+When grooming reveals urgent issues or blockers that cannot be resolved immediately:
+1. Document the issue clearly
+2. Escalate to appropriate team leads
+3. Update issue status and labels
+4. Follow up in subsequent grooming sessions
+
+---
+
+*This process ensures systematic management of the documentation backlog and maintains team productivity and project momentum.*
