@@ -52,38 +52,10 @@ const config: Config = {
 
   onBrokenLinks: 'throw',
 
-  // Internationalization configuration
-  // Add more locales as needed for Uyuni documentation
+  // Temporarily disable i18n to focus on English-only search
   i18n: {
     defaultLocale: 'en',
-    locales: ['en', 'de', 'es', 'fr', 'ja', 'zh-Hans'],
-    path: 'i18n',
-    localeConfigs: {
-      en: {
-        label: 'English',
-        direction: 'ltr',
-      },
-      de: {
-        label: 'Deutsch',
-        direction: 'ltr',
-      },
-      es: {
-        label: 'Español',
-        direction: 'ltr',
-      },
-      fr: {
-        label: 'Français',
-        direction: 'ltr',
-      },
-      ja: {
-        label: '日本語',
-        direction: 'ltr',
-      },
-      'zh-Hans': {
-        label: '简体中文',
-        direction: 'ltr',
-      },
-    },
+    locales: ['en'],
   },
 
   presets: [
@@ -109,7 +81,12 @@ const config: Config = {
           createSitemapItems: async (params) => {
             const {defaultCreateSitemapItems, ...rest} = params;
             const items = await defaultCreateSitemapItems(rest);
-            return items.filter((item) => !item.url.includes('/page/'));
+            return items
+              .filter((item) => !item.url.includes('/page/'))
+              .map((item) => ({
+                ...item,
+                url: item.url.endsWith('/') ? item.url : item.url + '/',
+              }));
           },
         },
       } satisfies Preset.Options,
@@ -122,13 +99,8 @@ const config: Config = {
       appId: 'TUSPP0C84U',
       apiKey: '9fe57ddc22a4b0ef865a88f6af4c957c',
       indexName: 'uyuni-architecture-docs',
-
-      // Optional but recommended:
-      contextualSearch: true,
-      searchParameters: {
-        facetFilters: ['language:$LOCALE', 'docusaurus_tag:default']
-      },
-      searchPagePath: 'search',
+      contextualSearch: false,
+      searchParameters: {},
     },
     // Replace with your project's social card
     image: 'img/uyuni-architecture-og.svg',
