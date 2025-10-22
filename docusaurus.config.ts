@@ -125,7 +125,9 @@ const config: Config = {
 
       // Optional but recommended:
       contextualSearch: true,
-      searchParameters: {},
+      searchParameters: {
+        facetFilters: ['language:$LOCALE', 'docusaurus_tag:default']
+      },
       searchPagePath: 'search',
     },
     // Replace with your project's social card
