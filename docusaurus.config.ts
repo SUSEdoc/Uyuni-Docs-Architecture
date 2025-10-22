@@ -119,15 +119,17 @@ const config: Config = {
   themeConfig: {
 
     algolia: {
-    appId: 'TUSPP0C84U',
-    apiKey: '9fe57ddc22a4b0ef865a88f6af4c957c',
-    indexName: 'uyuni-architecture-docs',
+      appId: 'TUSPP0C84U',
+      apiKey: '9fe57ddc22a4b0ef865a88f6af4c957c',
+      indexName: 'uyuni-architecture-docs',
 
-    // Optional but recommended:
-    contextualSearch: true,
-    searchParameters: {},
-    searchPagePath: 'search',
-  },
+      // Optional but recommended:
+      contextualSearch: true,
+      searchParameters: {
+        facetFilters: ['language:$LOCALE']
+      },
+      searchPagePath: 'search',
+    },
     // Replace with your project's social card
     image: 'img/uyuni-architecture-og.svg',
     colorMode: {
