@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# Welcome to Uyuni Documentation Architecture
+# Welcome
 
 Welcome to the comprehensive guide for the **Uyuni and SUSE Multi-Linux Manager documentation toolchain**. This site serves as the central resource for understanding, contributing to, and maintaining the documentation infrastructure that powers these enterprise-grade systems management solutions.
 
