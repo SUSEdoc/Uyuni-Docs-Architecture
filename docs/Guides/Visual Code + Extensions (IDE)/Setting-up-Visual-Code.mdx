@@ -1,0 +1,212 @@
+# Install and Configure Visual Studio Code for Documentation Development
+
+**Applies to:**  
+- OpenSUSE Leap 15.6
+- OpenSUSE Tumbleweed  
+- Ubuntu 24.04 LTS  
+
+---
+
+## Table of Contents
+- [Overview](#overview)
+- [Install Visual Studio Code](#install-visual-studio-code)
+  - [On OpenSUSE Leap 15.6 or Tumbleweed](#on-opensuse-leap-156-or-tumbleweed)
+  - [On Ubuntu 24.04](#on-ubuntu-2404)
+- [Install Recommended Extensions](#install-recommended-extensions)
+- [Configure VS Code for Documentation Development](#configure-vs-code-for-documentation-development)
+  - [Asciidoctor and Antora](#asciidoctor-and-antora)
+  - [Jinja2 and Python](#jinja2-and-python)
+  - [Makefile Support](#makefile-support)
+  - [Markdown and MDX](#markdown-and-mdx)
+- [Optional Enhancements](#optional-enhancements)
+- [Testing the Setup](#testing-the-setup)
+- [Troubleshooting](#troubleshooting)
+
+---
+
+## Overview
+
+This guide walks through installing **Visual Studio Code** (VS Code) and configuring it for technical documentation projects built with **Asciidoctor**, **Antora**, **Make**, and **Jinja2** templates.  
+It applies to both **OpenSUSE (Leap or Tumbleweed)** and **Ubuntu 24.04** systems.
+
+---
+
+## Install Visual Studio Code
+
+### On OpenSUSE Leap 15.6 or Tumbleweed
+
+1. Import Microsoft’s GPG key:
+   ```bash
+   sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
+   ```
+
+2. Add the VS Code repository:
+   ```bash
+   sudo sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ntype=rpm-md\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/zypp/repos.d/vscode.repo'
+   ```
+
+3. Refresh and install VS Code:
+   ```bash
+   sudo zypper refresh
+   sudo zypper install code
+   ```
+
+---
+
+### On Ubuntu 24.04
+
+1. Update system and install dependencies:
+   ```bash
+   sudo apt update
+   sudo apt install -y wget gpg apt-transport-https software-properties-common
+   ```
+
+2. Add Microsoft’s repository key:
+   ```bash
+   wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+   sudo install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/
+   rm packages.microsoft.gpg
+   ```
+
+3. Add the VS Code repository:
+   ```bash
+   sudo sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
+   ```
+
+4. Install VS Code:
+   ```bash
+   sudo apt update
+   sudo apt install -y code
+   ```
+
+---
+
+## Install Recommended Extensions
+
+Once VS Code is installed, open a terminal or the command palette (**Ctrl+Shift+P**) and install the following extensions:
+
+```bash
+# Core documentation and language support
+code --install-extension asciidoctor.asciidoctor-vscode
+code --install-extension mhutchie.git-graph
+code --install-extension streetsidesoftware.code-spell-checker
+
+# Antora and AsciiDoc tooling
+code --install-extension adammaras.antora
+code --install-extension yzhang.markdown-all-in-one
+
+# Jinja2 and Python
+code --install-extension wholroyd.jinja
+code --install-extension ms-python.python
+
+# Makefile and shell integration
+code --install-extension ms-vscode.makefile-tools
+code --install-extension foxundermoon.shell-format
+
+# Optional: Themes and editor helpers
+code --install-extension pkief.material-icon-theme
+code --install-extension ms-vscode.live-server
+```
+
+---
+
+## Configure VS Code for Documentation Development
+
+### Asciidoctor and Antora
+
+1. Open VS Code settings (**Ctrl+,**) or edit your `settings.json`:
+   ```json
+   {
+     "asciidoc.preview.useEditorStyle": false,
+     "asciidoc.use_kroki": true,
+     "asciidoc.antora.enable": true,
+     "asciidoc.antora.startupProjects": ["docs"],
+     "asciidoc.preview.attributes": {
+       "icons": "font",
+       "sectanchors": "",
+       "idprefix": "",
+       "idseparator": "-"
+     }
+   }
+   ```
+
+2. If your project uses **Antora**, make sure your repository has a proper `antora.yml` and `playbook.yml`.
+
+---
+
+### Jinja2 and Python
+
+1. Install the Python extension and Jinja2 syntax highlighter (see above).  
+2. Optionally, create a virtual environment for Python-based doc utilities:
+   ```bash
+   python3 -m venv .venv
+   source .venv/bin/activate
+   pip install jinja2 pyyaml
+   ```
+3. In VS Code, select your interpreter via the **Python: Select Interpreter** command.
+
+---
+
+### Makefile Support
+
+1. Install the **Makefile Tools** extension:
+   ```bash
+   code --install-extension ms-vscode.makefile-tools
+   ```
+
+2. This enables IntelliSense and target detection for GNU Make builds (commonly used in doc automation).
+
+---
+
+### Markdown and MDX
+
+For Docusaurus documentation repositories, these extensions are recommended:
+
+```bash
+code --install-extension unifiedjs.vscode-mdx
+code --install-extension davidanson.vscode-markdownlint
+```
+
+In your workspace `.vscode/settings.json`, you can define:
+```json
+{
+  "markdownlint.config": {
+    "MD013": false,
+    "MD033": false
+  }
+}
+```
+
+---
+
+## Optional Enhancements
+
+- **GitLens:** Deep Git integration (`eamodio.gitlens`)
+- **Path Intellisense:** Auto-complete paths (`christian-kohler.path-intellisense`)
+- **Live Preview:** Quick preview for AsciiDoc and Markdown (`ms-vscode.live-server`)
+- **YAML Support:** Helpful for `antora.yml` files (`redhat.vscode-yaml`)
+
+---
+
+## Testing the Setup
+
+1. Open a documentation repository in VS Code:
+   ```bash
+   code ~/projects/uyuni-docs
+   ```
+2. Open an `.adoc` file — preview it with **Ctrl+Shift+V** or **Alt+D**.  
+3. Run your Antora build to confirm integration:
+   ```bash
+   antora site.yml
+   ```
+
+---
+
+## Troubleshooting
+
+- **Missing Preview:** Check that the `asciidoctor.asciidoctor-vscode` extension is enabled.
+- **Antora errors:** Verify that Node.js and Antora are installed globally.
+- **Slow startup on OpenSUSE:** Disable telemetry with `"telemetry.telemetryLevel": "off"` in settings.
+
+---
+*With this setup, you should have a powerful environment for developing and maintaining technical documentation using Visual Studio Code on OpenSUSE or Ubuntu systems. Happy documenting!*

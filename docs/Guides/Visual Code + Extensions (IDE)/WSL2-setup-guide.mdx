@@ -1,0 +1,169 @@
+# Set Up WSL2 for Documentation Development
+
+**Applies to:**  
+- Windows 10 (Build 19044+)  
+- Windows 11  
+
+---
+
+## Table of Contents
+- [Overview](#overview)
+- [Enable WSL2 and Virtual Machine Platform](#enable-wsl2-and-virtual-machine-platform)
+- [Install a Linux Distribution](#install-a-linux-distribution)
+- [Set WSL2 as the Default Version](#set-wsl2-as-the-default-version)
+- [Accessing WSL2](#accessing-wsl2)
+- [Install Common Documentation Tools](#install-common-documentation-tools)
+- [Integrate with VS Code](#integrate-with-vs-code)
+- [Tips and Maintenance](#tips-and-maintenance)
+
+---
+
+## Overview
+
+Windows Subsystem for Linux 2 (WSL2) allows you to run a full Linux environment directly on Windows without the overhead of a virtual machine.  
+It’s ideal for technical writers and developers who work with **Asciidoctor**, **Antora**, **Make**, **Python/Jinja2**, or **Node.js** documentation toolchains.
+
+---
+
+## Enable WSL2 and Virtual Machine Platform
+
+Open **PowerShell as Administrator** and run:
+
+```powershell
+wsl --install
+```
+
+This command:
+- Enables the necessary Windows features (`Microsoft-Windows-Subsystem-Linux` and `VirtualMachinePlatform`)
+- Installs the latest Linux kernel
+- Installs Ubuntu by default
+
+If you need to install features manually (older systems):
+
+```powershell
+dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+```
+
+Then, restart your computer.
+
+---
+
+## Install a Linux Distribution
+
+List available distributions:
+```powershell
+wsl --list --online
+```
+
+Example output:
+```
+The following is a list of valid distributions that can be installed.
+  Ubuntu-24.04
+  Debian
+  openSUSE-Leap-15.6
+  openSUSE-Tumbleweed
+```
+
+Install your preferred distribution, for example:
+
+```powershell
+wsl --install -d Ubuntu-24.04
+```
+or
+```powershell
+wsl --install -d openSUSE-Leap-15.6
+```
+
+---
+
+## Set WSL2 as the Default Version
+
+Ensure new distributions use WSL2 by default:
+```powershell
+wsl --set-default-version 2
+```
+
+To upgrade an existing one:
+```powershell
+wsl --set-version Ubuntu-24.04 2
+```
+
+---
+
+## Accessing WSL2
+
+To start your Linux environment:
+```powershell
+wsl
+```
+
+Or from the Start Menu, search for your distribution name (e.g., “Ubuntu”).
+
+From within WSL, you can access your Windows filesystem at:
+```
+/mnt/c/Users/<YourUsername>/
+```
+
+---
+
+## Install Common Documentation Tools
+
+Once inside WSL2, you can follow the same Linux installation instructions used for:
+- [OpenSUSE Leap 15.6](./install-doc-toolchain-cleaned.md#opensuse-leap-156)
+- [Ubuntu 24.04](./install-doc-toolchain-cleaned.md#ubuntu-2404)
+
+For example:
+```bash
+sudo apt update
+sudo apt install -y git build-essential ruby ruby-dev python3 python3-pip nodejs npm
+```
+
+You can then install documentation utilities:
+```bash
+sudo gem install asciidoctor asciidoctor-pdf
+sudo npm install -g @antora/cli @antora/site-generator
+```
+
+---
+
+## Integrate with VS Code
+
+Install the **Remote - WSL** extension on Windows:
+```bash
+code --install-extension ms-vscode-remote.remote-wsl
+```
+
+Then open your Linux workspace directly from VS Code:
+1. Launch VS Code.
+2. Press **F1** → type `WSL: Connect to WSL`.
+3. Select your installed distribution.
+4. Open or clone your project folder inside the Linux environment.
+
+This lets you edit Linux files using VS Code while executing commands natively in WSL.
+
+---
+
+## Tips and Maintenance
+
+- **List all installed distributions:**
+  ```powershell
+  wsl --list --verbose
+  ```
+- **Update your kernel manually (if needed):**
+  ```powershell
+  wsl --update
+  ```
+- **Restart WSL:**
+  ```powershell
+  wsl --shutdown
+  ```
+- **Backup your WSL environment:**
+  ```powershell
+  wsl --export Ubuntu-24.04 ubuntu-backup.tar
+  ```
+
+---
+
+**End of Guide**  
+You now have a fully functional WSL2 environment ready for documentation and Antora-based development.
