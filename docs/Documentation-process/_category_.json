@@ -1,0 +1,8 @@
+{
+  "label": "Documentation process",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "description": "Comprehensive guides and procedures for managing the Uyuni documentation lifecycle, including team processes, content management, and quality assurance workflows."
+  }
+}
