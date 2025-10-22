@@ -1,0 +1,309 @@
+---
+id: changelog-system-improvement
+title: Changelog system improvement project
+sidebar_label: Changelog improvements
+description: Project proposal for enhancing the changelog system in uyuni-docs to improve release information tracking, artifacts generation, and developer communication.
+tags: [changelog, release-management, documentation, automation, project-proposal]
+---
+
+# Changelog system improvement project
+
+**Project Status:** Planning Phase  
+**Priority:** Medium  
+**Estimated Timeline:** TBD  
+
+---
+
+## Current Changelog Process
+
+Changelogs are **required** when we package the documentation. To make it easier to keep track of the changes we have made to various versions of the documentation during the development period, we maintain a plain text `.changelog` file at the top level of the docs repository.
+
+### When to Create Changelog Entries
+
+Not all changes you make require a changelog entry. Create a changelog entry if:
+
+- **Large changes**: The change is relatively significant (such as a restructure, or if you have moved or renamed content)
+- **New features**: The change is related to a new feature in the product
+- **Bug fixes**: The change resolves a bug and you have an associated BSC number (regardless of how large or small the change is)
+
+### Writing Guidelines
+
+Be **concise** in your changelog entries, but ensure they make sense to a reader. Strive for parallelism in entries where possible, using the syntax:
+
+**`<verbed> <noun> in <book name> (bsc#1234567)`**
+
+#### Examples:
+
+```
+- Updated Foo chapter in Installation Guide for readability
+- Documented Bar feature in Administration Guide  
+- Fixed error in Bat section of Upgrade Guide (bsc#1234567)
+```
+
+### Official Guidelines
+
+For comprehensive guidelines on writing changelogs, refer to the [openSUSE Creating a Changes File documentation](https://en.opensuse.org/openSUSE:Creating_a_changes_file_(RPM)#Changelog_section_.28.25changelog.29).
+
+### PR Review Checklist
+
+When reviewing pull requests, remember to consider the changelog entry:
+
+- ✅ **Does this change need a changelog?**
+- ✅ **Does this entry make sense to a reader?**
+- ✅ **Does this entry contain the correct BSC number?**
+- ✅ **Does this entry use correct spelling and grammar?**
+- ✅ **Could this entry be written more simply?**
+
+### Important Notes
+
+:::warning Commit Requirements
+Always ensure your changelog entry is committed in the **same PR** as the change it relates to. This ensures that your changelog entry is backported to the correct feature branch along with the change, and is included correctly at packaging time.
+:::
+
+---
+
+## Project Overview
+
+This document outlines a proposed improvement to the changelog system within the `uyuni-docs` repository to enhance release information tracking, artifact generation, and overall communication of changes across Uyuni releases.
+
+The current changelog approach lacks consistency, automation, and integration with our documentation workflow. This project aims to establish a robust, maintainable changelog system that serves both developers and end users.
+
+---
+
+## Current State Analysis
+
+### Existing Challenges
+
+- **Inconsistent Format**: Changelog entries vary in structure and detail level
+- **Manual Process**: Changes require manual compilation and formatting
+- **Limited Automation**: No automated generation from Git history or PR metadata
+- **Poor Integration**: Changelog updates are disconnected from documentation builds
+- **Release Artifacts**: Limited integration with release packaging and distribution
+- **Version Tracking**: Insufficient linking between documentation versions and software releases
+
+### Current Workflow Gaps
+
+1. **Change Detection**: No systematic way to identify documentation-impacting changes
+2. **Categorization**: Lack of standardized change categories (features, fixes, deprecations)
+3. **Cross-referencing**: Limited links between changelog entries and related documentation
+4. **Automation**: Manual effort required for each release cycle
+5. **Stakeholder Communication**: Inconsistent messaging for different audiences
+
+---
+
+## Project Goals
+
+### Primary Objectives
+
+1. **Standardized Format**: Establish consistent changelog entry structure
+2. **Automation Integration**: Implement automated changelog generation workflows
+3. **Release Artifact Enhancement**: Improve changelog inclusion in release packages
+4. **Documentation Integration**: Link changelog entries to relevant documentation sections
+5. **Multi-audience Support**: Tailor changelog content for different user types
+
+### Success Metrics
+
+- Reduced manual effort in changelog preparation
+- Increased consistency across releases
+- Improved developer and user experience with change communication
+- Better integration between documentation and software release processes
+- Enhanced traceability of changes and their documentation impact
+
+---
+
+## Proposed Solution Architecture
+
+### Technical Components
+
+#### 1. Changelog Format Standardization
+
+```markdown
+## [Version] - YYYY-MM-DD
+
+### Added
+- New features and capabilities
+- New documentation sections
+
+### Changed
+- Modifications to existing functionality
+- Updated documentation content
+
+### Deprecated
+- Features marked for future removal
+- Documentation sections to be retired
+
+### Removed
+- Deleted features
+- Removed documentation
+
+### Fixed
+- Bug fixes
+- Documentation corrections
+
+### Security
+- Security-related changes
+- Documentation security updates
+```
+
+#### 2. Automation Workflow
+
+- **Git Integration**: Extract changes from commit messages and PR descriptions
+- **Label-based Categorization**: Use GitHub labels to categorize changes automatically
+- **Template Enforcement**: Standardized PR templates with changelog information
+- **Release Integration**: Automatic changelog generation during release process
+
+#### 3. Documentation Integration
+
+- **Cross-references**: Link changelog entries to affected documentation pages
+- **Version Tracking**: Maintain changelog per documentation version
+- **Release Notes**: Generate user-facing release notes from changelog data
+- **Archive Management**: Historical changelog access and searchability
+
+---
+
+## Implementation Phases
+
+### Phase 1: Foundation (Planning)
+
+- [ ] Define changelog format standards
+- [ ] Create PR template with changelog requirements
+- [ ] Establish GitHub label taxonomy for change types
+- [ ] Document workflow procedures for contributors
+
+### Phase 2: Automation (Development)
+
+- [ ] Implement automated changelog generation scripts
+- [ ] Create GitHub Actions workflows for changelog processing
+- [ ] Develop changelog validation and formatting tools
+- [ ] Integrate with existing build and release processes
+
+### Phase 3: Integration (Enhancement)
+
+- [ ] Connect changelog system with documentation versioning
+- [ ] Implement cross-reference linking between changelog and docs
+- [ ] Create release artifact packaging with enhanced changelog
+- [ ] Develop changelog API for external consumption
+
+### Phase 4: Optimization (Refinement)
+
+- [ ] Gather feedback and refine processes
+- [ ] Optimize automation performance
+- [ ] Enhance user experience based on usage patterns
+- [ ] Implement advanced features (search, filtering, notifications)
+
+---
+
+## Technical Requirements
+
+### Infrastructure Needs
+
+- **GitHub Actions**: Workflow automation and CI/CD integration
+- **Scripting Environment**: Python or Node.js for changelog processing
+- **Template System**: Jinja2 or similar for changelog formatting
+- **Version Control Integration**: Git hooks and API integration
+- **Documentation Build**: Integration with Antora or current build system
+
+### Development Resources
+
+- **Backend Development**: Script creation and automation logic
+- **Frontend Integration**: Documentation site changelog display
+- **DevOps Configuration**: CI/CD pipeline setup and maintenance
+- **Quality Assurance**: Testing and validation procedures
+- **Documentation**: Process documentation and user guides
+
+---
+
+## Stakeholder Impact
+
+### Development Team
+
+- **Reduced Manual Work**: Automated changelog generation
+- **Clearer Process**: Standardized contribution requirements
+- **Better Tracking**: Enhanced visibility into project changes
+- **Quality Improvement**: Consistent change documentation
+
+### Documentation Team
+
+- **Streamlined Workflow**: Integrated changelog and docs updates
+- **Version Management**: Better tracking of documentation changes
+- **Release Coordination**: Improved synchronization with software releases
+- **Content Quality**: Consistent change communication
+
+### End Users
+
+- **Clear Information**: Well-formatted, comprehensive change logs
+- **Better Discovery**: Easier access to relevant changes
+- **Version Guidance**: Clear migration and update information
+- **Historical Context**: Access to previous releases and changes
+
+---
+
+## Risk Assessment
+
+### Technical Risks
+
+- **Integration Complexity**: Potential conflicts with existing workflows
+- **Performance Impact**: Automation overhead on build processes
+- **Maintenance Burden**: Ongoing script and workflow maintenance
+- **Tool Dependencies**: Reliance on external services and APIs
+
+### Mitigation Strategies
+
+- **Phased Implementation**: Gradual rollout to minimize disruption
+- **Fallback Procedures**: Manual processes as backup options
+- **Testing Environment**: Thorough testing before production deployment
+- **Documentation**: Comprehensive process documentation and training
+
+---
+
+## Future Considerations
+
+### Potential Enhancements
+
+- **Machine Learning**: Automatic change categorization using AI
+- **Integration Expansion**: Connection with issue tracking and project management
+- **Multi-format Output**: JSON, XML, RSS feeds for changelog consumption
+- **Internationalization**: Multi-language changelog support
+- **Analytics**: Usage tracking and improvement insights
+
+### Long-term Vision
+
+This project lays the foundation for a comprehensive change management system that could extend beyond documentation to encompass broader project communication and release management across the Uyuni ecosystem.
+
+---
+
+## Next Steps
+
+### Immediate Actions
+
+1. **Stakeholder Review**: Present proposal to documentation and development teams
+2. **Requirements Gathering**: Collect detailed requirements from all stakeholders  
+3. **Technical Assessment**: Evaluate current infrastructure and integration points
+4. **Timeline Planning**: Develop detailed project timeline and resource allocation
+5. **Prototype Development**: Create proof-of-concept implementation
+
+### Decision Points
+
+- **Project Approval**: Go/no-go decision based on resource availability
+- **Technology Selection**: Choose specific tools and frameworks
+- **Integration Approach**: Determine integration strategy with existing systems
+- **Rollout Strategy**: Define deployment and adoption timeline
+
+---
+
+## Contact and Collaboration
+
+This project proposal is open for feedback and collaboration. Contributors interested in changelog system improvements should:
+
+- Review this proposal and provide feedback
+- Participate in planning discussions
+- Contribute to requirement definition
+- Assist with prototype development and testing
+
+**Project Lead**: TBD  
+**Technical Contact**: TBD  
+**Documentation Contact**: TBD  
+
+---
+
+*This document serves as a living specification and will be updated as the project evolves from concept to implementation.*
