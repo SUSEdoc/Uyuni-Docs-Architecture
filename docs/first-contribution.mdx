@@ -1,0 +1,473 @@
+---
+id: first-contribution
+title: Contributing to Uyuni documentation
+sidebar_label: Contribution workflow
+description: Complete guide for contributing to the Uyuni documentation repository, including Git workflows, commit signing, pull request procedures, and review standards.
+authors: [Joseph Cayouette, Ornela Maric]
+tags: [contribution, git, workflow, pull-request, review, collaboration]
+---
+
+# Contributing to Uyuni documentation
+
+**Repository:** https://github.com/uyuni-project/uyuni-docs  
+**Contribution Model:** Fork-based with optional direct access  
+**Review Requirements:** Technical SME + Documentation team approval  
+
+---
+
+## Prerequisites
+
+### Required Setup
+
+**GitHub Account:**
+- Active GitHub account with proper profile setup
+- Two-factor authentication enabled (recommended)
+- SSH keys or personal access tokens configured
+
+**Git Configuration:**
+```bash
+# Configure your identity
+git config --global user.name "Your Name"
+git config --global user.email "your.email@example.com"
+
+# Configure default branch behavior
+git config --global init.defaultBranch master
+git config --global pull.ff only
+```
+
+### Commit Signing Requirements
+
+**Commit signing with GPG or SSH key is mandatory.** Verified commits ensure authenticity and are required for all contributions.
+
+**Setup Options:**
+
+**GPG Key Signing:**
+```bash
+# Generate a GPG key (if you don't have one)
+gpg --full-generate-key
+
+# List your GPG keys
+gpg --list-secret-keys --keyid-format=long
+
+# Configure Git to use your GPG key
+git config --global user.signingkey <your-key-id>
+git config --global commit.gpgsign true
+```
+
+**SSH Key Signing:**
+```bash
+# Configure Git to use SSH signing
+git config --global gpg.format ssh
+git config --global user.signingkey ~/.ssh/id_ed25519.pub
+git config --global commit.gpgsign true
+```
+
+**Resources:**
+- [GitHub GPG signing documentation](https://docs.github.com/en/authentication/managing-commit-signature-verification/signing-commits)
+- [GitHub SSH signing documentation](https://docs.github.com/en/authentication/managing-commit-signature-verification/about-commit-signature-verification#ssh-commit-signature-verification)
+
+---
+
+## First-Time Contribution Setup
+
+### Method 1: Contributing Using a Fork (Recommended)
+
+**Step 1: Fork the Repository**
+1. Navigate to https://github.com/uyuni-project/uyuni-docs
+2. Click the "Fork" button in the top-right corner
+3. Select your GitHub account as the destination
+
+**Step 2: Clone Your Fork**
+```bash
+# Clone your forked repository
+git clone https://github.com/<your-username>/uyuni-docs.git
+cd uyuni-docs
+```
+
+**Step 3: Configure Remotes**
+```bash
+# Verify your origin remote (should point to your fork)
+git remote -v
+
+# Add the upstream repository
+git remote add upstream https://github.com/uyuni-project/uyuni-docs.git
+
+# Verify both remotes are configured
+git remote -v
+# Should show:
+# origin    https://github.com/<your-username>/uyuni-docs.git (fetch)
+# origin    https://github.com/<your-username>/uyuni-docs.git (push)
+# upstream  https://github.com/uyuni-project/uyuni-docs.git (fetch)
+# upstream  https://github.com/uyuni-project/uyuni-docs.git (push)
+```
+
+**Step 4: Set Up Master Branch**
+```bash
+# Switch to master branch
+git checkout master
+
+# Fetch latest changes from upstream
+git fetch upstream
+
+# Merge upstream changes into your local master
+git merge upstream/master
+
+# Push updated master to your fork
+git push origin master
+```
+
+### Method 2: Contributing With Direct Write Access
+
+**For team members with repository write access:**
+
+```bash
+# Clone the repository directly
+git clone https://github.com/uyuni-project/uyuni-docs.git
+cd uyuni-docs
+
+# Switch to master branch
+git checkout master
+
+# Verify you're on the correct branch
+git branch
+```
+
+---
+
+## Development Workflow
+
+### Creating Feature Branches
+
+**Always create feature branches for your work:**
+
+```bash
+# Ensure you're on an updated master branch
+git checkout master
+git fetch upstream  # (for forks) or git fetch --all (for direct access)
+git merge upstream/master  # (for forks) or git pull --ff-only (for direct access)
+
+# Create and switch to a new feature branch
+git checkout -b feature/update-readme-improvements
+
+# Alternative descriptive branch names:
+# git checkout -b fix/broken-links-chapter-3
+# git checkout -b docs/new-installation-guide
+# git checkout -b update/api-documentation
+```
+
+### Branch Naming Conventions
+
+**Use descriptive, lowercase branch names with hyphens:**
+
+- `feature/description-of-feature`
+- `fix/description-of-fix`
+- `docs/description-of-documentation`
+- `update/description-of-update`
+
+**Examples:**
+- `feature/salt-master-configuration`
+- `fix/broken-links-installation-guide`
+- `docs/api-reference-channels`
+- `update/system-requirements-suse15`
+
+### Making Changes
+
+**Development Best Practices:**
+
+1. **Make focused, logical changes** related to a single issue or improvement
+2. **Test your changes locally** before committing
+3. **Follow documentation style guides** and existing conventions
+4. **Keep commits atomic** - one logical change per commit
+
+**Commit Process:**
+```bash
+# Stage specific files (preferred over git add .)
+git add path/to/changed/file1.md path/to/changed/file2.md
+
+# Or stage all changes (use with caution)
+git add .
+
+# Commit with a descriptive message (will be signed automatically)
+git commit -m "Add installation steps for SUSE Linux Enterprise 15 SP4
+
+- Include package repository configuration
+- Add firewall configuration requirements  
+- Update system requirements table"
+
+# Verify your commit is signed
+git log --show-signature -1
+```
+
+### Commit Message Standards
+
+**Format:**
+```
+Short summary (50 chars or less)
+
+Longer description if needed, wrapping at 72 characters. 
+Explain what and why, not how. Use bullet points if helpful:
+
+- First improvement or change
+- Second improvement or change
+- Third improvement or change
+
+Fixes #123
+```
+
+**Best Practices:**
+- Use imperative mood ("Add" not "Added" or "Adding")
+- Capitalize first letter of summary
+- No period at end of summary
+- Leave blank line between summary and description
+- Reference issues with "Fixes #123" or "Closes #123"
+
+---
+
+## Pull Request Process
+
+### Pushing Your Branch
+
+```bash
+# Push your feature branch to your fork (first time)
+git push --set-upstream origin feature/your-branch-name
+
+# Subsequent pushes (after the upstream is set)
+git push
+```
+
+### Creating a Pull Request
+
+**Step 1: Navigate to GitHub**
+- Go to your fork on GitHub
+- GitHub will often show a banner suggesting you create a PR
+- Or navigate to the upstream repository and click "New Pull Request"
+
+**Step 2: Configure Your PR**
+
+**Title Guidelines:**
+- Clear, descriptive summary of changes
+- Prefix with `[WIP]` if work is incomplete
+- Examples:
+  - `Add Salt configuration examples for channel management`
+  - `[WIP] Update installation guide for containerized deployments`
+  - `Fix broken cross-references in API documentation`
+
+**Description Template:**
+```markdown
+## Summary
+Brief description of what this PR accomplishes.
+
+## Changes Made
+- Specific change 1
+- Specific change 2
+- Specific change 3
+
+## Testing
+- [ ] Verified documentation builds without errors
+- [ ] Checked all links are functional
+- [ ] Reviewed for spelling and grammar
+- [ ] Tested any code examples included
+
+## Related Issues
+Fixes #123
+Relates to #456
+
+## Review Notes
+Any specific areas where you'd like reviewer focus or have questions.
+```
+
+**Step 3: Request Reviews**
+- **Required:** One SME (Subject Matter Expert) for technical changes
+- **Required:** One documentation team member for all changes
+- **Optional:** Additional stakeholders as appropriate
+
+**Step 4: Mark as Draft (if needed)**
+- Use Draft PR for work in progress
+- Convert to ready for review when complete
+
+---
+
+## Review Standards and Process
+
+### Review Requirements
+
+**All Pull Requests Must Have:**
+- One approval from a documentation team member
+- One approval from an SME (for technical content changes)
+- All conversations resolved
+- Passing CI/CD checks
+- Signed commits
+
+### Review Criteria
+
+**Content Quality:**
+- Technical accuracy and completeness
+- Clear writing and appropriate audience level
+- Consistent style and formatting
+- Proper cross-references and linking
+
+**Process Compliance:**
+- Follows contribution guidelines
+- Appropriate branch naming and commit messages
+- Proper issue references and documentation
+- No merge conflicts with master
+
+### Reviewer Guidelines
+
+**For Reviewers:**
+- **Do not merge another author's PR** without explicit permission
+- Provide constructive, specific feedback
+- Test documentation builds and functionality
+- Verify technical accuracy within your expertise
+- Approve only when all concerns are addressed
+
+**For Contributors:**
+- Address all review feedback promptly
+- Ask for clarification on unclear feedback
+- Update your branch with requested changes
+- Resolve conversations when changes are made
+
+---
+
+## Ongoing Contributions
+
+### Keeping Your Fork Synchronized
+
+**Essential for avoiding conflicts - do this before starting new work:**
+
+```bash
+# Switch to master branch
+git checkout master
+
+# Fetch latest changes from upstream
+git fetch upstream
+
+# Merge upstream changes (fast-forward only)
+git merge upstream/master
+
+# Push updated master to your fork
+git push origin master
+```
+
+### For Direct Access Contributors
+
+```bash
+# Switch to master branch
+git checkout master
+
+# Fetch all remote branches and tags
+git fetch --all
+
+# Update master with latest changes (fast-forward only)
+git pull --ff-only
+
+# Clean up merged branches (optional)
+git branch --merged | grep -v master | xargs -n 1 git branch -d
+```
+
+### Starting New Work
+
+**Always start from an updated master:**
+
+```bash
+# Ensure master is current (see synchronization steps above)
+git checkout master
+
+# Create new feature branch
+git checkout -b feature/new-feature-name
+
+# Begin your work...
+```
+
+---
+
+## Best Practices
+
+### Workflow Efficiency
+
+**Commit Early and Often:**
+- Make small, logical commits during development
+- Push work-in-progress branches regularly
+- Use Draft PRs for ongoing work visibility
+
+**Stay Synchronized:**
+- Update your master branch daily
+- Rebase feature branches when needed to avoid conflicts
+- Communicate with team about potentially conflicting work
+
+### Quality Assurance
+
+**Before Submitting:**
+- [ ] Documentation builds successfully
+- [ ] All links function correctly
+- [ ] Spelling and grammar checked
+- [ ] Code examples tested (if applicable)
+- [ ] Follows style guide conventions
+- [ ] Commit messages are clear and descriptive
+
+**Collaboration:**
+- Communicate early about significant changes
+- Ask for early feedback on complex work
+- Coordinate with SMEs for technical content
+- Update related documentation when making changes
+
+### Troubleshooting
+
+**Common Issues:**
+
+**Merge Conflicts:**
+```bash
+# Update your master branch first
+git checkout master
+git fetch upstream
+git merge upstream/master
+
+# Rebase your feature branch
+git checkout feature/your-branch
+git rebase master
+
+# Resolve conflicts in your editor, then:
+git add .
+git rebase --continue
+```
+
+**Unsigned Commits:**
+```bash
+# Sign previous commit
+git commit --amend --no-edit -S
+
+# Or sign all commits in current branch
+git rebase --exec 'git commit --amend --no-edit -S' master
+```
+
+**Wrong Branch:**
+```bash
+# Move uncommitted changes to correct branch
+git stash
+git checkout correct-branch
+git stash pop
+
+# Move committed changes to new branch
+git checkout -b correct-branch
+git checkout wrong-branch
+git reset --hard HEAD~1  # removes last commit from wrong branch
+```
+
+---
+
+## Getting Help
+
+**Resources:**
+- **Documentation team:** Reach out in team Slack channels
+- **Technical SMEs:** Contact appropriate product team members
+- **GitHub Issues:** Create issues for bugs or enhancement requests
+- **Team meetings:** Bring questions to regular team meetings
+
+**Emergency Contacts:**
+- For urgent documentation issues affecting releases
+- For repository access or permissions problems
+- For CI/CD pipeline failures blocking merges
+
+---
+
+*This workflow ensures high-quality contributions while maintaining efficient collaboration across the documentation team and broader Uyuni community.*
