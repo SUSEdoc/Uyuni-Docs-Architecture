@@ -1,4 +1,12 @@
-# Set Up WSL2 for Documentation Development
+---
+id: Set-Up-WSL2-for-Documentation-Development
+title: Set up WSL2 for documentation development
+sidebar_label: WSL2 setup guide
+description: A step-by-step guide to installing and configuring Windows Subsystem for Linux 2 (WSL2) for technical writing and documentation toolchains on Windows.
+tags: [wsl2, windows, linux, documentation, setup, guide]
+---
+
+# Set up WSL2 for documentation development
 
 **Applies to:**  
 - Windows 10 (Build 19044+)  
@@ -6,15 +14,15 @@
 
 ---
 
-## Table of Contents
+## Table of contents
 - [Overview](#overview)
 - [Enable WSL2 and Virtual Machine Platform](#enable-wsl2-and-virtual-machine-platform)
-- [Install a Linux Distribution](#install-a-linux-distribution)
-- [Set WSL2 as the Default Version](#set-wsl2-as-the-default-version)
+- [Install a Linux distribution](#install-a-linux-distribution)
+- [Set WSL2 as the default version](#set-wsl2-as-the-default-version)
 - [Accessing WSL2](#accessing-wsl2)
-- [Install Common Documentation Tools](#install-common-documentation-tools)
+- [Install common documentation tools](#install-common-documentation-tools)
 - [Integrate with VS Code](#integrate-with-vs-code)
-- [Tips and Maintenance](#tips-and-maintenance)
+- [Tips and maintenance](#tips-and-maintenance)
 
 ---
 
@@ -49,7 +57,7 @@ Then, restart your computer.
 
 ---
 
-## Install a Linux Distribution
+## Install a Linux distribution
 
 List available distributions:
 ```powershell
@@ -77,7 +85,7 @@ wsl --install -d openSUSE-Leap-15.6
 
 ---
 
-## Set WSL2 as the Default Version
+## Set WSL2 as the default version
 
 Ensure new distributions use WSL2 by default:
 ```powershell
@@ -107,11 +115,11 @@ From within WSL, you can access your Windows filesystem at:
 
 ---
 
-## Install Common Documentation Tools
+## Install common documentation tools
 
 Once inside WSL2, you can follow the same Linux installation instructions used for:
-- [OpenSUSE Leap 15.6](./install-doc-toolchain-cleaned.md#opensuse-leap-156)
-- [Ubuntu 24.04](./install-doc-toolchain-cleaned.md#ubuntu-2404)
+- [OpenSUSE Leap 15.6](/docs/Guides/Uyuni-MLM-toolchain/Deployment-and-Installation/manual-toolchain-installation#opensuse-leap-156)
+- [Ubuntu 24.04](/docs/Guides/Uyuni-MLM-toolchain/Deployment-and-Installation/manual-toolchain-installation#ubuntu-2404)
 
 For example:
 ```bash
@@ -144,7 +152,7 @@ This lets you edit Linux files using VS Code while executing commands natively i
 
 ---
 
-## Tips and Maintenance
+## Tips and maintenance
 
 - **List all installed distributions:**
   ```powershell

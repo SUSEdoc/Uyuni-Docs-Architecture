@@ -1,4 +1,12 @@
-# Install and Configure Visual Studio Code for Documentation Development
+---
+id: install-and-configure-visual-studio-code
+title: Install and configure Visual Studio Code for documentation development
+sidebar_label: Visual Studio Code setup
+description: A step-by-step guide to installing and configuring Visual Studio Code for technical writing and documentation toolchains.
+tags: [visual-studio-code, vscode, documentation, setup, guide]
+---
+
+# Install and configure Visual Studio Code for documentation development
 
 **Applies to:**  
 - OpenSUSE Leap 15.6
@@ -7,13 +15,13 @@
 
 ---
 
-## Table of Contents
+## Table of contents
 - [Overview](#overview)
 - [Install Visual Studio Code](#install-visual-studio-code)
   - [On OpenSUSE Leap 15.6 or Tumbleweed](#on-opensuse-leap-156-or-tumbleweed)
   - [On Ubuntu 24.04](#on-ubuntu-2404)
-- [Install Recommended Extensions](#install-recommended-extensions)
-- [Configure VS Code for Documentation Development](#configure-vs-code-for-documentation-development)
+- [Install recommended extensions](#install-recommended-extensions)
+- [Configure VS Code for documentation development](#configure-vs-code-for-documentation-development)
   - [Asciidoctor and Antora](#asciidoctor-and-antora)
   - [Jinja2 and Python](#jinja2-and-python)
   - [Makefile Support](#makefile-support)
@@ -28,6 +36,10 @@
 
 This guide walks through installing **Visual Studio Code** (VS Code) and configuring it for technical documentation projects built with **Asciidoctor**, **Antora**, **Make**, and **Jinja2** templates.  
 It applies to both **OpenSUSE (Leap or Tumbleweed)** and **Ubuntu 24.04** systems.
+
+:::tip Windows Users
+If you're on Windows, consider setting up **WSL2** first for the best documentation development experience. WSL2 provides a full Linux environment that works seamlessly with VS Code. See our [WSL2 Setup Guide](/docs/Guides/Uyuni-MLM-toolchain/Deployment-and-Installation/Set-Up-WSL2-for-Documentation-Development) for detailed instructions.
+:::
 
 ---
 
@@ -81,7 +93,7 @@ It applies to both **OpenSUSE (Leap or Tumbleweed)** and **Ubuntu 24.04** system
 
 ---
 
-## Install Recommended Extensions
+## Install recommended extensions
 
 Once VS Code is installed, open a terminal or the command palette (**Ctrl+Shift+P**) and install the following extensions:
 
@@ -110,7 +122,7 @@ code --install-extension ms-vscode.live-server
 
 ---
 
-## Configure VS Code for Documentation Development
+## Configure VS Code for documentation development
 
 ### Asciidoctor and Antora
 
@@ -179,7 +191,7 @@ In your workspace `.vscode/settings.json`, you can define:
 
 ---
 
-## Optional Enhancements
+## Optional enhancements
 
 - **GitLens:** Deep Git integration (`eamodio.gitlens`)
 - **Path Intellisense:** Auto-complete paths (`christian-kohler.path-intellisense`)
@@ -188,7 +200,7 @@ In your workspace `.vscode/settings.json`, you can define:
 
 ---
 
-## Testing the Setup
+## Testing the setup
 
 1. Open a documentation repository in VS Code:
    ```bash

@@ -32,6 +32,30 @@ const config: Config = {
         content: 'index, follow',
       },
     },
+    // Google Fonts preconnect for performance
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'preconnect',
+        href: 'https://fonts.googleapis.com',
+      },
+    },
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'preconnect',
+        href: 'https://fonts.gstatic.com',
+        crossorigin: 'anonymous',
+      },
+    },
+    // SUSE fonts from Google Fonts
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'stylesheet',
+        href: 'https://fonts.googleapis.com/css2?family=SUSE:wght@100..800&display=swap',
+      },
+    },
   ],
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
@@ -132,7 +156,7 @@ const config: Config = {
           position: 'right',
         },
         {
-          href: 'https://github.com/facebook/docusaurus',
+          href: 'https://github.com/uyuni-project/uyuni-docs',
           label: 'GitHub',
           position: 'right',
         },
@@ -155,7 +179,7 @@ const config: Config = {
           items: [
             {
               label: 'GitHub',
-              href: 'https://github.com/facebook/docusaurus',
+              href: 'https://github.com/uyuni-project/uyuni-docs',
             },
           ],
         },
@@ -165,6 +189,7 @@ const config: Config = {
     prism: {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
+      additionalLanguages: ['bash', 'makefile', 'ruby', 'python', 'yaml'],
     },
   } satisfies Preset.ThemeConfig,
 };
