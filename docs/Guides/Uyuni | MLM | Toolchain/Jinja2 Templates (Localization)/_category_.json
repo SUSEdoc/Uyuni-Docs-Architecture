@@ -1,0 +1,8 @@
+{
+  "label": "Jinja2 Templates (Localization)",
+  "position": 5,
+  "link": {
+    "type": "generated-index",
+    "description": "Jinja2 templating system for localization workflows and dynamic content generation in the documentation pipeline."
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "label": "Antora (Static Site)",
+  "position": 2,
+  "link": {
+    "type": "generated-index",
+    "description": "Antora static site generator configuration, usage, and best practices for multi-repository documentation sites."
+  }
+}

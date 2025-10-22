@@ -1,0 +1,8 @@
+{
+  "label": "Makefile (Core)",
+  "position": 4,
+  "link": {
+    "type": "generated-index",
+    "description": "Core Makefile configurations and build automation processes for the documentation toolchain."
+  }
+}

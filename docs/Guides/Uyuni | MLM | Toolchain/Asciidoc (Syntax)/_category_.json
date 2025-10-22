@@ -1,0 +1,8 @@
+{
+  "label": "AsciiDoc (Syntax)",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "description": "AsciiDoc markup language syntax, formatting guidelines, and best practices for technical documentation authoring."
+  }
+}

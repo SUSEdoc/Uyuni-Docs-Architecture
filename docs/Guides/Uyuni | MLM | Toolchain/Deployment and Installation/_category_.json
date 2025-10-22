@@ -1,0 +1,8 @@
+{
+  "label": "Deployment and Installation",
+  "position": 1,
+  "link": {
+    "type": "generated-index",
+    "description": "Setup and deployment processes for the Uyuni documentation infrastructure and toolchain components."
+  }
+}
