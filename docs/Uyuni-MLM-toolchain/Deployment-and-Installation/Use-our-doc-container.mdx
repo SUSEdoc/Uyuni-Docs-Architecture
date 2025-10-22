@@ -11,21 +11,99 @@ tags: [container, docker, toolchain, deployment, quick-start, development, envir
 **Author:** Joseph Cayouette  
 **Version:** v1.0 (2018-05-03)
 
+## Overview
 
-This document provides a complete overview of how to use the **Uyuni Documentation Build System** through the container script.
-It explains all command-line options, parameters, and examples for building and serving Uyuni or SUSE documentation.
+The Uyuni Documentation Container provides a simple, consistent way to build Uyuni documentation without having to install a large number of dependencies manually.  
+
+In addition, a **helper script** is provided for contributors who may not be familiar with containers. This script allows you to build and serve documentation easily from the command line.
+
+This system originated from **SUSE's Hack Week 22**.
 
 ---
 
-## Overview
+# Requirements
 
-The **Uyuni Documentation Build System** helps automate the process of building, packaging, and validating Uyuni and SUSE documentation using containerized environments.
+Before using the Uyuni Documentation Container, make sure your system meets the following setup requirements.
 
-You can build from either:
-- A **remote Git repository**, or
-- A **local Git clone**.
+## For Everyone
 
-It also supports serving the documentation for preview using a local HTTP server.
+You need either **Podman (recommended)** or **Docker** installed to run the containerized documentation build system.
+
+### Option 1 — Install Podman (Recommended)
+
+Podman is the preferred container runtime.  
+Check your distribution’s documentation or install it using your package manager.  
+
+Once installed, verify Podman works:
+
+```bash
+podman --version
+```
+
+### Option 2 — Use Docker as a Podman Alias
+
+If you prefer to use **Docker**, you can create an alias so the script works seamlessly with Docker commands.
+
+For Bash users, add this line to your `~/.bashrc` or `~/.alias` file:
+
+```bash
+alias podman='docker'
+```
+
+Then reload your shell configuration:
+
+```bash
+source ~/.bashrc
+```
+
+This ensures that every time the script calls `podman`, it actually runs Docker.
+
+---
+
+## For macOS Users
+
+In addition to Podman, macOS users must install **GNU Getopt**, since the built-in version of `getopt` on macOS is not fully compatible.
+
+### Install GNU Getopt using Homebrew
+
+If you don’t already have [Homebrew](https://brew.sh) installed, follow the instructions on their site, then run:
+
+```bash
+brew install gnu-getopt
+```
+
+This script automatically detects macOS and adjusts your `PATH` to use the correct version of `getopt`.
+
+---
+
+## Setting Up Podman on macOS or Windows
+
+If you are using **Podman Desktop** or **Podman Machine**, initialize and start your virtual machine:
+
+```bash
+# Initialize the Podman virtual machine (first time only)
+podman machine init
+
+# Start the Podman virtual machine
+podman machine start
+
+# Verify the connection to the Podman service
+podman system connection list
+```
+
+You should see an active connection (for example, `podman-machine-default` marked as `true`).
+
+---
+
+## Verification
+
+To confirm everything is configured correctly, run:
+
+```bash
+podman run hello-world
+```
+
+You should see a message confirming that Podman can pull and run containers successfully.
 
 ---
 
@@ -209,6 +287,6 @@ After running the script, output can be found under one of the following paths:
 ---
 
 
-**Author:** Uyuni Project  
-**Container Repository:** [https://github.com/uyuni-project/uyuni-docs](https://github.com/uyuni-project/uyuni-docs)
+**Author:** juliogonzalez  
+**Container Repository:** [https://github.com/uyuni-project/uyuni-docs-helper](https://github.com/uyuni-project/uyuni-docs-helper)
 
