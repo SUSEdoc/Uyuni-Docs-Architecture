@@ -49,6 +49,42 @@ function getFeatureList(): FeatureItem[] {
         </Translate>
       ),
     },
+    {
+      title: 'Make',
+      imagePath: '/img/make-logo.svg',
+      description: (
+        <Translate
+          id="homepage.features.make.description"
+          description="Description for Make feature">
+          The documentation build process is automated using Make, a build automation tool
+          that simplifies and streamlines the compilation of documentation assets.
+        </Translate>
+      ),
+    },
+     {
+      title: 'YAML',
+      imagePath: '/img/yml-logo.svg',
+      description: (
+        <Translate
+          id="homepage.features.yaml.description"
+          description="Description for YAML feature">
+          YAML (YAML Ain't Markup Language) is used extensively in the documentation toolchain
+          for configuration files due to its human-readable format and ease of use.
+        </Translate>
+      ),
+    },
+    {
+      title: 'Jinja2',
+      imagePath: '/img/jinja-logo.svg',
+      description: (
+        <Translate
+          id="homepage.features.jinja2.description"
+          description="Description for Jinja2 feature">
+          Jinja2 is a templating engine used in the documentation toolchain to create
+          dynamic content and reusable templates, enhancing the efficiency of document generation.
+        </Translate>
+      ),
+    },
   ];
 }
 
