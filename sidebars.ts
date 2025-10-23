@@ -17,6 +17,7 @@ const sidebars: SidebarsConfig = {
   tutorialSidebar: [
     'intro',
     'first-contribution',
+    'search-help',
     {
       type: 'category', 
       label: 'Uyuni documentation toolchain',
