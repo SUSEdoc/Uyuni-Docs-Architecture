@@ -128,8 +128,8 @@ const config: Config = {
       indexName: 'uyuni-architecture-docs',
       contextualSearch: false,
       searchParameters: {},
-      // Customize search to better show page-level results
-      searchPagePath: 'search',
+      // Disable the search page entirely - only use popup
+      searchPagePath: false,
     },
     // Replace with your project's social card
     image: 'img/uyuni-architecture-og.svg',
