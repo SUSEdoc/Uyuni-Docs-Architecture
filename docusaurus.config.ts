@@ -128,8 +128,8 @@ const config: Config = {
       indexName: 'uyuni-architecture-docs',
       contextualSearch: false,
       searchParameters: {},
-      // Disable the search page entirely - only use popup
-      searchPagePath: false,
+      // Customize search to better show page-level results
+      searchPagePath: 'search',
     },
     // Replace with your project's social card
     image: 'img/uyuni-architecture-og.svg',
@@ -150,10 +150,6 @@ const config: Config = {
           sidebarId: 'tutorialSidebar',
           position: 'left',
           label: 'Toolchain Guides',
-        },
-        {
-          type: 'localeDropdown',
-          position: 'right',
         },
         {
           href: 'https://github.com/uyuni-project/uyuni-docs',
