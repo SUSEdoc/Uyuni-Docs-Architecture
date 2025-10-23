@@ -1,0 +1,618 @@
+---
+id: suma-packaging-rpms-for-the-internal-build-service
+title: Packaging SUSE Manager documentation RPMs for Internal Build Service
+sidebar_label: RPM packaging for IBS
+description: Complete guide for building and packaging SUSE Manager documentation RPMs using uyuni-docs-helper and submitting to the Internal Build Service (IBS).
+authors: [Joseph Cayouette]
+tags: [suse-manager, rpm-packaging, obs, ibs, build-service, documentation-delivery, uyuni-docs-helper]
+---
+
+# Packaging SUSE Manager documentation RPMs for Internal Build Service
+
+**Target:** SUSE Manager documentation RPM packages  
+**Build System:** Internal Build Service (IBS) via build.suse.de  
+**Tool:** uyuni-docs-helper container  
+**Current Version:** SUSE Manager 5.0  
+
+---
+
+## Overview
+
+This document provides complete procedures for building and packaging SUSE Manager documentation as RPM packages for distribution through the Internal Build Service (IBS). The process uses the uyuni-docs-helper container to generate documentation packages that are then submitted to IBS for inclusion in SUSE Manager releases.
+
+The workflow ensures:
+- Consistent documentation packaging across releases
+- Automated build processes using containerized tools
+- Proper version management and changelog integration
+- Quality assurance through IBS validation processes
+
+---
+
+## Prerequisites
+
+### Required Tools and Access
+
+**uyuni-docs-helper Container:**
+- Container environment set up and functional
+- See [Use our documentation container](../../Deployment-and-Installation/Use-our-doc-container.mdx) for setup instructions
+- Verified container can build documentation successfully
+
+**SUSE Open Build Service Tools:**
+- `osc` command-line tools installed locally
+- Configuration completed for IBS access
+- See [The OBS Tutorial](https://openbuildservice.org/help/manuals/obs-user-guide/) for setup guidance
+
+**Internal Build Service Account:**
+- Active account at build.suse.de with appropriate permissions
+- Verified login capability to web interface
+- Multi-Factor Authentication (MFA) configured and functional
+- Access to relevant project repositories (Devel:Galaxy:Manager:*)
+
+### Verification Steps
+
+**Test uyuni-docs-helper:**
+```bash
+# Verify container functionality
+./uyuni-docs-helper --version
+
+# Test basic build capability
+./uyuni-docs-helper --help
+```
+
+**Test OBS tools:**
+```bash
+# Verify osc installation and configuration
+osc --version
+
+# Test IBS connectivity
+osc -A https://api.suse.de ls
+```
+
+**Verify IBS access:**
+- Log in to https://build.suse.de
+- Confirm MFA is working
+- Check project access permissions
+
+---
+
+## Configuration for IBS Packaging
+
+### Parameters File Configuration
+
+The `parameters.yml` file must be properly configured for the target SUSE Manager version before building packages.
+
+**Location:** `uyuni-docs/parameters.yml` (in your uyuni-docs checkout)
+
+### Site Configuration
+
+**For WebUI builds, configure the site section:**
+```yaml
+site:
+  - attribute: title
+    value: "SUSE Manager Documentation"
+  - attribute: start_page
+    value: "suse-manager::index"
+  - attribute: url
+    value: /
+```
+
+**Key requirements:**
+- `url` value must be set to `/` for WebUI deployment
+- `start_page` should reference the SUSE Manager index
+- `title` should reflect SUSE Manager branding
+
+### Version-Specific Configuration
+
+**Configure the SUSE Manager section (NOT the Uyuni section):**
+
+```yaml
+suma:
+  asciidoc:
+    - attribute: productnumber
+      value: "5.0"
+    - attribute: docversion
+      value: "5.0"
+    - attribute: minorversion
+      value: "5.0.6"
+    - attribute: saltversion
+      value: 3006
+    - attribute: sles-version
+      value: 15
+    - attribute: sp-version
+      value: SP5
+    - attribute: smrproductnumber
+      value: 4.3
+    - attribute: opensuse-version
+      value: 15.5
+```
+
+**Version-specific notes:**
+- **productnumber & docversion:** Set to major version (5.0)
+- **minorversion:** Set to specific maintenance release (5.0.6)
+- **saltversion:** Update to Salt version used in SUSE Manager 5.0
+- **sles-version & sp-version:** Update to supported SLES version
+- **opensuse-version:** Update to supported openSUSE Leap version
+
+### Supplemental Files Configuration
+
+**Add WebUI theme configuration:**
+```yaml
+supplemental_files: ./branding/supplemental-ui/mlm/webui-2025
+```
+
+**Important notes:**
+- Path must exist in your uyuni-docs checkout
+- Theme files must be current for the target release
+- Verify branding assets are updated for current year
+
+---
+
+## Building Documentation Packages
+
+### Build Methods
+
+Two build methods are available depending on your workflow needs:
+
+1. **Remote build:** Builds from the remote GitHub repository
+2. **Local build:** Builds from your local git checkout
+
+### Method 1: Remote Build
+
+**Use case:** Building from committed changes in remote repository
+
+**Prerequisites:**
+- All changes committed and pushed to target branch
+- Parameters file updated and committed
+- Target branch exists on GitHub
+
+**Build command:**
+```bash
+# Navigate to uyuni-docs-helper directory
+cd /path/to/uyuni-docs-helper
+
+# Build from remote repository
+./uyuni-docs-helper -r manager-5.0-MU-5.0.6 -o ./tmp -c obs-packages-suma-en -p suma
+```
+
+**Command breakdown:**
+- `-r manager-5.0-MU-5.0.6` - Target branch/tag for build
+- `-o ./tmp` - Output directory for generated packages
+- `-c obs-packages-suma-en` - Configuration for SUSE Manager English packages
+- `-p suma` - Product identifier (suma for SUSE Manager)
+
+### Method 2: Local Build
+
+**Use case:** Building from uncommitted local changes or testing
+
+**Prerequisites:**
+- Local uyuni-docs checkout with desired changes
+- Parameters file configured locally
+- Local checkout on correct branch
+
+**Build command:**
+```bash
+# Navigate to uyuni-docs-helper directory
+cd /path/to/uyuni-docs-helper
+
+# Build from local checkout
+./uyuni-docs-helper -l ../uyuni-docs -r manager-5.0-MU-5.0.6 -c obs-packages-suma-en -p suma
+```
+
+**Command breakdown:**
+- `-l ../uyuni-docs` - Path to local uyuni-docs checkout
+- Other parameters same as remote build
+
+### Build Output Verification
+
+**After successful build:**
+```bash
+# Check output directory
+ls -la ./tmp/build/packages/
+
+# Expected files:
+# susemanager-docs_en-5.0.6-*.noarch.rpm
+# susemanager-docs_en-5.0.6-*.src.rpm
+```
+
+**Verify package contents:**
+```bash
+# List package contents
+rpm -qlp ./tmp/build/packages/susemanager-docs_en-*.noarch.rpm
+
+# Check package metadata
+rpm -qip ./tmp/build/packages/susemanager-docs_en-*.noarch.rpm
+```
+
+---
+
+## OBS Environment Setup
+
+### Environment Variables Configuration
+
+**Set required OBS environment variables:**
+```bash
+# Set your IBS username
+export OBS_USER=your-username
+
+# Set target project repository
+export OBS_REPO=Devel:Galaxy:Manager:5.0
+
+# Alternative project options:
+# export OBS_REPO=Devel:Galaxy:Manager:5.1    # Latest major release
+# export OBS_REPO=Devel:Galaxy:Manager:Head   # Alpha and beta releases
+```
+
+**Project repository selection guide:**
+- **Devel:Galaxy:Manager:5.0** - Maintained major release (5.0.x)
+- **Devel:Galaxy:Manager:5.1** - Latest major release
+- **Devel:Galaxy:Manager:Head** - Development/pre-release builds
+
+### Package Checkout from OBS
+
+**Check out the documentation package:**
+```bash
+# Checkout SUSE Manager documentation package
+osc -A https://api.suse.de bco $OBS_REPO susemanager-docs_en
+
+# This creates: home:$OBS_USER:branches:$OBS_REPO/susemanager-docs_en/
+```
+
+**Troubleshooting checkout issues:**
+```bash
+# If checkout fails with 404 error:
+# 1. Log in to build.suse.de web interface
+# 2. Verify project access permissions
+# 3. Retry checkout command
+
+# Check project exists:
+osc -A https://api.suse.de ls $OBS_REPO | grep susemanager-docs
+```
+
+### Package File Management
+
+**Copy new packages to OBS checkout:**
+```bash
+# Navigate to build output directory
+cd ./tmp/build/packages/
+
+# Copy both packages to OBS checkout
+cp susemanager-docs_en-*.noarch.rpm \
+   susemanager-docs_en-*.src.rpm \
+   ~/home:$OBS_USER:branches:$OBS_REPO/susemanager-docs_en/
+
+# Verify files copied successfully
+ls -la ~/home:$OBS_USER:branches:$OBS_REPO/susemanager-docs_en/
+```
+
+---
+
+## Package Versioning and Changelog
+
+### Spec File Updates
+
+**Navigate to OBS checkout directory:**
+```bash
+cd ~/home:$OBS_USER:branches:$OBS_REPO/susemanager-docs_en/
+```
+
+**Update version in spec file:**
+```bash
+# Edit the .spec file
+vim susemanager-docs_en.spec
+
+# Update Version line:
+Name:           susemanager-docs_en
+Version:        5.0.6
+Release:        0
+```
+
+**Spec file validation:**
+```bash
+# Verify spec file syntax
+rpmbuild --parse susemanager-docs_en.spec
+
+# Check for common issues
+rpmlint susemanager-docs_en.spec
+```
+
+### Changelog Management
+
+**SUSE Manager 5.0 uses integrated changelog updates from the uyuni-docs repository.**
+
+**Update changelog with latest entries:**
+```bash
+# Add changelog entry using osc
+osc vc susemanager-docs_en.changes
+```
+
+**This opens an editor with a template like:**
+```
+-------------------------------------------------------------------
+Wed Oct 23 15:16:07 UTC 2024 - Your Name <your.email@suse.com>
+
+- Version 5.0.6
+  - [Add your changes here from uyuni-docs/.changelog]
+
+-------------------------------------------------------------------
+```
+
+**Changelog content guidelines:**
+- Reference the latest entries from `uyuni-docs/.changelog`
+- Include version number in first line
+- List major changes and bug fixes
+- Reference bug numbers when applicable (bsc#1234567)
+- Keep entries concise but descriptive
+
+**Example changelog entry:**
+```
+-------------------------------------------------------------------
+Wed Oct 23 15:16:07 UTC 2024 - Joseph Cayouette <jcayouette@suse.com>
+
+- Version 5.0.6
+  - Updated Salt configuration examples for channel management
+  - Fixed broken cross-references in installation guide
+  - Added containerized deployment documentation
+  - Enhanced troubleshooting section for proxy setup (bsc#1234567)
+  - Updated system requirements for SLES 15 SP5
+
+-------------------------------------------------------------------
+```
+
+---
+
+## Build Submission Process
+
+### Check In Changes
+
+**Add and commit all changes to OBS:**
+```bash
+# Add new/changed files
+osc add susemanager-docs_en-*.rpm
+
+# Check status
+osc status
+
+# Commit changes (initiates build)
+osc ci -m "Update SUSE Manager documentation to version 5.0.6"
+```
+
+**Monitor build progress:**
+```bash
+# Check project build results
+osc pr
+
+# Watch build progress in real-time
+osc results --watch
+
+# Check specific package build status
+osc results susemanager-docs_en
+```
+
+**Build timing expectations:**
+- Initial build: ~15-20 minutes
+- Architecture-specific builds run in parallel
+- Total completion time varies by system load
+
+### Build Validation
+
+**Verify successful build:**
+```bash
+# Check all architectures built successfully
+osc results
+
+# Download built packages for testing
+osc getbinaries
+
+# Test package installation (in test environment)
+rpm -ivh susemanager-docs_en-*.rpm
+```
+
+**Quality checks:**
+- All target architectures build successfully
+- Package size is reasonable (not empty or oversized)
+- Installation test completes without errors
+- Documentation files are accessible post-installation
+
+---
+
+## Service Request Management
+
+### Creating Service Request
+
+**Submit packages for integration:**
+```bash
+# Create service request
+osc sr -m 'Update SUSE Manager documentation to version 5.0.6'
+
+# If superseding existing SR, answer prompt appropriately:
+# "Supersede the old request? (y/n/c)"
+```
+
+**Service request options:**
+- **New SR:** First submission for this version
+- **Supersede:** Replace existing pending SR with updated version
+- **Additional:** Add to existing SR (rare)
+
+### Communication and Approval
+
+**Notify release management:**
+1. Inform `@multi-linux-manager-releng` on Slack about the service request
+2. Use Vega or docs channels for communication
+3. Include SR number and brief description of changes
+4. Mention any urgent timeline requirements
+
+**Example Slack notification:**
+```
+@multi-linux-manager-releng SR#123456 submitted for SUSE Manager 5.0.6 documentation update.
+
+Key changes:
+- Updated installation procedures
+- Fixed critical documentation bugs
+- Enhanced troubleshooting guides
+
+Ready for review and approval.
+```
+
+### Approval Process
+
+**Service request workflow:**
+1. **Automated checks:** IBS runs validation tests
+2. **Release manager review:** Manual review of changes and impact
+3. **Approval decision:** Accept, request changes, or reject
+4. **Integration:** Approved packages included in next build
+
+**Timeline expectations:**
+- Standard review: 1-3 business days
+- Urgent fixes: Same day (with proper justification)
+- Complex changes: May require additional review cycles
+
+---
+
+## Troubleshooting
+
+### Common Build Issues
+
+**Container build failures:**
+```bash
+# Check container status
+docker ps -a
+
+# View build logs
+./uyuni-docs-helper -l ../uyuni-docs -r manager-5.0-MU-5.0.6 -c obs-packages-suma-en -p suma --verbose
+
+# Common fixes:
+# - Verify parameters.yml syntax
+# - Check branch exists and is accessible
+# - Ensure all required files are present
+```
+
+**OBS connectivity issues:**
+```bash
+# Test IBS connection
+osc -A https://api.suse.de ls
+
+# Clear cached credentials
+rm -rf ~/.config/osc/
+
+# Reconfigure OBS
+osc init
+```
+
+**Package build failures:**
+```bash
+# View detailed build logs
+osc buildlog $OBS_REPO susemanager-docs_en
+
+# Check build dependencies
+osc meta prj $OBS_REPO
+
+# Common issues:
+# - Missing dependencies in project config
+# - Spec file syntax errors
+# - File conflicts with existing packages
+```
+
+### Recovery Procedures
+
+**Failed service request:**
+1. Review rejection comments from release manager
+2. Address identified issues in local checkout
+3. Rebuild and test packages locally
+4. Submit updated service request
+5. Communicate changes made to address concerns
+
+**Build environment corruption:**
+```bash
+# Clean OBS checkout
+osc revert
+osc up
+
+# Rebuild packages from clean state
+cd /path/to/uyuni-docs-helper
+./uyuni-docs-helper -r manager-5.0-MU-5.0.6 -o ./tmp -c obs-packages-suma-en -p suma
+
+# Restart submission process
+```
+
+---
+
+## Best Practices
+
+### Development Workflow
+
+**Pre-submission validation:**
+- Test documentation builds locally before submission
+- Verify all links and cross-references work correctly
+- Review changelog entries for completeness and accuracy
+- Coordinate with development teams on version alignment
+
+**Version management:**
+- Use consistent version numbering across all components
+- Maintain alignment with SUSE Manager product releases
+- Document version dependencies and requirements
+- Plan submission timing around release schedules
+
+### Quality Assurance
+
+**Package validation:**
+- Test installation in clean environment
+- Verify documentation accessibility and functionality
+- Check package dependencies and conflicts
+- Validate metadata and file permissions
+
+**Process documentation:**
+- Keep this document updated with process changes
+- Document any deviations or special circumstances
+- Maintain troubleshooting knowledge base
+- Share lessons learned with team members
+
+### Team Coordination
+
+**Communication:**
+- Coordinate submission timing with release manager
+- Notify stakeholders of documentation updates
+- Maintain visibility into submission status
+- Escalate issues promptly when they arise
+
+**Release planning:**
+- Align documentation releases with product milestones
+- Plan for maintenance update cycles
+- Coordinate with translation teams for multilingual releases
+- Schedule submissions to avoid conflicts with other releases
+
+---
+
+## Maintenance Updates
+
+### Regular Update Process
+
+**For maintenance releases (5.0.7, 5.0.8, etc.):**
+1. Update version numbers in parameters.yml
+2. Rebuild packages using same procedures
+3. Update changelog with maintenance-specific changes
+4. Submit through standard SR process
+5. Coordinate timing with maintenance release schedule
+
+**Automation opportunities:**
+- Consider scripting repetitive steps
+- Implement validation checks in build pipeline
+- Automate changelog integration where possible
+- Develop templates for common submission scenarios
+
+### Long-term Maintenance
+
+**Process improvement:**
+- Regular review of submission procedures
+- Feedback collection from release management
+- Tool updates and optimization
+- Training for new team members
+
+**Documentation evolution:**
+- Keep procedures current with tool changes
+- Update examples with latest version numbers
+- Incorporate lessons learned from submissions
+- Maintain compatibility with IBS changes
+
+---
+
+*This process ensures reliable packaging and delivery of SUSE Manager documentation through the Internal Build Service, supporting consistent user experience across all SUSE Manager deployments.*

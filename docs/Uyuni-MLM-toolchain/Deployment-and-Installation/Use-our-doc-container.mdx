@@ -113,6 +113,90 @@ You should see a message confirming that Podman can pull and run containers succ
 
 ---
 
+## Adding Helper to System PATH
+
+For convenience, you can add the `uyuni-doc-container.sh` helper script to your system PATH so you can run it from anywhere on the command line without specifying the full path.
+
+### Option 1: Create a Symbolic Link in /usr/local/bin
+
+```bash
+# Make the script executable (if not already)
+chmod +x /path/to/uyuni-docs-helper/uyuni-doc-container.sh
+
+# Create a symbolic link in /usr/local/bin
+sudo ln -s /path/to/uyuni-docs-helper/uyuni-doc-container.sh /usr/local/bin/uyuni-docs
+
+# Now you can run from anywhere:
+uyuni-docs -p uyuni -c html-uyuni-en -l ~/projects/uyuni-docs
+```
+
+### Option 2: Add Directory to PATH
+
+Add the uyuni-docs-helper directory to your PATH by modifying your shell configuration:
+
+**For Bash users (.bashrc or .bash_profile):**
+```bash
+# Add this line to ~/.bashrc or ~/.bash_profile
+export PATH="$PATH:/path/to/uyuni-docs-helper"
+
+# Reload your shell configuration
+source ~/.bashrc
+```
+
+**For Zsh users (.zshrc):**
+```bash
+# Add this line to ~/.zshrc
+export PATH="$PATH:/path/to/uyuni-docs-helper"
+
+# Reload your shell configuration
+source ~/.zshrc
+```
+
+**For Fish users (config.fish):**
+```bash
+# Add this line to ~/.config/fish/config.fish
+set -gx PATH $PATH /path/to/uyuni-docs-helper
+
+# Reload Fish configuration
+source ~/.config/fish/config.fish
+```
+
+### Option 3: Create an Alias
+
+Create a convenient alias for the script:
+
+```bash
+# Add to your shell configuration file (.bashrc, .zshrc, etc.)
+alias uyuni-docs='/path/to/uyuni-docs-helper/uyuni-doc-container.sh'
+
+# Reload your shell configuration
+source ~/.bashrc  # or source ~/.zshrc
+```
+
+### Verification
+
+After setting up PATH access, test that the command works from any directory:
+
+```bash
+# Change to a different directory
+cd ~
+
+# Run the helper (using symbolic link method)
+uyuni-docs --help
+
+# Or using the original script name (if added to PATH)
+uyuni-doc-container.sh --help
+```
+
+### Benefits of PATH Setup
+
+- **Global access:** Run the helper from any directory
+- **Simplified commands:** No need to remember the full path
+- **Integration with scripts:** Easy to use in automation scripts
+- **Consistent workflow:** Same command structure across different projects
+
+---
+
 ## Basic Syntax
 
 ```bash
