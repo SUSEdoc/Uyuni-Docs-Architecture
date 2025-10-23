@@ -1,0 +1,464 @@
+---
+id: suma-github-actions
+title: GitHub Actions updates for SUSE Manager releases
+sidebar_label: GitHub Actions updates
+description: Annual workflow update procedures for GitHub Actions when new SUSE Manager major releases are created, including branch configuration and maintenance update patterns.
+authors: [Joseph Cayouette]
+tags: [github-actions, suse-manager, ci-cd, workflow-updates, release-management, automation]
+---
+
+# GitHub Actions updates for SUSE Manager releases
+
+**Frequency:** Annual (with major releases)  
+**Applies to:** SUSE Manager documentation CI/CD workflows  
+**Repository:** uyuni-docs  
+**Trigger:** New major release branch creation  
+
+---
+
+## Overview
+
+When a new SUSE Manager major release branch is created (typically once per year), several GitHub Actions workflow files must be updated to include the new branch in automated builds, testing, and deployment processes.
+
+This ensures that:
+- New major release branches are included in CI/CD pipelines
+- Documentation builds automatically for new versions
+- Translation workflows cover new release branches
+- Release and maintenance update patterns are properly configured
+
+**Critical timing:** These updates must be completed immediately after creating new major release branches to ensure continuous integration functionality.
+
+---
+
+## Affected Workflow Files
+
+### Primary Workflow Files Requiring Updates
+
+1. **`build_and_archive_devel_docs.yml`** - Development branch builds
+2. **`build_and_archive_release_docs.yml`** - Release branch builds and maintenance updates
+3. **`test_pdf_translations.yml`** - Translation testing for supported languages
+4. **`update_translation_files.yml`** - Translation file updates and maintenance
+
+### File Locations
+
+All workflow files are located in:
+```
+.github/workflows/
+├── build_and_archive_devel_docs.yml
+├── build_and_archive_release_docs.yml
+├── test_pdf_translations.yml
+└── update_translation_files.yml
+```
+
+---
+
+## Update Procedures
+
+### 1. Development Branch Builds (`build_and_archive_devel_docs.yml`)
+
+**Purpose:** Builds documentation from development and major release branches
+
+**Current Configuration:**
+```yaml
+name: Build and archive documentation from development branches
+
+on:
+  push:
+    branches:
+      - 'master'      # Builds both Uyuni and SUSE Manager documentation
+      - 'manager-4.3' # Builds SUSE Manager documentation only
+      - 'manager-5.0' # Builds SUSE Manager documentation only
+      - 'manager-5.1' # Builds SUSE Manager documentation only
+```
+
+**Update Process:**
+
+**When creating SUSE Manager 5.2 (example):**
+```yaml
+name: Build and archive documentation from development branches
+
+on:
+  push:
+    branches:
+      - 'master'      # Builds both Uyuni and SUSE Manager documentation
+      - 'manager-4.3' # Builds SUSE Manager documentation only
+      - 'manager-5.0' # Builds SUSE Manager documentation only
+      - 'manager-5.1' # Builds SUSE Manager documentation only
+      - 'manager-5.2' # ADD: New major release branch
+```
+
+**Steps:**
+1. Open `.github/workflows/build_and_archive_devel_docs.yml`
+2. Locate the `branches:` section under `on: push:`
+3. Add the new major release branch (e.g., `manager-5.2`)
+4. Ensure proper YAML formatting and indentation
+5. Add comment indicating SUSE Manager documentation only
+
+### 2. Release Branch Builds (`build_and_archive_release_docs.yml`)
+
+**Purpose:** Builds documentation from release branches, including maintenance updates
+
+**Current Configuration:**
+```yaml
+name: Build and archive documentation from release branches
+
+on:
+  push:
+    branches:
+      - 'uyuni-20[0-9][0-9].[0-9][0-9]'           # Uyuni release pattern
+      - 'manager-4.3-MU-4.3.[0-9][0-9]?'         # 4.3 maintenance updates
+      - 'manager-5.0-alpha[0-9]'                  # 5.0 alpha releases
+      - 'manager-5.0-beta[0-9]'                   # 5.0 beta releases  
+      - 'manager-5.0-rc[0-9]'                     # 5.0 release candidates
+      - 'manager-5.0-gmc[0-9]'                    # 5.0 GMC releases
+      - 'manager-5.0-gm'                          # 5.0 gold master
+      - 'manager-5.0'                             # 5.0 final release
+      - 'manager-5.0-MU-5.0.[0-9][0-9]?'         # 5.0 maintenance updates
+```
+
+**Update Process:**
+
+**When creating SUSE Manager 5.2 (example):**
+```yaml
+name: Build and archive documentation from release branches
+
+on:
+  push:
+    branches:
+      - 'uyuni-20[0-9][0-9].[0-9][0-9]'           # Uyuni release pattern
+      - 'manager-4.3-MU-4.3.[0-9][0-9]?'         # 4.3 maintenance updates
+      - 'manager-5.0-alpha[0-9]'                  # 5.0 alpha releases
+      - 'manager-5.0-beta[0-9]'                   # 5.0 beta releases  
+      - 'manager-5.0-rc[0-9]'                     # 5.0 release candidates
+      - 'manager-5.0-gmc[0-9]'                    # 5.0 GMC releases
+      - 'manager-5.0-gm'                          # 5.0 gold master
+      - 'manager-5.0'                             # 5.0 final release
+      - 'manager-5.0-MU-5.0.[0-9][0-9]?'         # 5.0 maintenance updates
+      - 'manager-5.2-alpha[0-9]'                  # ADD: 5.2 alpha releases
+      - 'manager-5.2-beta[0-9]'                   # ADD: 5.2 beta releases
+      - 'manager-5.2-rc[0-9]'                     # ADD: 5.2 release candidates
+      - 'manager-5.2-gmc[0-9]'                    # ADD: 5.2 GMC releases
+      - 'manager-5.2-gm'                          # ADD: 5.2 gold master
+      - 'manager-5.2'                             # ADD: 5.2 final release
+      - 'manager-5.2-MU-5.2.[0-9][0-9]?'         # ADD: 5.2 maintenance updates
+```
+
+**Steps:**
+1. Open `.github/workflows/build_and_archive_release_docs.yml`
+2. Add complete release cycle patterns for new major version
+3. Include alpha, beta, RC, GMC, GM, final, and MU patterns
+4. Use regex patterns to match maintenance update numbers
+5. Maintain chronological order in the branch list
+
+### 3. PDF Translation Testing (`test_pdf_translations.yml`)
+
+**Purpose:** Tests PDF generation for Japanese, Korean, and Chinese translations
+
+**Current Configuration:**
+```yaml
+name: Test PDF translations (ja, ko, zh_CN)
+
+on:
+  push:
+    branches:
+      - master       # Builds both Uyuni and SUSE Manager documentation
+      - manager-4.3  # Builds SUSE Manager documentation
+      - manager-5.0  # Builds SUSE Manager documentation
+      - manager-5.1  # Builds SUSE Manager documentation
+```
+
+**Update Process:**
+
+**When creating SUSE Manager 5.2 (example):**
+```yaml
+name: Test PDF translations (ja, ko, zh_CN)
+
+on:
+  push:
+    branches:
+      - master       # Builds both Uyuni and SUSE Manager documentation
+      - manager-4.3  # Builds SUSE Manager documentation
+      - manager-5.0  # Builds SUSE Manager documentation
+      - manager-5.1  # Builds SUSE Manager documentation
+      - manager-5.2  # ADD: Builds SUSE Manager documentation
+```
+
+**Steps:**
+1. Open `.github/workflows/test_pdf_translations.yml`
+2. Add new major release branch with appropriate comment
+3. Ensure consistent formatting with existing entries
+
+### 4. Translation File Updates (`update_translation_files.yml`)
+
+**Purpose:** Updates translation files for documentation changes
+
+**Current Configuration:**
+```yaml
+name: Update translation files
+on:
+  push:
+    branches:
+      - 'master'
+      - 'manager-4.3'
+      - 'manager-4.3-MU-4.3.[0-9][0-9]?'         # 4.3 MU branches
+      - 'manager-5.0'
+      - 'manager-5.0-MU-5.0.[0-9][0-9]?'         # 5.0 MU branches
+      - 'manager-5.1'
+      - 'manager-5.1-MU-5.1.[0-9][0-9]?'         # 5.1 MU branches
+```
+
+**Update Process:**
+
+**When creating SUSE Manager 5.2 (example):**
+```yaml
+name: Update translation files
+on:
+  push:
+    branches:
+      - 'master'
+      - 'manager-4.3'
+      - 'manager-4.3-MU-4.3.[0-9][0-9]?'         # 4.3 MU branches
+      - 'manager-5.0'
+      - 'manager-5.0-MU-5.0.[0-9][0-9]?'         # 5.0 MU branches
+      - 'manager-5.1'
+      - 'manager-5.1-MU-5.1.[0-9][0-9]?'         # 5.1 MU branches
+      - 'manager-5.2'                             # ADD: New major release
+      - 'manager-5.2-MU-5.2.[0-9][0-9]?'         # ADD: 5.2 MU branches
+```
+
+**Steps:**
+1. Open `.github/workflows/update_translation_files.yml`
+2. Add new major release branch
+3. Add maintenance update pattern for new version
+4. Include comments for clarity
+
+---
+
+## Complete Update Workflow
+
+### Pre-Update Checklist
+
+**Before making changes:**
+- [ ] New major release branch has been created and pushed
+- [ ] Branch naming follows established conventions
+- [ ] Team has been notified of the update schedule
+- [ ] Backup of current workflow files completed
+
+### Update Sequence
+
+**Recommended order for updates:**
+
+1. **Development builds** (`build_and_archive_devel_docs.yml`)
+   - Add new major branch immediately after creation
+   - Test with sample commit to new branch
+
+2. **Translation updates** (`update_translation_files.yml`)
+   - Add major branch and MU pattern
+   - Ensure translation workflows function
+
+3. **PDF translation testing** (`test_pdf_translations.yml`)
+   - Add new branch for translation testing
+   - Verify PDF generation works
+
+4. **Release builds** (`build_and_archive_release_docs.yml`)
+   - Add complete release cycle patterns
+   - Most complex update - requires all patterns
+
+### Testing and Validation
+
+**After each file update:**
+
+1. **Syntax validation:**
+   ```bash
+   # Validate YAML syntax
+   yamllint .github/workflows/filename.yml
+   ```
+
+2. **Commit and monitor:**
+   ```bash
+   git add .github/workflows/
+   git commit -m "Add SUSE Manager 5.2 to GitHub Actions workflows"
+   git push
+   ```
+
+3. **Workflow verification:**
+   - Check GitHub Actions tab for syntax errors
+   - Monitor first builds on new branches
+   - Verify workflows trigger correctly
+
+**Testing checklist:**
+- [ ] YAML syntax is valid
+- [ ] Workflows trigger on new branch commits
+- [ ] Build processes complete successfully
+- [ ] No workflow failures or errors
+- [ ] Translation processes function correctly
+
+---
+
+## Maintenance Update Considerations
+
+### Adding Maintenance Branches
+
+**When maintenance update branches are created:**
+
+Most maintenance updates are already covered by regex patterns:
+- `manager-5.0-MU-5.0.[0-9][0-9]?` covers MU branches like `manager-5.0-MU-5.0.16`
+- Patterns support single and double-digit MU numbers
+
+**Manual updates only needed for:**
+- Non-standard maintenance branch naming
+- Special release branches (alpha, beta, RC)
+- Emergency or hotfix branches
+
+### Pattern Explanations
+
+**Regex Pattern Breakdown:**
+```yaml
+'manager-5.0-MU-5.0.[0-9][0-9]?'
+```
+
+- `manager-5.0-MU-5.0.` - Literal prefix
+- `[0-9]` - Single digit (required)
+- `[0-9]?` - Second digit (optional)
+- Matches: `5.0.1`, `5.0.16`, `5.0.99`
+
+**Version-specific patterns:**
+- Each major version needs its own MU pattern
+- Patterns must be updated for each new major release
+- Use consistent formatting across all workflow files
+
+---
+
+## Troubleshooting
+
+### Common Issues
+
+**YAML Syntax Errors:**
+```yaml
+# Incorrect indentation
+branches:
+- 'master'
+  - 'manager-5.0'  # Wrong indentation
+
+# Correct indentation
+branches:
+  - 'master'
+  - 'manager-5.0'
+```
+
+**Pattern Matching Problems:**
+```yaml
+# Too restrictive - won't match double digits
+'manager-5.0-MU-5.0.[0-9]'
+
+# Correct - matches single and double digits  
+'manager-5.0-MU-5.0.[0-9][0-9]?'
+```
+
+**Branch Not Triggering:**
+1. Verify branch name matches pattern exactly
+2. Check for typos in workflow file
+3. Confirm branch exists and has commits
+4. Review GitHub Actions logs for errors
+
+### Recovery Procedures
+
+**If workflows break after updates:**
+
+1. **Immediate rollback:**
+   ```bash
+   git revert <commit-hash>
+   git push
+   ```
+
+2. **Fix and reapply:**
+   - Identify specific syntax or pattern error
+   - Fix in local copy
+   - Test YAML syntax locally
+   - Commit and push corrected version
+
+3. **Manual workflow dispatch:**
+   - Use GitHub UI to manually trigger workflows
+   - Test with known good branch first
+   - Verify fixes before automatic triggers
+
+---
+
+## Annual Update Checklist
+
+### Complete Workflow Update Process
+
+**When creating new major release (e.g., SUSE Manager 5.2):**
+
+**Phase 1: Preparation**
+- [ ] Create and verify new major release branch exists
+- [ ] Backup current workflow files
+- [ ] Plan update sequence and timing
+- [ ] Notify team of scheduled updates
+
+**Phase 2: File Updates**
+- [ ] Update `build_and_archive_devel_docs.yml`
+- [ ] Update `update_translation_files.yml`  
+- [ ] Update `test_pdf_translations.yml`
+- [ ] Update `build_and_archive_release_docs.yml`
+
+**Phase 3: Testing**
+- [ ] Validate YAML syntax for all files
+- [ ] Test development build workflows
+- [ ] Verify translation workflows function
+- [ ] Test release build patterns
+- [ ] Monitor first automated builds
+
+**Phase 4: Documentation**
+- [ ] Update this document with new version examples
+- [ ] Document any special cases or exceptions
+- [ ] Update team documentation and runbooks
+- [ ] Archive old version information if needed
+
+### Post-Update Monitoring
+
+**First week after updates:**
+- Monitor all workflow executions daily
+- Check for any failures or errors
+- Verify builds complete successfully
+- Confirm translation updates work correctly
+
+**First month after updates:**
+- Review workflow performance and timing
+- Identify any optimization opportunities  
+- Document lessons learned
+- Plan improvements for next annual update
+
+---
+
+## Best Practices
+
+### Workflow Management
+
+**Version Control:**
+- Always commit workflow changes with descriptive messages
+- Tag major workflow updates for easy reference
+- Maintain changelog of workflow modifications
+- Use pull requests for workflow changes when possible
+
+**Testing Strategy:**
+- Test each workflow file individually
+- Use development branches for initial testing
+- Verify regex patterns match expected branches
+- Monitor resource usage and build times
+
+### Documentation:**
+- Keep this document updated with each annual change
+- Document any deviations from standard patterns
+- Maintain examples using current version numbers
+- Include troubleshooting for common issues encountered
+
+### Team Coordination:**
+- Schedule workflow updates during low-activity periods
+- Communicate changes to all team members
+- Provide training on new patterns or processes
+- Establish rollback procedures for emergencies
+
+---
+
+*This annual update process ensures that GitHub Actions workflows remain current and functional for all SUSE Manager documentation releases and maintenance updates.*
