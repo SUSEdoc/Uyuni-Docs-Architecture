@@ -1,0 +1,408 @@
+---
+id: suma-branch-conventions
+title: SUSE Manager branch conventions
+sidebar_label: Branch conventions
+description: Branch management conventions and procedures for SUSE Manager documentation releases, including major and maintenance version processes.
+authors: [Joseph Cayouette]
+tags: [suse-manager, branching, release-management, version-control, documentation-process]
+---
+
+# SUSE Manager branch conventions
+
+**Author:** Joseph Cayouette  
+**Version:** v1.0 (2025-10-23)
+
+**Applies to:** SUSE Manager documentation releases  
+**Current Versions:** SUSE Manager 4.3 and 5.0  
+**Repository:** uyuni-docs  
+
+---
+
+## Overview
+
+This document outlines the branch management conventions used for SUSE Manager documentation releases. We maintain separate branches for each major release and create maintenance branches for minor updates and patches.
+
+The branching strategy ensures:
+- Stable documentation for each supported SUSE Manager version
+- Isolated development for different release streams
+- Controlled deployment of fixes and updates
+- Clear version tracking and release management
+
+---
+
+## Branch Structure
+
+### Current Active Branches
+
+**Major Release Branches:**
+- `manager-4.3` - SUSE Manager 4.3 documentation
+- `manager-5.0` - SUSE Manager 5.0 documentation
+- `master` - Development branch for future releases (Uyuni and MLM)
+
+**Current Maintenance Branches:**
+- `manager-4.3-MU-4.3.16` - SUSE Manager 4.3 maintenance update 16
+- `manager-5.0-MU-5.0.5` - SUSE Manager 5.0 maintenance update 5
+
+
+### Branch Naming Conventions
+
+**Major Release Branches:**
+- Format: `manager-X.Y`
+- Examples: `manager-4.3`, `manager-5.0`
+
+**Maintenance Update Branches:**
+- Format: `manager-X.Y-MU-X.Y.Z`
+- Examples: `manager-4.3-MU-4.3.16`, `manager-5.0-MU-5.0.5`
+
+---
+
+## Major Version Release Process
+
+### Creating Major Release Branches
+
+Major release branches are created annually from the master branch when a new SUSE Manager version is released.
+
+**Procedure:**
+
+1. **Prepare the source branch:**
+   ```bash
+   # Switch to master branch
+   git checkout master
+   
+   # Fetch all remote changes
+   git fetch --all
+   
+   # Update master with latest changes
+   git pull --ff-only
+   ```
+
+2. **Create the major release branch:**
+   ```bash
+   # Create new branch for major release
+   git checkout -b manager-X.Y
+   # Example: git checkout -b manager-5.1
+   ```
+
+3. **Push the new branch:**
+   ```bash
+   # Push the new branch to remote
+   git push --set-upstream origin manager-X.Y
+   ```
+
+4. **Verify branch creation:**
+   ```bash
+   # Confirm you're on the correct branch
+   git branch
+   
+   # Verify branch exists on remote
+   git branch -r | grep manager-X.Y
+   ```
+
+### Current Examples
+
+**SUSE Manager 4.3:**
+```bash
+git checkout master
+git fetch --all
+git pull --ff-only
+git checkout -b manager-4.3
+git push --set-upstream origin manager-4.3
+```
+
+**SUSE Manager 5.0:**
+```bash
+git checkout master
+git fetch --all
+git pull --ff-only
+git checkout -b manager-5.0
+git push --set-upstream origin manager-5.0
+```
+
+---
+
+## Maintenance Version Release Process
+
+### Creating Maintenance Update Branches
+
+Maintenance update branches are created from existing major release branches to deliver patches, bug fixes, and minor updates.
+
+**Procedure:**
+
+1. **Switch to the target major branch:**
+   ```bash
+   # Checkout the major release branch
+   git checkout manager-X.Y
+   # Example: git checkout manager-4.3
+   ```
+
+2. **Update the major branch:**
+   ```bash
+   # Fetch latest changes
+   git fetch --all
+   
+   # Pull updates from remote
+   git pull --ff-only
+   ```
+
+3. **Create the maintenance branch:**
+   ```bash
+   # Create maintenance update branch
+   git checkout -b manager-X.Y-MU-X.Y.Z
+   # Example: git checkout -b manager-4.3-MU-4.3.17
+   ```
+
+4. **Push the maintenance branch:**
+   ```bash
+   # Push to remote repository
+   git push --set-upstream origin manager-X.Y-MU-X.Y.Z
+   ```
+
+### Current Maintenance Examples
+
+**SUSE Manager 4.3 Maintenance Update:**
+```bash
+# Current: manager-4.3-MU-4.3.16
+# Next maintenance update would be:
+
+git checkout manager-4.3
+git fetch --all
+git pull --ff-only
+git checkout -b manager-4.3-MU-4.3.17
+git push --set-upstream origin manager-4.3-MU-4.3.17
+```
+
+**SUSE Manager 5.0 Maintenance Update:**
+```bash
+# Current: manager-5.0-MU-5.0.5
+# Next maintenance update would be:
+
+git checkout manager-5.0
+git fetch --all
+git pull --ff-only
+git checkout -b manager-5.0-MU-5.0.6
+git push --set-upstream origin manager-5.0-MU-5.0.6
+```
+
+---
+
+## Branch Lifecycle Management
+
+### Branch Relationships
+
+**Master Branch:**
+- Contains latest development work
+- Source for new major release branches
+- Receives new features and improvements
+- Not used for production releases
+
+**Major Release Branches:**
+- Stable documentation for specific SUSE Manager versions
+- Source for maintenance update branches
+- Receive backported fixes and updates
+- Long-term support lifecycle
+
+**Maintenance Update Branches:**
+- Short-lived branches for specific updates
+- Contain targeted fixes and improvements
+- Merged back to major release branch after release
+- Archived after successful deployment
+
+### Update Flow
+
+**New Features:**
+1. Developed on feature branches from master
+2. Merged to master after review and testing
+3. Backported to active major release branches if applicable
+
+**Bug Fixes:**
+1. Applied to relevant maintenance update branch
+2. Tested and validated for specific version
+3. Merged to major release branch
+4. Cherry-picked to master if applicable
+
+**Security Updates:**
+1. Applied to all active maintenance branches
+2. Fast-tracked through review process
+3. Deployed to all supported versions simultaneously
+
+---
+
+## Working with Branches
+
+### Switching Between Versions
+
+**Check current branch:**
+```bash
+git branch
+git status
+```
+
+**Switch to different version:**
+```bash
+# Switch to SUSE Manager 4.3
+git checkout manager-4.3
+
+# Switch to SUSE Manager 5.0  
+git checkout manager-5.0
+
+# Switch to current 4.3 maintenance
+git checkout manager-4.3-MU-4.3.16
+
+# Switch to current 5.0 maintenance
+git checkout manager-5.0-MU-5.0.5
+```
+
+### Keeping Branches Updated
+
+**Update major release branches:**
+```bash
+# For manager-4.3
+git checkout manager-4.3
+git fetch origin
+git pull --ff-only origin manager-4.3
+
+# For manager-5.0
+git checkout manager-5.0
+git fetch origin
+git pull --ff-only origin manager-5.0
+```
+
+**Update maintenance branches:**
+```bash
+# For current 4.3 maintenance
+git checkout manager-4.3-MU-4.3.16
+git fetch origin
+git pull --ff-only origin manager-4.3-MU-4.3.16
+
+# For current 5.0 maintenance
+git checkout manager-5.0-MU-5.0.5
+git fetch origin
+git pull --ff-only origin manager-5.0-MU-5.0.5
+```
+
+---
+
+## Release Coordination
+
+### Version Planning
+
+**Major Releases:**
+- Coordinated with SUSE Manager product releases
+- Annual release cycle typically
+- Require comprehensive testing and validation
+- Include significant feature updates and changes
+
+**Maintenance Updates:**
+- Regular schedule based on product maintenance cycle
+- Focus on bug fixes and security updates
+- Minimal risk changes only
+- Fast deployment when critical issues arise
+
+### Branch Protection
+
+**Protected Branches:**
+- All major release branches (manager-4.3, manager-5.0)
+- Current maintenance branches
+- Master branch
+
+**Protection Rules:**
+- Require pull request reviews
+- Require status checks to pass
+- Require signed commits
+- Restrict force pushes
+- Require linear history
+
+---
+
+## Best Practices
+
+### Branch Management
+
+**Creation:**
+- Always create branches from updated source branches
+- Use consistent naming conventions
+- Verify branch creation with remote confirmation
+- Document branch purpose and lifecycle
+
+**Maintenance:**
+- Keep branches updated with regular pulls
+- Monitor for conflicts when merging changes
+- Archive outdated maintenance branches
+- Maintain clean branch history
+
+### Documentation:**
+- Update this document when conventions change
+- Communicate branch changes to team members
+- Maintain branch lifecycle documentation
+- Document any exceptions or special procedures
+
+### Quality Assurance
+
+**Before Branch Creation:**
+- Verify source branch is current and clean
+- Confirm naming convention compliance
+- Test branch creation process in development environment
+- Coordinate with team on timing and impact
+
+**After Branch Creation:**
+- Verify branch exists on remote repository
+- Test checkout and update procedures
+- Update CI/CD pipelines if necessary
+- Communicate availability to team members
+
+---
+
+## Troubleshooting
+
+### Common Issues
+
+**Branch Not Found:**
+```bash
+# Fetch all remote branches
+git fetch --all
+
+# List all branches including remote
+git branch -a
+
+# Checkout remote branch locally
+git checkout -b manager-5.0 origin/manager-5.0
+```
+
+**Merge Conflicts:**
+```bash
+# Abort current merge
+git merge --abort
+
+# Update source branch first
+git checkout manager-5.0
+git pull --ff-only
+
+# Try merge again or use rebase strategy
+```
+
+**Outdated Local Branches:**
+```bash
+# Remove outdated local branches
+git branch -d old-branch-name
+
+# Force remove if needed (use with caution)
+git branch -D old-branch-name
+
+# Clean up remote tracking branches
+git remote prune origin
+```
+
+### Emergency Procedures
+
+**Critical Updates:**
+1. Identify all affected branches
+2. Create emergency maintenance branches if needed
+3. Apply fixes to maintenance branches first
+4. Test and validate changes
+5. Deploy to production
+6. Backport to major release branches
+7. Update master branch if applicable
+
+---
+
+*This branching strategy ensures reliable version management and controlled deployment of SUSE Manager documentation updates across all supported versions.*
