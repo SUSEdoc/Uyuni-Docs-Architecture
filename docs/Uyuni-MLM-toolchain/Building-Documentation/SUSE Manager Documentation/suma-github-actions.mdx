@@ -9,6 +9,9 @@ tags: [github-actions, suse-manager, ci-cd, workflow-updates, release-management
 
 # GitHub Actions updates for SUSE Manager releases
 
+**Author:** Joseph Cayouette  
+**Version:** v1.0 (2025-10-23)
+
 **Frequency:** Annual (with major releases)  
 **Applies to:** SUSE Manager documentation CI/CD workflows  
 **Repository:** uyuni-docs  
@@ -394,7 +397,7 @@ branches:
 - [ ] Create and verify new major release branch exists
 - [ ] Backup current workflow files
 - [ ] Plan update sequence and timing
-- [ ] Notify team of scheduled updates
+- [ ] Notify team of scheduled updates (freeze)
 
 **Phase 2: File Updates**
 - [ ] Update `build_and_archive_devel_docs.yml`
@@ -417,8 +420,8 @@ branches:
 
 ### Post-Update Monitoring
 
-**First week after updates:**
-- Monitor all workflow executions daily
+**First day after updates:**
+- Monitor all workflow executions 
 - Check for any failures or errors
 - Verify builds complete successfully
 - Confirm translation updates work correctly
@@ -428,36 +431,6 @@ branches:
 - Identify any optimization opportunities  
 - Document lessons learned
 - Plan improvements for next annual update
-
----
-
-## Best Practices
-
-### Workflow Management
-
-**Version Control:**
-- Always commit workflow changes with descriptive messages
-- Tag major workflow updates for easy reference
-- Maintain changelog of workflow modifications
-- Use pull requests for workflow changes when possible
-
-**Testing Strategy:**
-- Test each workflow file individually
-- Use development branches for initial testing
-- Verify regex patterns match expected branches
-- Monitor resource usage and build times
-
-### Documentation:**
-- Keep this document updated with each annual change
-- Document any deviations from standard patterns
-- Maintain examples using current version numbers
-- Include troubleshooting for common issues encountered
-
-### Team Coordination:**
-- Schedule workflow updates during low-activity periods
-- Communicate changes to all team members
-- Provide training on new patterns or processes
-- Establish rollback procedures for emergencies
 
 ---
 
