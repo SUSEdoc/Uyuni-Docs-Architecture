@@ -1,0 +1,86 @@
+---
+id: local-toolchain-setup
+slug: /local-toolchain-setup
+title: Local toolchain setup
+sidebar_label: Local toolchain setup
+description: Optional host install of Task, Go, Antora, and Asciidoctor PDF for building uyuni-docs without a container.
+---
+
+# Local toolchain setup
+
+Use this only if you need to build documentation **on the host**, without a container. For most work, use [Container setup](./Use-our-doc-container.mdx) instead.
+
+Official source: [docs/local-toolchain-setup.md](https://github.com/uyuni-project/uyuni-docs/blob/master/docs/local-toolchain-setup.md) in uyuni-docs.
+
+**Supported platforms:** openSUSE Leap 16.0 / SUSE Linux Enterprise 16.0, openSUSE Tumbleweed, Ubuntu 26.04 LTS.
+
+---
+
+## 1. Install Task
+
+[Task](https://taskfile.dev) is the build runner. Do not install it via `zypper` on Leap 16 or SLES 16.
+
+```bash
+sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b ~/.local/bin
+echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
+source ~/.bashrc
+task --version
+```
+
+---
+
+## 2. Install Go
+
+The build system includes a Go binary (`cmd/docbuild`) that generates Antora configuration from `config.yml`.
+
+**openSUSE / SLES:**
+
+```bash
+sudo zypper install go
+```
+
+**Ubuntu:**
+
+```bash
+sudo apt-get install -y golang-go
+```
+
+Or install the upstream binary. Verify with `go version` (1.22 or newer).
+
+---
+
+## 3. Install Node.js and Antora
+
+Antora needs Node.js 18 or newer. Node.js 22 LTS is recommended.
+
+```bash
+npm install -g \
+    @antora/cli \
+    @antora/site-generator \
+    @antora/lunr-extension \
+    @asciidoctor/tabs
+```
+
+---
+
+## 4. Install Ruby and Asciidoctor PDF
+
+**openSUSE / SLES:** `sudo zypper install ruby ruby-devel gcc make`  
+**Ubuntu:** `sudo apt-get install -y ruby ruby-dev build-essential`
+
+```bash
+gem install asciidoctor-pdf rouge --no-document
+```
+
+---
+
+## 5. Generate configs and build
+
+From a clone of uyuni-docs:
+
+```bash
+task setup    # Compiles cmd/docbuild → .bin/docbuild
+task gen      # Generates site configs from config.yml
+```
+
+Host tasks match the container ones without the `container:` prefix, for example `task publish:dsc` instead of `task container:publish:dsc`. Run `task` with no arguments for the full list.

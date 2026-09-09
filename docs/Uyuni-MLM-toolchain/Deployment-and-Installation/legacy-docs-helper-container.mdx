@@ -1,0 +1,386 @@
+---
+id: legacy-docs-helper-container
+slug: /legacy-docs-helper-container
+title: Legacy documentation container (uyuni-docs-helper)
+sidebar_label: Legacy container helper
+description: Make-based uyuni-docs-helper container used on manager-4.3, manager-5.0, and SUSE Manager branches.
+---
+
+# Legacy documentation container (uyuni-docs-helper)
+
+:::caution Legacy
+This page describes the **uyuni-docs-helper** script and Make targets used on older branches (manager-4.3, manager-5.0, SUSE Manager). For current master builds, use [Container setup](./Use-our-doc-container.mdx) (`task container:build` and `task container:…`).
+:::
+
+**Author:** Joseph Cayouette  
+**Version:** v1.0 (2025-10-22)
+
+## Overview
+
+The Uyuni Documentation Container provides a simple, consistent way to build Uyuni documentation without having to install a large number of dependencies manually.  
+
+In addition, a **helper script** is provided for contributors who may not be familiar with containers. This script allows you to build and serve documentation easily from the command line.
+
+This system originated from **SUSE's Hack Week 22**.
+
+---
+
+# Requirements
+
+Before using the Uyuni Documentation Container, make sure your system meets the following setup requirements.
+
+## For Everyone
+
+You need either **Podman (recommended)** or **Docker** installed to run the containerized documentation build system.
+
+### Option 1 — Install Podman (Recommended)
+
+Podman is the preferred container runtime.  
+Check your distribution’s documentation or install it using your package manager.  
+
+```bash
+sudo zypper in podman        # OpenSUSE
+sudo apt install podman      # Ubuntu
+```
+
+
+Once installed, verify Podman works:
+
+```bash
+podman --version
+```
+
+### Option 2 — Use Docker as a Podman Alias
+
+If you prefer to use **Docker**, you can create an alias so the script works seamlessly with Docker commands.
+
+For Bash users, add this line to your `~/.bashrc` or `~/.alias` file:
+
+```bash
+alias podman='docker'
+```
+
+Then reload your shell configuration:
+
+```bash
+source ~/.bashrc
+```
+
+This ensures that every time the script calls `podman`, it actually runs Docker.
+
+---
+
+## For macOS Users
+
+In addition to Podman, macOS users must install **GNU Getopt**, since the built-in version of `getopt` on macOS is not fully compatible.
+
+### Install GNU Getopt using Homebrew
+
+If you don’t already have [Homebrew](https://brew.sh) installed, follow the instructions on their site, then run:
+
+```bash
+brew install gnu-getopt
+```
+
+This script automatically detects macOS and adjusts your `PATH` to use the correct version of `getopt`.
+
+---
+
+## Setting Up Podman on macOS or Windows
+
+If you are using **Podman Desktop** or **Podman Machine**, initialize and start your virtual machine:
+
+```bash
+# Initialize the Podman virtual machine (first time only)
+podman machine init
+
+# Start the Podman virtual machine
+podman machine start
+
+# Verify the connection to the Podman service
+podman system connection list
+```
+
+You should see an active connection (for example, `podman-machine-default` marked as `true`).
+
+---
+
+## Verification
+
+To confirm everything is configured correctly, run:
+
+```bash
+podman run hello-world
+```
+
+You should see a message confirming that Podman can pull and run containers successfully.
+
+---
+
+## Adding Helper to System PATH
+
+For convenience, you can add the `uyuni-doc-container.sh` helper script to your system PATH so you can run it from anywhere on the command line without specifying the full path.
+
+### Option 1: Create a Symbolic Link in /usr/local/bin
+
+```bash
+# Make the script executable (if not already)
+chmod +x /path/to/uyuni-docs-helper/uyuni-doc-container.sh
+
+# Create a symbolic link in /usr/local/bin
+sudo ln -s /path/to/uyuni-docs-helper/uyuni-doc-container.sh /usr/local/bin/uyuni-docs
+
+# Now you can run from anywhere:
+uyuni-docs -p uyuni -c html-uyuni-en -l ~/projects/uyuni-docs
+```
+
+### Option 2: Add Directory to PATH
+
+Add the uyuni-docs-helper directory to your PATH by modifying your shell configuration:
+
+**For Bash users (.bashrc or .bash_profile):**
+```bash
+# Add this line to ~/.bashrc or ~/.bash_profile
+export PATH="$PATH:/path/to/uyuni-docs-helper"
+
+# Reload your shell configuration
+source ~/.bashrc
+```
+
+**For Zsh users (.zshrc):**
+```bash
+# Add this line to ~/.zshrc
+export PATH="$PATH:/path/to/uyuni-docs-helper"
+
+# Reload your shell configuration
+source ~/.zshrc
+```
+
+**For Fish users (config.fish):**
+```bash
+# Add this line to ~/.config/fish/config.fish
+set -gx PATH $PATH /path/to/uyuni-docs-helper
+
+# Reload Fish configuration
+source ~/.config/fish/config.fish
+```
+
+### Option 3: Create an Alias
+
+Create a convenient alias for the script:
+
+```bash
+# Add to your shell configuration file (.bashrc, .zshrc, etc.)
+alias uyuni-docs='/path/to/uyuni-docs-helper/uyuni-doc-container.sh'
+
+# Reload your shell configuration
+source ~/.bashrc  # or source ~/.zshrc
+```
+
+### Verification
+
+After setting up PATH access, test that the command works from any directory:
+
+```bash
+# Change to a different directory
+cd ~
+
+# Run the helper (using symbolic link method)
+uyuni-docs --help
+
+# Or using the original script name (if added to PATH)
+uyuni-doc-container.sh --help
+```
+
+### Benefits of PATH Setup
+
+- **Global access:** Run the helper from any directory
+- **Simplified commands:** No need to remember the full path
+- **Integration with scripts:** Easy to use in automation scripts
+- **Consistent workflow:** Same command structure across different projects
+
+---
+
+## Basic Syntax
+
+```bash
+uyuni-doc-container.sh [OPTIONS]
+```
+
+Example:
+```bash
+./uyuni-doc-container.sh -p uyuni -c html-uyuni-en -g uyuni-project -r master
+```
+
+---
+
+## Mandatory Arguments
+
+| Option | Long Option | Description |
+|---------|--------------|-------------|
+| `-p` | `--product <uyuni\|mlm\|suma>` | Choose the product to build. |
+| `-c` | `--command <make target>` | Specify which documentation target to build (see [Command Reference](#command-reference) below). |
+
+---
+
+## Remote Git Repository Options
+
+| Option | Long Option | Description |
+|---------|--------------|-------------|
+| `-g` | `--gitrepo <REPO>` | Git repository URL or GitHub user/org (defaults to `https://github.com/uyuni-project/uyuni-docs.git`). |
+| `-r` | `--gitref <BRANCH>` | Git branch or reference (default: `master`). |
+| `-o` | `--output <PATH>` | Path where output will be stored (inside a new `build/` directory). |
+
+Example:
+```bash
+./uyuni-doc-container.sh -p uyuni -c html-uyuni-en -g uyuni-project -r master -o ~/builds
+```
+
+---
+
+## Local Git Repository Options
+
+| Option | Long Option | Description |
+|---------|--------------|-------------|
+| `-l` | `--localclone <PATH>` | Path to a local git repository clone. Output is placed inside `<PATH>/build`. |
+
+Example:
+```bash
+./uyuni-doc-container.sh -p mlm -c pdf-all-mlm-en -l ~/projects/uyuni-docs
+```
+
+> **Warning:** You cannot use `-l` (local clone) and `-o` (output) together.
+
+---
+
+## Optional Arguments
+
+| Option | Long Option | Description |
+|---------|--------------|-------------|
+| `-t` | `--tag <TAG>` | Container image tag (default: `main`). |
+| `-j` | `--project <PROJECT>` | GitHub project (used if using forked or custom repos). |
+| `-s` | `--serve` | Serve the documentation via HTTP on port 8000 after build completion. |
+
+Example (Serve build):
+```bash
+./uyuni-doc-container.sh -p uyuni -c html-uyuni-en -l ~/projects/uyuni-docs -s
+```
+
+This will build the documentation and serve it locally on `http://localhost:8000`.
+
+---
+
+## Command Reference
+
+| Command | Description |
+|----------|--------------|
+| `make html-uyuni` | Build Uyuni HTML for all languages. |
+| `make html-uyuni-en` | Build Uyuni HTML only (English). |
+| `make antora-uyuni-en` | Build Uyuni HTML + PDF (English). |
+| `make obs-packages-uyuni` | Build complete Uyuni docs (HTML + PDF) for all languages. |
+| `make clean-en` | Clean English build artifacts. |
+| `make pdf-all-uyuni-en` | Build all Uyuni PDF guides. |
+| `make validate-uyuni-en` | Validate Uyuni documentation structure. |
+| `make checkstyle` | Check AsciiDoc style compliance. |
+| `make checkstyle-autofix` | Auto-fix AsciiDoc style issues. |
+| `make clean` | Remove all build artifacts. |
+| `make debug-help` | Show debug and color test options. |
+
+---
+
+## Example Workflows
+
+### 1. Build and serve Uyuni documentation
+```bash
+./uyuni-doc-container.sh -p uyuni -c html-uyuni-en -l ~/projects/uyuni-docs -s
+```
+
+### 2. Build PDF for SUSE MLM docs
+```bash
+./uyuni-doc-container.sh -p mlm -c pdf-all-mlm-en -g uyuni-project -r master
+```
+
+### 3. Validate and check documentation styles
+```bash
+./uyuni-doc-container.sh -p uyuni -c validate-uyuni-en -l ~/projects/uyuni-docs
+./uyuni-doc-container.sh -p uyuni -c checkstyle -l ~/projects/uyuni-docs
+```
+
+### 4. Clean build artifacts
+```bash
+./uyuni-doc-container.sh -p uyuni -c clean -l ~/projects/uyuni-docs
+```
+
+---
+
+## Debug & Logging Options
+
+| Variable | Description |
+|-----------|--------------|
+| `DEBUG=1` | Enable verbose build output. |
+| `VERBOSE_LOG=1` | Enable colored progress messages. |
+
+Example:
+```bash
+DEBUG=1 ./uyuni-doc-container.sh -p uyuni -c html-uyuni-en -l ~/projects/uyuni-docs
+```
+
+---
+
+## Configuration Targets
+
+| Command | Description |
+|----------|-------------|
+| `configure-uyuni` | Configure Uyuni documentation build system. |
+| `configure-mlm` | Configure SUSE MLM documentation build system. |
+| `translations` | Update translation files. |
+| `pot` | Generate translation templates. |
+
+---
+
+## Available Languages
+
+| Code | Language |
+|-------|-----------|
+| `en` | English |
+| `ja` | Japanese |
+| `ko` | Korean |
+| `zh_CN` | Chinese |
+
+---
+
+## Available PDF Sections
+
+`installation-and-upgrade`, `client-configuration`, `administration`, `reference`, `retail`, `common-workflows`, `specialized-guides`, `legal`
+
+---
+
+## Example Outputs
+
+After running the script, output can be found under one of the following paths:
+
+- For remote Git builds: `<output_path>/build`
+- For local Git builds: `<local_clone>/build`
+
+---
+
+## Example: Full Build with Packaging
+
+```bash
+./uyuni-doc-container.sh -p uyuni -c obs-packages-uyuni -g uyuni-project -r master -o ~/builds
+```
+
+---
+
+## Notes
+
+- The script automatically validates product input (`uyuni`, `mlm`, or `suma`).
+- If SELinux is enabled, it adds the `:Z` flag to Podman volume mounts.
+- Default container image: `ghcr.io/uyuni-project/uyuni-docs-helper:main`
+
+---
+
+
+**Author:** juliogonzalez  
+**Container Repository:** [https://github.com/uyuni-project/uyuni-docs-helper](https://github.com/uyuni-project/uyuni-docs-helper)
+

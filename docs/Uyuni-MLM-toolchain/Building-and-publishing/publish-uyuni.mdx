@@ -1,0 +1,47 @@
+---
+id: publish-uyuni
+slug: /publish-uyuni
+title: Publish Uyuni
+sidebar_label: Publish Uyuni
+description: Build Uyuni documentation with the container and Task for uyuni-project.org.
+---
+
+# Publish Uyuni
+
+Uyuni documentation is published to [uyuni-project.org](https://www.uyuni-project.org/uyuni-docs/). Build it with the same container and Task workflow as Multi-Linux Manager.
+
+For setup, see [Container setup](../Deployment-and-Installation/Use-our-doc-container.mdx).
+
+---
+
+## 1. Update config.yml
+
+Before a Uyuni release, set the Uyuni version fields in `config.yml` (`releaseversion` / `productnumber`, chart version, site title). Also review supported client versions in the shared `asciidoc:` block with the release managers and the product owner. Details: [config.yml](./config-yml.mdx).
+
+---
+
+## 2. Build
+
+```bash
+cd uyuni-docs
+task container:build                 # once, or after Dockerfile.bci changes
+task container:publish:uyuni
+```
+
+Limit languages or jobs if needed:
+
+```bash
+task container:publish:uyuni LANGUAGES=en
+task container:publish:uyuni LANGUAGES="en ja" JOBS=4
+```
+
+Other Uyuni targets:
+
+```bash
+task container:publish:webui-uyuni
+task container:pdf:uyuni
+task container:obs:uyuni
+task container:validate:uyuni
+```
+
+Output lands in `build/` on the host.

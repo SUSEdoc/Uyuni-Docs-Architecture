@@ -1,0 +1,71 @@
+---
+id: publish-mlm-dsc
+slug: /publish-mlm-dsc
+title: Publish Multi-Linux Manager
+sidebar_label: Publish Multi-Linux Manager
+description: Build Multi-Linux Manager documentation with the container and Task for documentation.suse.com.
+---
+
+# Publish Multi-Linux Manager
+
+Enterprise Multi-Linux Manager documentation is published to [documentation.suse.com](https://documentation.suse.com/). Build it with the **uyuni-docs-builder** container and Task from a clone of [uyuni-docs](https://github.com/uyuni-project/uyuni-docs). After the build, copy the output into the matching version directory on the internal Docserv tree.
+
+For setup, see [Container setup](../Deployment-and-Installation/Use-our-doc-container.mdx).
+
+---
+
+## 1. Update config.yml
+
+Before a versioned build, set the MLM version fields in `config.yml`. At minimum:
+
+- `products.mlm.asciidoc.attributes.productnumber` (quoted, for example `"5.1"`)
+- `productchartversion` and `gitchartsbranch`
+- `copyrightdate` if the year range changed
+- `outputs.mlm-dsc.site.title` and `outputs.mlm-dsc.site.url`  
+  The URL version segment changes with each yearly major release, for example `https://documentation.suse.com/multi-linux-manager/5.2/`
+- Supported client versions in the shared `asciidoc:` block (`opensuse-version`, `sles-version` / `sp-version`, `microversion`, BCI bases, and related fields). Confirm these with the release managers and the product owner.
+
+Details: [config.yml](./config-yml.mdx).
+
+---
+
+## 2. Build the container image (once)
+
+```bash
+cd uyuni-docs
+task container:build
+```
+
+Repeat only when `Dockerfile.bci` changes.
+
+---
+
+## 3. Build the documentation.suse.com output
+
+```bash
+task container:publish:dsc
+```
+
+This produces HTML, PDFs, and zip artifacts for Multi-Linux Manager. Limit languages or jobs if needed:
+
+```bash
+task container:publish:dsc LANGUAGES=en
+task container:publish:dsc LANGUAGES="en ja" JOBS=4
+```
+
+---
+
+## 4. Find the output
+
+```
+build/{lang}/          HTML per language
+build/pdf/{lang}/      PDFs per language
+```
+
+---
+
+## 5. Copy the output to the Docserv tree
+
+Copy the build output into the matching version directory on [gitlab.suse.de/susedoc/docserv-external-tree-suma](https://gitlab.suse.de/susedoc/docserv-external-tree-suma). Each major release has its own directory (`5.1`, `5.2`, …). Use the directory that matches `productnumber` and `outputs.mlm-dsc.site.url` in `config.yml`.
+
+The public site URL comes from `outputs.mlm-dsc.site.url` (for example `https://documentation.suse.com/multi-linux-manager/5.2/`).

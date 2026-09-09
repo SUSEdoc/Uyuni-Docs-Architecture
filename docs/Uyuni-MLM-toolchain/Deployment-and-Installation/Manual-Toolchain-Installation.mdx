@@ -1,11 +1,16 @@
 ---
 id: manual-toolchain-installation
+slug: /manual-toolchain-installation
 title: Install the documentation toolchain
 sidebar_label: Manual installation
 description: Step-by-step guide to manually install the Uyuni documentation toolchain including Antora, Asciidoctor, Node.js, and related tools on OpenSUSE Leap 15.6 and Ubuntu 24.04.
 ---
 
 # Install the documentation toolchain
+
+:::caution Legacy
+This page installs the **Make / Jinja2 / rbenv** toolchain used on manager-4.3, manager-5.0, and SUSE Manager branches. For current master, use [Container setup](./Use-our-doc-container.mdx) or [Local toolchain setup](./local-toolchain-setup.mdx).
+:::
 
 **Author:** Joseph Cayouette  
 **Version:** v1.0 (2025-10-22)
@@ -25,12 +30,11 @@ description: Step-by-step guide to manually install the Uyuni documentation tool
 
 ## About this page
 
-This installation guide explains how to set up the **2025** version of the local documentation toolchain on a clean **OpenSUSE Leap 15.6** or **Ubuntu 24.04** system.
+This installation guide explains how to set up the **legacy** local documentation toolchain on a clean **OpenSUSE Leap 15.6** or **Ubuntu 24.04** system.
 
 > **TIP**  
-> This method is for **tooling development and maintenance**.  
-> For regular documentation contributions, use the container:  
-> [Uyuni Docs Helper](https://github.com/uyuni-project/uyuni-docs-helper/blob/main/README.md)
+> Current contributions should use the Task-based container, not this install.  
+> Legacy helper script: [uyuni-docs-helper](https://github.com/uyuni-project/uyuni-docs-helper/blob/main/README.md)
 
 ---
 

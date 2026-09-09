@@ -1,5 +1,6 @@
 import type {ReactNode} from 'react';
 import clsx from 'clsx';
+import Link from '@docusaurus/Link';
 import Heading from '@theme/Heading';
 import styles from './styles.module.css';
 import useBaseUrl from '@docusaurus/useBaseUrl';
@@ -8,6 +9,7 @@ import Translate from '@docusaurus/Translate';
 type FeatureItem = {
   title: string;
   imagePath: string;
+  href: string;
   description: ReactNode;
 };
 
@@ -16,6 +18,7 @@ function getFeatureList(): FeatureItem[] {
     {
       title: 'AsciiDoc',
       imagePath: '/img/asciidoc-logo.png',
+      href: '/docs/toolchain/asciidoc',
       description: (
         <Translate
           id="homepage.features.asciidoc.description"
@@ -28,6 +31,7 @@ function getFeatureList(): FeatureItem[] {
     {
       title: 'Antora',
       imagePath: '/img/antora-logo.png',
+      href: '/docs/toolchain/antora',
       description: (
         <Translate
           id="homepage.features.antora.description"
@@ -40,30 +44,33 @@ function getFeatureList(): FeatureItem[] {
     {
       title: 'Weblate',
       imagePath: '/img/weblate-logo.png',
+      href: '/docs/toolchain/weblate',
       description: (
         <Translate
           id="homepage.features.weblate.description"
           description="Description for Weblate feature">
-          Uyuni and Multi-Linux Manager rely on Weblate, a web-based continuous
-          localization platform for managing documentation translations.
+          Uyuni documentation translations are managed in Weblate, a web-based
+          continuous localization platform.
         </Translate>
       ),
     },
     {
-      title: 'Make',
-      imagePath: '/img/make-logo.svg',
+      title: 'Task',
+      imagePath: '/img/task-logo.svg',
+      href: '/docs/toolchain/task',
       description: (
         <Translate
-          id="homepage.features.make.description"
-          description="Description for Make feature">
-          The documentation build process is automated using Make, a build automation tool
+          id="homepage.features.task.description"
+          description="Description for Task feature">
+          The documentation build process is automated using Task, a task runner
           that simplifies and streamlines the compilation of documentation assets.
         </Translate>
       ),
     },
-     {
+    {
       title: 'YAML',
       imagePath: '/img/yml-logo.svg',
+      href: '/docs/toolchain/yaml',
       description: (
         <Translate
           id="homepage.features.yaml.description"
@@ -74,31 +81,48 @@ function getFeatureList(): FeatureItem[] {
       ),
     },
     {
-      title: 'Jinja2',
-      imagePath: '/img/jinja-logo.svg',
+      title: 'Go',
+      imagePath: '/img/go-logo.svg',
+      href: '/docs/toolchain/go',
       description: (
         <Translate
-          id="homepage.features.jinja2.description"
-          description="Description for Jinja2 feature">
-          Jinja2 is a templating engine used in the documentation toolchain to create
-          dynamic content and reusable templates, enhancing the efficiency of document generation.
+          id="homepage.features.go.description"
+          description="Description for Go feature">
+          Go is used in the documentation toolchain to generate dynamic content
+          and reusable templates, enhancing the efficiency of document generation.
+        </Translate>
+      ),
+    },
+    {
+      title: 'Container',
+      imagePath: '/img/container-logo.svg',
+      href: '/docs/toolchain/container',
+      description: (
+        <Translate
+          id="homepage.features.container.description"
+          description="Description for Container feature">
+          The documentation toolchain is packaged as an easy-to-use container.
+          Pull the image and everything just runs, with no need to install a
+          large set of dependencies by hand.
         </Translate>
       ),
     },
   ];
 }
 
-function Feature({title, imagePath, description}: FeatureItem) {
+function Feature({title, imagePath, href, description}: FeatureItem) {
   const imgUrl = useBaseUrl(imagePath);
   return (
     <div className={clsx('col col--4')}>
-      <div className="text--center">
-        <img src={imgUrl} className={styles.featureSvg} role="img" alt={title} />
-      </div>
-      <div className="text--center padding-horiz--md">
-        <Heading as="h3">{title}</Heading>
-        <p>{description}</p>
-      </div>
+      <Link className={styles.featureCard} to={href}>
+        <div className="text--center">
+          <img src={imgUrl} className={styles.featureSvg} role="img" alt="" />
+        </div>
+        <div className="text--center padding-horiz--md">
+          <Heading as="h3">{title}</Heading>
+          <p>{description}</p>
+        </div>
+      </Link>
     </div>
   );
 }

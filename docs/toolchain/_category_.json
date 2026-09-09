@@ -1,0 +1,10 @@
+{
+  "label": "Toolchain references",
+  "position": 2,
+  "link": {
+    "type": "generated-index",
+    "title": "Toolchain references",
+    "description": "Handbook pages and official documentation for each tool in the Uyuni docs toolchain.",
+    "slug": "/category/toolchain"
+  }
+}

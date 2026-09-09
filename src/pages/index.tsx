@@ -21,17 +21,17 @@ function HomepageHeader() {
           <Translate
             id="homepage.tagline"
             description="The homepage tagline">
-            Documenting the system that documents.
+            How we write, build, and publish the docs.
           </Translate>
         </p>
         <div className={styles.buttons}>
           <Link
-            className="button button--secondary button--lg"
+            className="button button--primary button--lg"
             to="/docs/intro">
             <Translate
               id="homepage.toolchain.button"
               description="The homepage button to toolchain guides">
-              Docs 🚀
+              Docs
             </Translate>
           </Link>
         </div>
@@ -46,12 +46,12 @@ export default function Home(): ReactNode {
     <Layout
       title={translate({
         id: 'homepage.title',
-        message: 'Hello from Uyuni Documentation Architecture',
+        message: 'Process, toolchain, and publishing',
         description: 'The homepage title'
       })}
       description={translate({
         id: 'homepage.description',
-        message: 'Description will go into a meta tag in <head />',
+        message: 'Process, toolchain, and publishing for Uyuni and Multi-Linux Manager documentation.',
         description: 'The homepage description'
       })}>
       <HomepageHeader />

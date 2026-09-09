@@ -24,7 +24,7 @@ description: A step-by-step guide to installing and configuring Windows Subsyste
 - [Install a Linux distribution](#install-a-linux-distribution)
 - [Set WSL2 as the default version](#set-wsl2-as-the-default-version)
 - [Accessing WSL2](#accessing-wsl2)
-- [Install common documentation tools](#install-common-documentation-tools)
+- [Install the documentation toolchain](#install-the-documentation-toolchain)
 - [Integrate with VS Code](#integrate-with-vs-code)
 - [Tips and maintenance](#tips-and-maintenance)
 
@@ -32,8 +32,7 @@ description: A step-by-step guide to installing and configuring Windows Subsyste
 
 ## Overview
 
-Windows Subsystem for Linux 2 (WSL2) allows you to run a full Linux environment directly on Windows without the overhead of a virtual machine.  
-It’s ideal for technical writers and developers who work with **Asciidoctor**, **Antora**, **Make**, **Python/Jinja2**, or **Node.js** documentation toolchains.
+Windows Subsystem for Linux 2 (WSL2) lets you run a full Linux environment on Windows. Use it to clone [uyuni-docs](https://github.com/uyuni-project/uyuni-docs) and build with **Podman or Docker** and **Task** — the same path as on a Linux host.
 
 ---
 
@@ -71,20 +70,20 @@ wsl --list --online
 Example output:
 ```
 The following is a list of valid distributions that can be installed.
-  Ubuntu-24.04
+  Ubuntu-26.04
   Debian
-  openSUSE-Leap-15.6
+  openSUSE-Leap-16.0
   openSUSE-Tumbleweed
 ```
 
 Install your preferred distribution, for example:
 
 ```powershell
-wsl --install -d Ubuntu-24.04
+wsl --install -d Ubuntu-26.04
 ```
 or
 ```powershell
-wsl --install -d openSUSE-Leap-15.6
+wsl --install -d openSUSE-Leap-16.0
 ```
 
 ---
@@ -98,7 +97,7 @@ wsl --set-default-version 2
 
 To upgrade an existing one:
 ```powershell
-wsl --set-version Ubuntu-24.04 2
+wsl --set-version Ubuntu-26.04 2
 ```
 
 ---
@@ -119,23 +118,21 @@ From within WSL, you can access your Windows filesystem at:
 
 ---
 
-## Install common documentation tools
+## Install the documentation toolchain
 
-Once inside WSL2, you can follow the same Linux installation instructions used for:
-- [OpenSUSE Leap 15.6](/docs/Uyuni-MLM-toolchain/Deployment-and-Installation/manual-toolchain-installation#opensuse-leap-156)
-- [Ubuntu 24.04](/docs/Uyuni-MLM-toolchain/Deployment-and-Installation/manual-toolchain-installation#ubuntu-2404)
+Inside WSL2, install Podman (or Docker) and Task, then follow [Container setup](./Use-our-doc-container.mdx). You do not need a host install of Antora or Ruby.
 
-For example:
+On Ubuntu inside WSL:
+
 ```bash
 sudo apt update
-sudo apt install -y git build-essential ruby ruby-dev python3 python3-pip nodejs npm
+sudo apt install -y git podman
+sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b ~/.local/bin
+echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
+source ~/.bashrc
 ```
 
-You can then install documentation utilities:
-```bash
-sudo gem install asciidoctor asciidoctor-pdf
-sudo npm install -g @antora/cli @antora/site-generator
-```
+Then clone uyuni-docs and run `task container:build`.
 
 ---
 
@@ -172,10 +169,10 @@ This lets you edit Linux files using VS Code while executing commands natively i
   ```
 - **Backup your WSL environment:**
   ```powershell
-  wsl --export Ubuntu-24.04 ubuntu-backup.tar
+  wsl --export Ubuntu-26.04 ubuntu-backup.tar
   ```
 
 ---
 
 **End of Guide**  
-You now have a fully functional WSL2 environment ready for documentation and Antora-based development.
+You now have a WSL2 environment ready to build documentation with Task and the container.

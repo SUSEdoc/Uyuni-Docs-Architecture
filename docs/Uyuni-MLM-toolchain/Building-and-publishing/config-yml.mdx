@@ -1,0 +1,74 @@
+---
+id: config-yml
+slug: /config-yml
+title: config.yml
+sidebar_label: config.yml
+description: What to edit in config.yml before a Multi-Linux Manager or Uyuni documentation release.
+---
+
+# config.yml
+
+`config.yml` at the root of [uyuni-docs](https://github.com/uyuni-project/uyuni-docs) is the single source of truth for products, languages, branding, and outputs.
+
+Edit it **before** a versioned publish. Then run `task gen` (local toolchain) or go straight to a container publish target — container tasks generate config as part of the build.
+
+Do not paste the whole file into this handbook. The live file is in the repository: [config.yml on master](https://github.com/uyuni-project/uyuni-docs/blob/master/config.yml).
+
+---
+
+## Fields to update for a Multi-Linux Manager release
+
+Under `products.mlm`:
+
+| Field | Purpose | Example |
+| --- | --- | --- |
+| `asciidoc.attributes.productnumber` | Product version shown in the docs. Quote it so a trailing zero is kept (`"5.0"`, `"5.1"`). | `"5.1"` |
+| `asciidoc.attributes.productchartversion` | Helm chart version. | `"5.1.4"` |
+| `asciidoc.attributes.gitchartsbranch` | Charts git branch. | `Manager-5.1` |
+| `asciidoc.attributes.copyrightdate` | Copyright range. | `"2011–2026"` |
+| `outputs.mlm-dsc.site.title` | documentation.suse.com site title. | `SUSE Multi-Linux Manager 5.1 Documentation` |
+| `outputs.mlm-dsc.site.url` | Public site URL. Update the version segment for each yearly major release. The language segment is appended per locale. | `https://documentation.suse.com/multi-linux-manager/5.2/` |
+
+---
+
+## Supported client versions
+
+The shared `asciidoc:` block at the top of `config.yml` holds OS and client versions used throughout the guides. Update these for each major release. **Confirm the supported client list and versions with the release managers and the product owner before you publish.**
+
+Versioned attributes to review include:
+
+| Field | Purpose | Example |
+| --- | --- | --- |
+| `opensuse-version` | openSUSE Leap client version | `"15.6"` |
+| `sles-version` / `sp-version` (and related `sp-*` fields) | SLES base and service pack | `15` / `SP7` |
+| `microversion` | SL Micro / SLE Micro for MLM | `"6.2"` |
+| `microversionforuyuni` | SL Micro / SLE Micro for Uyuni | `"5.5"` |
+| `bci-mlm` / `bci-uyuni` | Container host / BCI base | `15 SP7` / `15.6` |
+| `rhnminrelease6` / `rhnminrelease7` / `rhnminrelease8` | Named RHEL client releases | `Red Hat Enterprise Linux Server 8` |
+| `sles-base-os-documentation` | Link to the matching SLES docs | `https://documentation.suse.com/sles/15-SP7/html/SLES-all` |
+
+Client OS **names** (Ubuntu, Debian, AlmaLinux, Rocky Linux, and so on) stay in the same block; they rarely change. The **versions** they refer to in the content must still match what release management and the product owner signed off.
+
+---
+
+## Fields to update for a Uyuni release
+
+Under `products.uyuni`:
+
+| Field | Purpose | Example |
+| --- | --- | --- |
+| `antora.title` | Antora component title. | `Uyuni 2025.10` |
+| `asciidoc.attributes.releaseversion` / `productnumber` | Release label. | `"2025.10"` |
+| `asciidoc.attributes.productchartversion` | Chart version. | `"2025.10.0"` |
+| `asciidoc.attributes.gitchartsbranch` | Charts branch. | `main` |
+
+---
+
+## What else lives in this file
+
+- **Antora and AsciiDoc extensions** applied to every build
+- **Shared AsciiDoc attributes** (product names, architectures, cloud terms)
+- **Products** `mlm` and `uyuni`, each with sections (books), PDF naming, UI bundle, and outputs (`mlm-dsc`, `mlm-webui`, `uyuni-website`, `uyuni-webui`)
+- **Languages** (`en`, `ja`, `zh_CN`, `ko`) — add a new language by adding a block here, then run `task gen`
+
+After you change `config.yml`, build with the matching publish target. See [Publish Multi-Linux Manager](./publish-mlm.mdx) and [Publish Uyuni](./publish-uyuni.mdx).

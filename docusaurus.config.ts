@@ -5,8 +5,8 @@ import type * as Preset from '@docusaurus/preset-classic';
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const config: Config = {
-  title: 'Uyuni Documentation Architecture',
-  tagline: 'Documenting the system that documents.',
+  title: 'Uyuni Docs Handbook',
+  tagline: 'How we write, build, and publish the docs.',
   favicon: 'img/favicon.ico',
 
   // Add meta tags for Algolia site verification and SEO
@@ -53,7 +53,7 @@ const config: Config = {
       tagName: 'link',
       attributes: {
         rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css2?family=SUSE:wght@100..800&display=swap',
+        href: 'https://fonts.googleapis.com/css2?family=Noto+Emoji:wght@300..700&family=SUSE:wght@100..800&display=swap',
       },
     },
   ],
@@ -139,7 +139,7 @@ const config: Config = {
       respectPrefersColorScheme: false,
     },
     navbar: {
-      title: 'Uyuni Documentation Architecture',
+      title: 'Uyuni Docs Handbook',
       logo: {
         alt: 'Uyuni Logo',
         src: 'img/uyuni-logo.png',
@@ -180,11 +180,11 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} Uyuni Documentation Architecture, openSUSE.`,
+      copyright: `Copyright © ${new Date().getFullYear()} Uyuni Docs Handbook, openSUSE.`,
     },
     prism: {
       theme: prismThemes.github,
-      darkTheme: prismThemes.dracula,
+      darkTheme: prismThemes.nightOwl,
       additionalLanguages: ['bash', 'makefile', 'ruby', 'python', 'yaml'],
     },
   } satisfies Preset.ThemeConfig,
