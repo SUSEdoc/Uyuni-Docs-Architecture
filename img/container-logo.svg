@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Toolchain container: isometric cube -->
+  <path fill="#0B4F96" d="M16 15.8v12L4.8 21.8V10.2z"/>
+  <path fill="#1D72D8" d="M16 15.8v12L27.2 21.8V10.2z"/>
+  <path fill="#4EB2FF" d="M16 15.8 4.8 10.2 16 4.2l11.2 6z"/>
+</svg>
