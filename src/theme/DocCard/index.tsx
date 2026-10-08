@@ -7,6 +7,7 @@ import {
 } from '@docusaurus/plugin-content-docs/client';
 import {usePluralForm} from '@docusaurus/theme-common';
 import isInternalUrl from '@docusaurus/isInternalUrl';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 import {translate} from '@docusaurus/Translate';
 
 import type {Props} from '@theme/DocCard';
@@ -129,6 +130,11 @@ function CardLayout({
 function CardCategory({item}: {item: PropSidebarItemCategory}): ReactNode {
   const href = findFirstSidebarItemLink(item);
   const categoryItemsPlural = useCategoryItemsPlural();
+  const customIcon =
+    typeof item.customProps?.icon === 'string'
+      ? item.customProps.icon
+      : undefined;
+  const iconUrl = useBaseUrl(customIcon ?? '');
 
   if (!href) {
     return null;
@@ -138,7 +144,13 @@ function CardCategory({item}: {item: PropSidebarItemCategory}): ReactNode {
     <CardLayout
       className={item.className}
       href={href}
-      icon={<CardIcon kind="category" />}
+      icon={
+        customIcon ? (
+          <img src={iconUrl} className={styles.cardIcon} alt="" />
+        ) : (
+          <CardIcon kind="category" />
+        )
+      }
       title={item.label}
       description={item.description ?? categoryItemsPlural(item.items.length)}
     />
@@ -146,7 +158,14 @@ function CardCategory({item}: {item: PropSidebarItemCategory}): ReactNode {
 }
 
 function CardLink({item}: {item: PropSidebarItemLink}): ReactNode {
-  const icon = (
+  const customIcon =
+    typeof item.customProps?.icon === 'string'
+      ? item.customProps.icon
+      : undefined;
+  const iconUrl = useBaseUrl(customIcon ?? '');
+  const icon = customIcon ? (
+    <img src={iconUrl} className={styles.cardIcon} alt="" />
+  ) : (
     <CardIcon kind={isInternalUrl(item.href) ? 'doc' : 'external'} />
   );
   const doc = useDocById(item.docId ?? undefined);

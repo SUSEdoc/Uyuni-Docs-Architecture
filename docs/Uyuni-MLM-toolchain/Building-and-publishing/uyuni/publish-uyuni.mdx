@@ -2,21 +2,23 @@
 id: publish-uyuni
 slug: /publish-uyuni
 title: Publish Uyuni
-sidebar_label: Publish Uyuni
+sidebar_label: Publish to uyuni-project.org
 description: Build Uyuni documentation with the container and Task for uyuni-project.org.
+sidebar_custom_props:
+  icon: /img/publish-logo.svg
 ---
 
 # Publish Uyuni
 
 Uyuni documentation is published to [uyuni-project.org](https://www.uyuni-project.org/uyuni-docs/). Build it with the same container and Task workflow as Multi-Linux Manager.
 
-For setup, see [Container setup](../Deployment-and-Installation/Use-our-doc-container.mdx).
+For setup, see [Container setup](../../Deployment-and-Installation/Use-our-doc-container.mdx).
 
 ---
 
 ## 1. Update config.yml
 
-Before a Uyuni release, set the Uyuni version fields in `config.yml` (`releaseversion` / `productnumber`, chart version, site title). Also review supported client versions in the shared `asciidoc:` block with the release managers and the product owner. Details: [config.yml](./config-yml.mdx).
+Before a Uyuni release, set the Uyuni version fields in `config.yml` (`releaseversion` / `productnumber`, chart version, site title). Also review supported client versions in the shared `asciidoc:` block with the release managers and the product owner. Details: [config.yml](../config-yml.mdx).
 
 ---
 
@@ -35,13 +37,6 @@ task container:publish:uyuni LANGUAGES=en
 task container:publish:uyuni LANGUAGES="en ja" JOBS=4
 ```
 
-Other Uyuni targets:
-
-```bash
-task container:publish:webui-uyuni
-task container:pdf:uyuni
-task container:obs:uyuni
-task container:validate:uyuni
-```
-
 Output lands in `build/` on the host.
+
+For English RPM packages, see [Packaging Uyuni](./packaging-uyuni.mdx) (`task container:obs:uyuni`).

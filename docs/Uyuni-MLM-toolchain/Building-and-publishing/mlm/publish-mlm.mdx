@@ -2,15 +2,17 @@
 id: publish-mlm-dsc
 slug: /publish-mlm-dsc
 title: Publish Multi-Linux Manager
-sidebar_label: Publish Multi-Linux Manager
+sidebar_label: Publish to documentation.suse.com
 description: Build Multi-Linux Manager documentation with the container and Task for documentation.suse.com.
+sidebar_custom_props:
+  icon: /img/publish-logo.svg
 ---
 
 # Publish Multi-Linux Manager
 
 Enterprise Multi-Linux Manager documentation is published to [documentation.suse.com](https://documentation.suse.com/). Build it with the **uyuni-docs-builder** container and Task from a clone of [uyuni-docs](https://github.com/uyuni-project/uyuni-docs). After the build, copy the output into the matching version directory on the internal Docserv tree.
 
-For setup, see [Container setup](../Deployment-and-Installation/Use-our-doc-container.mdx).
+For setup, see [Container setup](../../Deployment-and-Installation/Use-our-doc-container.mdx).
 
 ---
 
@@ -25,7 +27,7 @@ Before a versioned build, set the MLM version fields in `config.yml`. At minimum
   The URL version segment changes with each yearly major release, for example `https://documentation.suse.com/multi-linux-manager/5.2/`
 - Supported client versions in the shared `asciidoc:` block (`opensuse-version`, `sles-version` / `sp-version`, `microversion`, BCI bases, and related fields). Confirm these with the release managers and the product owner.
 
-Details: [config.yml](./config-yml.mdx).
+Details: [config.yml](../config-yml.mdx).
 
 ---
 

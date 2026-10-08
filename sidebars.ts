@@ -13,100 +13,86 @@ import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
 const sidebars: SidebarsConfig = {
   tutorialSidebar: [
     'intro',
+    'first-contribution',
     {
       type: 'category',
-      label: 'Docs',
+      label: 'Set up',
       collapsed: false,
+      link: {
+        type: 'generated-index',
+        title: 'Set up',
+        description:
+          'Shared toolchain setup for both products. Install Podman or Docker, Task, and the uyuni-docs-builder container. Optional: local tools, WSL2, and VS Code.',
+        slug: '/category/deployment-and-installation',
+      },
       items: [
-        'first-contribution',
-        'search-help',
+        'Uyuni-MLM-toolchain/Deployment-and-Installation/documentation-container',
+        'Uyuni-MLM-toolchain/Deployment-and-Installation/local-toolchain-setup',
+        'Uyuni-MLM-toolchain/Deployment-and-Installation/Set-Up-WSL2-for-Documentation-Development',
+        'Visual-Code-and-Extensions/install-and-configure-visual-studio-code',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Build and publish',
+      collapsed: false,
+      link: {
+        type: 'generated-index',
+        title: 'Build and publish',
+        description:
+          'Shared config.yml first, then the product you are shipping. Multi-Linux Manager is enterprise (documentation.suse.com). Uyuni is the open-source community site (uyuni-project.org).',
+        slug: '/category/building-and-publishing',
+      },
+      items: [
+        'Uyuni-MLM-toolchain/Building-and-publishing/config-yml',
         {
           type: 'category',
-          label: 'Deployment and installation',
+          label: 'Multi-Linux Manager (enterprise)',
           collapsed: false,
+          customProps: {icon: '/img/mlm-logo.svg'},
           link: {
             type: 'generated-index',
-            title: 'Deployment and installation',
+            title: 'Multi-Linux Manager (enterprise)',
             description:
-              'Set up the current documentation toolchain: Podman or Docker, Task, and the uyuni-docs-builder container.',
-            slug: '/category/deployment-and-installation',
+              'Enterprise documentation for SUSE Multi-Linux Manager. Package English RPMs and publish to documentation.suse.com. Translations for manager-5.1 and manager-5.2 are AI-generated pull requests against those branches.',
+            slug: '/category/mlm',
           },
           items: [
-            'Uyuni-MLM-toolchain/Deployment-and-Installation/documentation-container',
-            'Uyuni-MLM-toolchain/Deployment-and-Installation/local-toolchain-setup',
-            'Uyuni-MLM-toolchain/Deployment-and-Installation/Set-Up-WSL2-for-Documentation-Development',
+            'Uyuni-MLM-toolchain/Building-and-publishing/mlm/packaging-mlm',
+            'Uyuni-MLM-toolchain/Building-and-publishing/mlm/publish-mlm-dsc',
           ],
         },
         {
           type: 'category',
-          label: 'Building and publishing',
+          label: 'Uyuni (community)',
           collapsed: false,
+          customProps: {icon: '/img/uyuni-logo.png'},
           link: {
             type: 'generated-index',
-            title: 'Building and publishing',
+            title: 'Uyuni (community)',
             description:
-              'Update config.yml and publish Multi-Linux Manager and Uyuni documentation with Task and the container.',
-            slug: '/category/building-and-publishing',
+              'Open-source community documentation. Package English RPMs on src.opensuse.org, then publish to uyuni-project.org.',
+            slug: '/category/uyuni',
           },
           items: [
-            'Uyuni-MLM-toolchain/Building-and-publishing/config-yml',
-            'Uyuni-MLM-toolchain/Building-and-publishing/publish-mlm-dsc',
-            'Uyuni-MLM-toolchain/Building-and-publishing/publish-uyuni',
-          ],
-        },
-        {
-          type: 'category',
-          label: 'Legacy',
-          collapsed: true,
-          items: [
-            'Uyuni-MLM-toolchain/Deployment-and-Installation/manual-toolchain-installation',
-            'Uyuni-MLM-toolchain/Deployment-and-Installation/legacy-docs-helper-container',
-            {
-              type: 'category',
-              label: 'Legacy publishing',
-              collapsed: true,
-              link: {
-                type: 'generated-index',
-                title: 'Legacy publishing',
-                description:
-                  'Make-based and SUSE Manager procedures for manager-4.3, manager-5.0, and older branches. Current master publishing is under Building and publishing.',
-                slug: '/category/legacy-publishing',
-              },
-              items: [
-                'Uyuni-MLM-toolchain/Building-Documentation/SUSE Multi-Linux Manager Documentation/mlm-github-actions',
-                'Uyuni-MLM-toolchain/Building-Documentation/SUSE Manager Documentation/suma-github-actions',
-                'Uyuni-MLM-toolchain/Building-Documentation/SUSE Manager Documentation/suma-branch-conventions',
-                'Uyuni-MLM-toolchain/Building-Documentation/SUSE Manager Documentation/suma-packaging-rpms-for-the-internal-build-service',
-              ],
-            },
+            'Uyuni-MLM-toolchain/Building-and-publishing/uyuni/packaging-uyuni',
+            'Uyuni-MLM-toolchain/Building-and-publishing/uyuni/publish-uyuni',
           ],
         },
       ],
     },
     {
       type: 'category',
-      label: 'Toolchain references',
+      label: 'Tools',
       collapsed: true,
       link: {
         type: 'generated-index',
-        title: 'Toolchain references',
+        title: 'Tools',
         description:
-          'Handbook pages and official documentation for each tool in the Uyuni docs toolchain.',
+          'AsciiDoc, Antora, Task, the container, and the other tools we use to write and build the docs.',
         slug: '/category/toolchain',
       },
       items: [{type: 'autogenerated', dirName: 'toolchain'}],
-    },
-    {
-      type: 'category',
-      label: 'Visual Studio Code and extensions',
-      collapsed: true,
-      items: [{type: 'autogenerated', dirName: 'Visual-Code-and-Extensions'}],
-    },
-    {
-      type: 'category',
-      label: 'Documentation process',
-      collapsed: true,
-      items: [{type: 'autogenerated', dirName: 'Documentation-process'}],
     },
   ],
 };

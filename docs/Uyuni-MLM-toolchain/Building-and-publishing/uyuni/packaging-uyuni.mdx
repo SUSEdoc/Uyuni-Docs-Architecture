@@ -1,0 +1,81 @@
+---
+id: packaging-uyuni
+slug: /packaging-uyuni
+title: Packaging Uyuni
+sidebar_label: Packaging
+description: Package English Uyuni documentation and submit it to src.opensuse.org/uyuni/uyuni-docs_en.
+sidebar_custom_props:
+  icon: /img/package-logo.svg
+---
+
+# Packaging Uyuni
+
+Package the **English** Uyuni documentation after you update [config.yml](../config-yml.mdx) and run `task container:obs:uyuni`. Submit the packages only to [src.opensuse.org/uyuni/uyuni-docs_en](https://src.opensuse.org/uyuni/uyuni-docs_en): fork the repo and open a pull request.
+
+Do **not** submit Uyuni docs packages to build.opensuse.org.
+
+`osc` is used only to format the changelog (`osc vc`). Configuring an OBS account is out of scope for this page.
+
+For setup, see [Container setup](../../Deployment-and-Installation/Use-our-doc-container.mdx).
+
+---
+
+## 1. Update config.yml
+
+Set the Uyuni fields in `config.yml` before you build. At minimum:
+
+- `products.uyuni.asciidoc.attributes.releaseversion` / `productnumber` (quoted, for example `"2026.08"`)
+- `productchartversion` and `gitchartsbranch`
+- `antora.title` (for example `Uyuni 2026.08`)
+- Supported client versions in the shared `asciidoc:` block. Confirm these with the release managers and the product owner.
+
+Details: [config.yml](../config-yml.mdx).
+
+---
+
+## 2. Build the English packages
+
+```bash
+cd uyuni-docs
+task container:build                 # once, or after Dockerfile.bci changes
+task container:obs:uyuni LANGUAGES=en
+```
+
+English packages land in `build/packages/` on the host (`uyuni-docs_en.tar.gz` and `uyuni-docs_en-pdf.tar.gz`).
+
+---
+
+## 3. Update src.opensuse.org
+
+1. Fork [src.opensuse.org/uyuni/uyuni-docs_en](https://src.opensuse.org/uyuni/uyuni-docs_en) and clone your fork.
+2. Copy the English packages from `uyuni-docs/build/packages/` into the package directory in your fork. Ship the **en** build only.
+3. Bump `Version:` in `uyuni-docs_en.spec` to the release you are packaging:
+
+```
+Name:           uyuni-docs_en
+Version:        2026.08
+Release:        0
+```
+
+4. Format the changelog. The release number must be the topmost entry and must be bumped for every new release:
+
+```bash
+osc vc uyuni-docs_en.changes
+```
+
+Copy the latest entries from `uyuni-docs/CHANGELOG.md` under the timestamp. Do not use acronyms. Example:
+
+```
+-------------------------------------------------------------------
+Wed Oct  7 09:16:07 UTC 2026 - FirstName LastName <user@suse.com>
+
+- Version 2026.08
+  * Updated client support matrix for the 2026.08 release
+  * Documented container host requirements
+  * Fixed installation procedure for the proxy
+-------------------------------------------------------------------
+```
+
+5. Commit and open a pull request against [uyuni/uyuni-docs_en](https://src.opensuse.org/uyuni/uyuni-docs_en).
+
+Then continue with [Publish to uyuni-project.org](./publish-uyuni.mdx).

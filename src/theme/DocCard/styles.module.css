@@ -11,7 +11,7 @@
 
 .cardContainer:hover {
   border-color: var(--ifm-color-primary);
-  box-shadow: 0 3px 6px 0 rgb(15 122 77 / 12%);
+  box-shadow: 0 6px 18px rgb(38 201 148 / 18%);
 }
 
 .cardContainer *:last-child {
@@ -31,6 +31,9 @@
 
 .cardIcon {
   flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
   color: var(--ifm-color-primary);
 }
 

@@ -1,7 +1,7 @@
 import type {ReactNode} from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 import Layout from '@theme/Layout';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
 import Heading from '@theme/Heading';
@@ -10,28 +10,33 @@ import Translate, {translate} from '@docusaurus/Translate';
 import styles from './index.module.css';
 
 function HomepageHeader() {
-  const {siteConfig} = useDocusaurusContext();
+  const saltFlats = useBaseUrl('/img/uyuni-salt-flats.jpg');
   return (
-    <header className={clsx('hero hero--primary', styles.heroBanner)}>
-      <div className="container">
-        <Heading as="h1" className="hero__title">
-          {siteConfig.title}
+    <header
+      className={clsx('hero hero--primary', styles.heroBanner)}
+      style={{
+        backgroundImage: `linear-gradient(180deg, rgb(14 26 30 / 38%) 0%, rgb(14 26 30 / 62%) 100%), url('${saltFlats}')`,
+      }}>
+      <div className={styles.heroInner}>
+        <Heading as="h1" className={styles.title}>
+          <span className={styles.titleBrand}>Uyuni</span>
+          <span className={styles.titleRest}>Contributors Handbook</span>
         </Heading>
-        <p className="hero__subtitle">
+        <p className={styles.intro}>
           <Translate
-            id="homepage.tagline"
-            description="The homepage tagline">
-            How we write, build, and publish the docs.
+            id="homepage.intro"
+            description="Homepage intro for the contributors handbook">
+            How the community writes, builds, and publishes documentation for
+            Uyuni and Multi-Linux Manager.
           </Translate>
         </p>
+        <HomepageFeatures />
         <div className={styles.buttons}>
-          <Link
-            className="button button--primary button--lg"
-            to="/docs/intro">
+          <Link className="button button--primary button--lg" to="/docs/intro">
             <Translate
               id="homepage.toolchain.button"
               description="The homepage button to toolchain guides">
-              Docs
+              Open the handbook
             </Translate>
           </Link>
         </div>
@@ -41,7 +46,6 @@ function HomepageHeader() {
 }
 
 export default function Home(): ReactNode {
-  const {siteConfig} = useDocusaurusContext();
   return (
     <Layout
       title={translate({
@@ -55,9 +59,6 @@ export default function Home(): ReactNode {
         description: 'The homepage description'
       })}>
       <HomepageHeader />
-      <main>
-        <HomepageFeatures />
-      </main>
     </Layout>
   );
 }

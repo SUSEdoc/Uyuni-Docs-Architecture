@@ -5,12 +5,19 @@ import type * as Preset from '@docusaurus/preset-classic';
 // This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
 
 const config: Config = {
-  title: 'Uyuni Docs Handbook',
-  tagline: 'How we write, build, and publish the docs.',
+  title: 'Uyuni Contributors Handbook',
+  tagline: 'How we write, build, and publish Uyuni and Multi-Linux Manager documentation.',
   favicon: 'img/favicon.ico',
+  clientModules: ['./src/force-dark.ts'],
 
   // Add meta tags for Algolia site verification and SEO
   headTags: [
+    {
+      tagName: 'script',
+      attributes: {},
+      innerHTML:
+        "document.documentElement.setAttribute('data-theme','dark');document.documentElement.setAttribute('data-theme-choice','dark');try{localStorage.setItem('theme','dark')}catch(e){}",
+    },
     {
       tagName: 'meta',
       attributes: {
@@ -48,12 +55,12 @@ const config: Config = {
         crossorigin: 'anonymous',
       },
     },
-    // SUSE fonts from Google Fonts
+    // Lato is the typeface on uyuni-project.org
     {
       tagName: 'link',
       attributes: {
         rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css2?family=Noto+Emoji:wght@300..700&family=SUSE:wght@100..800&display=swap',
+        href: 'https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Noto+Emoji:wght@300..700&display=swap',
       },
     },
   ],
@@ -134,23 +141,17 @@ const config: Config = {
     // Replace with your project's social card
     image: 'img/uyuni-architecture-og.svg',
     colorMode: {
-      defaultMode: 'light',
-      disableSwitch: false,
+      defaultMode: 'dark',
+      disableSwitch: true,
       respectPrefersColorScheme: false,
     },
     navbar: {
-      title: 'Uyuni Docs Handbook',
+      title: 'Uyuni Contributors Handbook',
       logo: {
-        alt: 'Uyuni Logo',
+        alt: 'Uyuni',
         src: 'img/uyuni-logo.png',
       },
       items: [
-        {
-          type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
-          position: 'left',
-          label: 'Toolchain Guides',
-        },
         {
           href: 'https://github.com/uyuni-project/uyuni-docs',
           label: 'GitHub',
@@ -158,32 +159,8 @@ const config: Config = {
         },
       ],
     },
-    footer: {
-      style: 'dark',
-      links: [
-        {
-          title: 'Docs',
-          items: [
-            {
-              label: 'Tutorial',
-              to: '/docs/intro',
-            },
-          ],
-        },
-        {
-          title: 'More',
-          items: [
-            {
-              label: 'GitHub',
-              href: 'https://github.com/uyuni-project/uyuni-docs',
-            },
-          ],
-        },
-      ],
-      copyright: `Copyright © ${new Date().getFullYear()} Uyuni Docs Handbook, openSUSE.`,
-    },
     prism: {
-      theme: prismThemes.github,
+      theme: prismThemes.nightOwl,
       darkTheme: prismThemes.nightOwl,
       additionalLanguages: ['bash', 'makefile', 'ruby', 'python', 'yaml'],
     },

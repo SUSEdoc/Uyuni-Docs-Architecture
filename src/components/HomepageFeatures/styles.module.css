@@ -1,49 +1,54 @@
-.features {
-  display: flex;
-  align-items: center;
-  padding: 2.5rem 0 3.5rem;
-  width: 100%;
-  background: var(--ifm-background-color);
+.ribbonWrap {
+  margin: 1.75rem 0 0;
+  padding-top: 1.35rem;
+  border-top: 1px solid rgb(232 238 240 / 12%);
 }
 
-.featureCard {
+.ribbon {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0.35rem;
+}
+
+.toolChip {
   display: flex;
   flex-direction: column;
-  height: 100%;
-  margin-bottom: 1.5rem;
-  padding: 1.25rem 0.75rem 1.5rem;
-  border: 1px solid var(--ifm-toc-border-color);
-  border-radius: 1.25rem;
-  background: var(--ifm-background-surface-color);
-  color: inherit;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.7rem 0.25rem 0.55rem;
+  border-radius: 0.9rem;
+  color: var(--uyuni-text);
   text-decoration: none;
-  transition: border-color 160ms ease, box-shadow 160ms ease;
+  min-width: 0;
 }
 
-.featureCard:hover {
-  border-color: var(--ifm-color-primary);
-  box-shadow: 0 6px 18px rgb(15 122 77 / 12%);
+.toolChip:hover {
+  background: rgb(77 184 232 / 14%);
+  color: var(--uyuni-white);
   text-decoration: none;
-  color: inherit;
 }
 
-.featureCard:hover h3 {
-  color: var(--ifm-color-primary);
-}
-
-.featureSvg {
-  height: 160px;
-  width: 160px;
+.toolChip img {
+  width: 1.75rem;
+  height: 1.75rem;
   object-fit: contain;
-  padding: 1rem;
-  border-radius: 1.5rem;
-  background: color-mix(in srgb, var(--ifm-color-primary) 8%, transparent);
 }
 
-.featureCard h3 {
-  color: var(--ifm-heading-color);
+.toolChip span {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+  white-space: nowrap;
 }
 
-.featureCard p {
-  color: var(--ifm-color-content-secondary);
+@media screen and (max-width: 700px) {
+  .ribbon {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.45rem;
+  }
+
+  .toolChip span {
+    font-size: 0.7rem;
+  }
 }

@@ -1,0 +1,125 @@
+---
+id: packaging-mlm
+slug: /packaging-mlm
+title: Packaging Multi-Linux Manager
+sidebar_label: Packaging
+description: Package English Multi-Linux Manager documentation for manager-5.2 (src.suse.de) and manager-5.1 (OBS).
+sidebar_custom_props:
+  icon: /img/package-logo.svg
+---
+
+# Packaging Multi-Linux Manager
+
+Package the **English** Multi-Linux Manager documentation after you update [config.yml](../config-yml.mdx) and run `task container:obs:mlm`.
+
+- **manager-5.2** — update packages on [src.suse.de/Galaxy/susemanager-docs_en](https://src.suse.de/Galaxy/susemanager-docs_en)
+- **manager-5.1** — update packages on OBS at [build.suse.de](https://build.suse.de) in `Devel:Galaxy:Manager:5.1`
+
+Configuring your OBS user account is out of scope for this page. You need `osc` installed and working against `https://api.suse.de`.
+
+For setup, see [Container setup](../../Deployment-and-Installation/Use-our-doc-container.mdx).
+
+---
+
+## 1. Update config.yml
+
+On the branch you are packaging (`manager-5.2` or `manager-5.1`), set the MLM fields in `config.yml` before you build. At minimum:
+
+- `products.mlm.asciidoc.attributes.productnumber` (quoted, for example `"5.2"` or `"5.1"`)
+- `productchartversion` and `gitchartsbranch`
+- `copyrightdate` if the year range changed
+- Supported client versions in the shared `asciidoc:` block. Confirm these with the release managers and the product owner.
+
+Details: [config.yml](../config-yml.mdx).
+
+---
+
+## 2. Build the English OBS packages
+
+```bash
+cd uyuni-docs
+task container:build                 # once, or after Dockerfile.bci changes
+task container:obs:mlm LANGUAGES=en
+```
+
+English packages land in `build/packages/` on the host.
+
+Then follow the section for the branch you are packaging.
+
+---
+
+## manager-5.2
+
+Packaging for manager-5.2 happens on internal GitLab: [src.suse.de/Galaxy/susemanager-docs_en](https://src.suse.de/Galaxy/susemanager-docs_en).
+
+1. Fork [src.suse.de/Galaxy/susemanager-docs_en](https://src.suse.de/Galaxy/susemanager-docs_en) and clone your fork.
+2. Copy the English packages from `uyuni-docs/build/packages/` into the package directory in your fork. Ship the **en** build only.
+3. Update the `.spec` file `Version:` to the release version.
+4. Format and add the changelog from `uyuni-docs/.changelog`:
+
+```bash
+osc vc susemanager-docs_en.changes
+```
+
+5. Commit and open a pull request against the upstream package repo.
+
+---
+
+## manager-5.1
+
+Packaging for manager-5.1 happens on OBS: `Devel:Galaxy:Manager:5.1` at [build.suse.de](https://build.suse.de).
+
+The [SUMA product docs IBS wiki](https://github.com/uyuni-project/uyuni-docs/wiki/suma-product-docs-ibs) still describes the older helper-script build. Use it only as a reference for the OBS checkout, changelog, and service-request steps below. Do **not** use `uyuni-docs-helper` or `parameters.yml` — build with Task and [config.yml](../config-yml.mdx) as in steps 1 and 2.
+
+### Check out the OBS package
+
+```bash
+export OBS_USER=your-username
+export OBS_REPO=Devel:Galaxy:Manager:5.1
+
+osc -A https://api.suse.de bco $OBS_REPO susemanager-docs_en
+```
+
+If this fails with a 404, log in at [build.suse.de](https://build.suse.de) and try again.
+
+Copy the English packages from `uyuni-docs/build/packages/` into:
+
+```
+home:$OBS_USER:branches:$OBS_REPO/susemanager-docs_en
+```
+
+### Update the spec and changelog
+
+```bash
+cd home:$OBS_USER:branches:$OBS_REPO/susemanager-docs_en
+```
+
+In the `.spec` file, set `Version:` to the release version, for example:
+
+```
+Name:           susemanager-docs_en
+Version:        5.1.x
+Release:        0
+```
+
+Add the latest entries from `uyuni-docs/.changelog` with:
+
+```bash
+osc vc susemanager-docs_en.changes
+```
+
+### Check in and submit
+
+```bash
+osc ci -m "update"
+```
+
+The OBS build takes about 15 minutes. Check progress with `osc pr`.
+
+When the packages build cleanly, create or supersede the service request:
+
+```bash
+osc sr -m "update"
+```
+
+Answer `Supersede the old request? (y/n/c)` as needed. Then tell `@multi-linux-manager-releng` on Slack (Vega or docs channels). The release manager accepts the SR so the docs land in the new RPMs.

@@ -1,10 +1,10 @@
 {
-  "label": "Toolchain references",
+  "label": "Tools",
   "position": 2,
   "link": {
     "type": "generated-index",
-    "title": "Toolchain references",
-    "description": "Handbook pages and official documentation for each tool in the Uyuni docs toolchain.",
+    "title": "Tools",
+    "description": "AsciiDoc, Antora, Task, the container, and the other tools we use to write and build the docs.",
     "slug": "/category/toolchain"
   }
 }

@@ -4,17 +4,19 @@ sidebar_position: 1
 
 # Welcome
 
-Welcome to the comprehensive guide for the **Uyuni and SUSE Multi-Linux Manager documentation toolchain**.  
-This site serves as the central resource for understanding, contributing to, and maintaining the documentation infrastructure that supports these enterprise-grade systems management solutions.
+This handbook is how we write, build, and publish documentation for two products that share one toolchain:
 
----
+- **SUSE Multi-Linux Manager** — enterprise docs on [documentation.suse.com](https://documentation.suse.com/)
+- **Uyuni** — open-source community docs on [uyuni-project.org](https://www.uyuni-project.org/uyuni-docs/)
 
-## What You'll Find Here
+## How this handbook is organized
 
-This handbook covers the toolchain and processes used to create, manage, and publish documentation for:
-
-- **Uyuni** — The open-source systems management platform  
-- **SUSE Multi-Linux Manager** — The enterprise systems management solution
+| Section | What it is for |
+| --- | --- |
+| **Contribute** | Fork, branch, sign commits, and open a pull request |
+| **Set up** | Container, Task, WSL2, VS Code |
+| **Build and publish** | config.yml, then MLM (enterprise) or Uyuni (community) |
+| **Tools** | AsciiDoc, Antora, Task, and the other tools we use |
 
 ---
 
@@ -33,34 +35,8 @@ The Uyuni documentation ecosystem is built on established tools and practices us
 - Version management and controlled release processes
 
 ### Localization and Translation
-- **Weblate** for Uyuni documentation translations
-- Vistatek fork and AI translation PRs for Multi-Linux Manager 5.1 and 5.2
+- AI translation against the **manager-5.1** and **manager-5.2** branches, delivered as pull requests
 
 ---
 
-## Getting Started
-
-Whether you are a:
-
-- **Content contributor** writing or updating documentation  
-- **Developer** maintaining or extending the toolchain  
-- **Translator** localizing content for global audiences  
-- **Maintainer** managing the overall documentation ecosystem  
-
-You will find clear guides, standards, and technical references to help you contribute effectively to the Uyuni documentation project.
-
----
-
-## Next Steps
-
-Explore the sections in this guide to learn about:
-
-- Setting up your local authoring environment  
-- Understanding content standards and style guides  
-- Contributing to translations and localization efforts  
-- Using the build and deployment pipeline  
-- Maintaining and improving documentation infrastructure
-
----
-
-*This site documents the tools, processes, and best practices that ensure Uyuni and SUSE Multi-Linux documentation remains accurate, accessible, and up to date for our global community.*
+Start with [Contribution workflow](/docs/first-contribution) and [Container setup](/docs/documentation-container).

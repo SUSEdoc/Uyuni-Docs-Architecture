@@ -4,6 +4,8 @@ slug: /config-yml
 title: config.yml
 sidebar_label: config.yml
 description: What to edit in config.yml before a Multi-Linux Manager or Uyuni documentation release.
+sidebar_custom_props:
+  icon: /img/yml-logo.svg
 ---
 
 # config.yml
@@ -57,9 +59,9 @@ Under `products.uyuni`:
 
 | Field | Purpose | Example |
 | --- | --- | --- |
-| `antora.title` | Antora component title. | `Uyuni 2025.10` |
-| `asciidoc.attributes.releaseversion` / `productnumber` | Release label. | `"2025.10"` |
-| `asciidoc.attributes.productchartversion` | Chart version. | `"2025.10.0"` |
+| `antora.title` | Antora component title. | `Uyuni 2026.08` |
+| `asciidoc.attributes.releaseversion` / `productnumber` | Release label. | `"2026.08"` |
+| `asciidoc.attributes.productchartversion` | Chart version. | `"2026.8.0"` |
 | `asciidoc.attributes.gitchartsbranch` | Charts branch. | `main` |
 
 ---
@@ -71,4 +73,7 @@ Under `products.uyuni`:
 - **Products** `mlm` and `uyuni`, each with sections (books), PDF naming, UI bundle, and outputs (`mlm-dsc`, `mlm-webui`, `uyuni-website`, `uyuni-webui`)
 - **Languages** (`en`, `ja`, `zh_CN`, `ko`) — add a new language by adding a block here, then run `task gen`
 
-After you change `config.yml`, build with the matching publish target. See [Publish Multi-Linux Manager](./publish-mlm.mdx) and [Publish Uyuni](./publish-uyuni.mdx).
+After you change `config.yml`, build with the matching product target:
+
+- [Packaging Multi-Linux Manager](./mlm/packaging-mlm.mdx) and [Publish to documentation.suse.com](./mlm/publish-mlm.mdx)
+- [Packaging Uyuni](./uyuni/packaging-uyuni.mdx) and [Publish Uyuni](./uyuni/publish-uyuni.mdx)

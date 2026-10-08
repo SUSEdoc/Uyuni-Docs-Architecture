@@ -1,23 +1,76 @@
-/**
- * CSS files with the .module.css suffix will be treated as CSS modules
- * and scoped locally.
- */
-
 .heroBanner {
-  padding: 5rem 0 4.5rem;
+  min-height: calc(100vh - var(--ifm-navbar-height));
+  padding: 3rem 1.25rem;
   text-align: center;
   position: relative;
   overflow: hidden;
+  background-color: var(--uyuni-canvas);
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-@media screen and (max-width: 996px) {
-  .heroBanner {
-    padding: 2rem;
-  }
+.heroInner {
+  width: min(44rem, 100%);
+  padding: 2.75rem 2.5rem 2.35rem;
+  border: 1px solid rgb(232 238 240 / 14%);
+  border-radius: 1.75rem;
+  background: rgb(14 26 30 / 42%);
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 8%) inset,
+    0 28px 80px rgb(0 0 0 / 38%);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.title {
+  margin: 0;
+  color: var(--uyuni-white);
+  font-weight: 700;
+  line-height: 0.95;
+}
+
+.titleBrand {
+  display: block;
+  font-size: clamp(3.1rem, 8vw, 4.6rem);
+  letter-spacing: -0.045em;
+}
+
+.titleRest {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: clamp(1.35rem, 3.2vw, 1.85rem);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: rgb(232 238 240 / 90%);
+}
+
+.intro {
+  max-width: 34rem;
+  margin: 1.35rem auto 0;
+  color: var(--uyuni-text);
+  font-size: 1.05rem;
+  line-height: 1.55;
+  font-weight: 400;
 }
 
 .buttons {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 1.85rem;
+}
+
+@media screen and (max-width: 996px) {
+  .heroBanner {
+    padding: 2rem 1rem;
+    min-height: calc(100vh - var(--ifm-navbar-height));
+  }
+
+  .heroInner {
+    padding: 2rem 1.25rem 1.75rem;
+    border-radius: 1.35rem;
+  }
 }

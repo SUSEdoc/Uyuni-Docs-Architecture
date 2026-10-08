@@ -1,9 +1,29 @@
 /**
- * Uyuni Docs Handbook — theme tokens and chrome.
- * Infima consumes these variables on docs, navbar, footer, and homepage.
+ * Uyuni Contributors Handbook — dark-only theme from the Uyuni project palette
+ * (uyuni-project.org: primary, chameleon, cyan links, secondary dark).
+ *
+ * Official tokens, lightened where needed so body text and links meet WCAG AA.
  */
 
-/* Emoji-only face so SUSE is not asked to draw characters it does not contain. */
+:root {
+  --uyuni-primary: #008558;
+  --uyuni-chameleon: #26c994;
+  --uyuni-chameleon-light: #5ee0b5;
+  --uyuni-secondary: #142529;
+  --uyuni-canvas: #0e1a1e;
+  --uyuni-navy: #0d2c40;
+  --uyuni-cyan: #008acf;
+  --uyuni-cyan-bright: #4db8e8;
+  --uyuni-cyan-hover: #7dd8f5;
+  --uyuni-teal-link: #0082a0;
+  --uyuni-text: #e8eef0;
+  --uyuni-text-muted: #b7c9d0;
+  --uyuni-white: #ffffff;
+  --uyuni-warning: #e3b341;
+  --uyuni-danger: #ee6f63;
+}
+
+/* Emoji-only face so Lato is not asked to draw characters it does not contain. */
 @font-face {
   font-family: 'Emoji Fallback';
   font-style: normal;
@@ -15,147 +35,94 @@
     U+FE00-FE0F, U+1F000-1FAFF;
 }
 
-:root {
-  --ifm-font-family-base: 'Emoji Fallback', 'SUSE', -apple-system,
+html {
+  color-scheme: dark;
+}
+
+:root,
+[data-theme='dark'],
+[data-theme='light'] {
+  --ifm-color-scheme: dark;
+  --ifm-font-family-base: 'Emoji Fallback', 'Lato', -apple-system,
     BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',
     'Fira Sans', 'Droid Sans', 'Helvetica Neue', 'Apple Color Emoji',
     'Segoe UI Emoji', 'Noto Color Emoji', sans-serif;
   --ifm-font-family-monospace: 'SFMono-Regular', Consolas, 'Liberation Mono',
     Menlo, Courier, monospace;
 
-  /* Brand: Uyuni chameleon green, darkened for AA contrast on light surfaces */
-  --ifm-color-primary: #0f7a4d;
-  --ifm-color-primary-dark: #0d6e45;
-  --ifm-color-primary-darker: #0c6841;
-  --ifm-color-primary-darkest: #0a5536;
-  --ifm-color-primary-light: #1a8b5a;
-  --ifm-color-primary-lighter: #229663;
-  --ifm-color-primary-lightest: #3ecc5f;
+  --ifm-color-primary: var(--uyuni-chameleon);
+  --ifm-color-primary-dark: var(--uyuni-primary);
+  --ifm-color-primary-darker: #006b47;
+  --ifm-color-primary-darkest: var(--uyuni-canvas);
+  --ifm-color-primary-light: var(--uyuni-chameleon-light);
+  --ifm-color-primary-lighter: #8aebcc;
+  --ifm-color-primary-lightest: #c5f6e6;
 
-  --ifm-link-color: var(--ifm-color-primary);
-  --ifm-link-hover-color: var(--ifm-color-primary-darkest);
-  --ifm-color-success: #15803d;
-  --ifm-color-info: #0f766e;
-  --ifm-color-warning: #b45309;
-  --ifm-color-danger: #be123c;
+  --ifm-link-color: var(--uyuni-cyan-bright);
+  --ifm-link-hover-color: var(--uyuni-chameleon-light);
+  --ifm-color-success: var(--uyuni-chameleon);
+  --ifm-color-info: var(--uyuni-cyan-bright);
+  --ifm-color-warning: var(--uyuni-warning);
+  --ifm-color-danger: var(--uyuni-danger);
 
-  --ifm-background-color: #f6f8f7;
-  --ifm-background-surface-color: #ffffff;
-  --ifm-font-color-base: #14241c;
-  --ifm-heading-color: #0b1f16;
-  --ifm-color-content-secondary: #4b6356;
-  --ifm-hover-overlay: rgb(15 122 77 / 8%);
+  --ifm-background-color: var(--uyuni-canvas);
+  --ifm-background-surface-color: var(--uyuni-secondary);
+  --ifm-font-color-base: var(--uyuni-text);
+  --ifm-heading-color: var(--uyuni-white);
+  --ifm-color-content: var(--uyuni-text);
+  --ifm-color-content-secondary: var(--uyuni-text-muted);
+  --ifm-hover-overlay: rgb(38 201 148 / 12%);
 
   --ifm-global-radius: 10px;
   --ifm-button-border-radius: 10px;
   --ifm-code-border-radius: 6px;
   --ifm-code-font-size: 95%;
-  --ifm-code-background: #e8f1ec;
-  --docusaurus-highlighted-code-line-bg: rgb(15 122 77 / 10%);
+  --ifm-code-background: color-mix(in srgb, var(--uyuni-navy) 80%, var(--uyuni-secondary));
+  --docusaurus-highlighted-code-line-bg: rgb(38 201 148 / 16%);
 
-  --ifm-navbar-background-color: rgb(255 255 255 / 82%);
-  --ifm-navbar-link-color: #14241c;
-  --ifm-navbar-link-hover-color: var(--ifm-color-primary);
+  --ifm-navbar-background-color: rgb(14 26 30 / 90%);
+  --ifm-navbar-link-color: var(--uyuni-text);
+  --ifm-navbar-link-hover-color: var(--uyuni-cyan-hover);
   --ifm-navbar-shadow: none;
   --ifm-navbar-height: 4rem;
 
-  --ifm-footer-background-color: #0c1a14;
-  --ifm-footer-color: #c5d4cb;
-  --ifm-footer-title-color: #f4faf6;
-  --ifm-footer-link-color: #d5e4db;
-  --ifm-footer-link-hover-color: var(--ifm-color-primary-lightest);
+  --ifm-menu-color: var(--uyuni-text-muted);
+  --ifm-menu-color-active: var(--uyuni-cyan-bright);
+  --ifm-menu-color-background-active: rgb(77 184 232 / 16%);
+  --ifm-menu-color-background-hover: rgb(77 184 232 / 12%);
+  --ifm-toc-border-color: rgb(0 138 207 / 28%);
+  --ifm-hr-background-color: rgb(0 138 207 / 28%);
+  --ifm-table-stripe-background: rgb(77 184 232 / 8%);
+  --ifm-blockquote-border-color: var(--uyuni-chameleon);
+  --ifm-blockquote-color: var(--uyuni-text-muted);
+  --ifm-pagination-nav-color-hover: var(--uyuni-cyan-bright);
 
-  --ifm-menu-color: #33463c;
-  --ifm-menu-color-active: var(--ifm-color-primary-darkest);
-  --ifm-menu-color-background-active: rgb(15 122 77 / 12%);
-  --ifm-menu-color-background-hover: rgb(15 122 77 / 8%);
-  --ifm-toc-border-color: #d9e4dd;
-  --ifm-hr-background-color: #d9e4dd;
-  --ifm-table-stripe-background: rgb(15 122 77 / 5%);
-  --ifm-blockquote-border-color: var(--ifm-color-primary);
-  --ifm-blockquote-color: #4b6356;
-  --ifm-pagination-nav-color-hover: var(--ifm-color-primary);
+  --docsearch-primary-color: var(--uyuni-chameleon);
+  --docsearch-text-color: var(--uyuni-text);
+  --docsearch-muted-color: var(--uyuni-text-muted);
+  --docsearch-searchbox-background: var(--uyuni-secondary);
+  --docsearch-searchbox-focus-background: var(--uyuni-navy);
+  --docsearch-hit-active-color: var(--uyuni-canvas);
+  --docsearch-highlight-color: var(--uyuni-chameleon);
+  --docsearch-modal-background: var(--uyuni-canvas);
+  --docsearch-footer-background: var(--uyuni-secondary);
+  --docsearch-key-gradient: linear-gradient(
+    180deg,
+    var(--uyuni-navy),
+    var(--uyuni-secondary)
+  );
+  --docsearch-modal-shadow: none;
+  --docsearch-container-background: rgb(14 26 30 / 76%);
 
-  --docsearch-primary-color: var(--ifm-color-primary);
-  --docsearch-text-color: var(--ifm-font-color-base);
-  --docsearch-muted-color: var(--ifm-color-content-secondary);
-  --docsearch-searchbox-background: #e8f1ec;
-  --docsearch-searchbox-focus-background: #ffffff;
-  --docsearch-hit-active-color: #ffffff;
-  --docsearch-highlight-color: var(--ifm-color-primary);
-  --docsearch-modal-background: #f6f8f7;
-  --docsearch-footer-background: #ffffff;
-
-  --hero-title-color: var(--ifm-heading-color);
-  --hero-subtitle-color: var(--ifm-color-content-secondary);
-  --hero-glow: rgb(62 204 95 / 28%);
-}
-
-[data-theme='dark'] {
-  --ifm-color-primary: #3ecc5f;
-  --ifm-color-primary-dark: #35c055;
-  --ifm-color-primary-darker: #30b64f;
-  --ifm-color-primary-darkest: #279642;
-  --ifm-color-primary-light: #58d273;
-  --ifm-color-primary-lighter: #6ad882;
-  --ifm-color-primary-lightest: #8ee3a1;
-
-  --ifm-link-color: var(--ifm-color-primary);
-  --ifm-link-hover-color: var(--ifm-color-primary-lighter);
-  --ifm-color-success: #4ade80;
-  --ifm-color-info: #2dd4bf;
-  --ifm-color-warning: #fbbf24;
-  --ifm-color-danger: #fb7185;
-
-  --ifm-background-color: #0c1411;
-  --ifm-background-surface-color: #15201b;
-  --ifm-font-color-base: #dce8e0;
-  --ifm-heading-color: #f4faf6;
-  --ifm-color-content-secondary: #9bb3a4;
-  --ifm-hover-overlay: rgb(62 204 95 / 10%);
-
-  --ifm-code-background: #1a2a22;
-  --docusaurus-highlighted-code-line-bg: rgb(62 204 95 / 16%);
-
-  --ifm-navbar-background-color: rgb(12 20 17 / 82%);
-  --ifm-navbar-link-color: #e8f0eb;
-  --ifm-navbar-link-hover-color: var(--ifm-color-primary-light);
-
-  --ifm-footer-background-color: #070d0a;
-  --ifm-footer-color: #9bb3a4;
-  --ifm-footer-title-color: #f4faf6;
-  --ifm-footer-link-color: #c5d4cb;
-  --ifm-footer-link-hover-color: var(--ifm-color-primary);
-
-  --ifm-menu-color: #b7c9be;
-  --ifm-menu-color-active: var(--ifm-color-primary-light);
-  --ifm-menu-color-background-active: rgb(62 204 95 / 14%);
-  --ifm-menu-color-background-hover: rgb(62 204 95 / 8%);
-  --ifm-toc-border-color: #24332c;
-  --ifm-hr-background-color: #24332c;
-  --ifm-table-stripe-background: rgb(62 204 95 / 6%);
-  --ifm-blockquote-border-color: var(--ifm-color-primary);
-  --ifm-blockquote-color: #9bb3a4;
-
-  --docsearch-primary-color: var(--ifm-color-primary);
-  --docsearch-text-color: var(--ifm-font-color-base);
-  --docsearch-muted-color: var(--ifm-color-content-secondary);
-  --docsearch-searchbox-background: #1a2a22;
-  --docsearch-searchbox-focus-background: #15201b;
-  --docsearch-hit-active-color: #0c1411;
-  --docsearch-highlight-color: var(--ifm-color-primary);
-  --docsearch-modal-background: #0c1411;
-  --docsearch-footer-background: #15201b;
-  --docsearch-key-gradient: linear-gradient(180deg, #24332c, #15201b);
-
-  --hero-title-color: var(--ifm-heading-color);
-  --hero-subtitle-color: #c5d4cb;
-  --hero-glow: rgb(62 204 95 / 22%);
+  --hero-title-color: var(--uyuni-white);
+  --hero-subtitle-color: var(--uyuni-text-muted);
+  --hero-glow: rgb(77 184 232 / 26%);
 }
 
 html,
 body {
   font-family: var(--ifm-font-family-base);
+  background-color: var(--uyuni-canvas);
 }
 
 .navbar__title,
@@ -167,15 +134,26 @@ h4,
 h5,
 h6,
 .hero__title,
-.hero__subtitle,
-.footer__title {
+.hero__subtitle {
   font-family: var(--ifm-font-family-base);
-  font-weight: 500;
+  font-weight: 700;
 }
 
 ::selection {
-  background: color-mix(in srgb, var(--ifm-color-primary) 28%, transparent);
-  color: inherit;
+  background: color-mix(in srgb, var(--uyuni-chameleon) 42%, transparent);
+  color: var(--uyuni-white);
+}
+
+:focus-visible {
+  outline: 2px solid var(--uyuni-cyan-bright);
+  outline-offset: 2px;
+}
+
+/* Light-mode toggle is disabled in config; hide any leftover control. */
+.navbar button[class*='toggleButton'],
+.navbar button[class*='colorModeToggle'],
+[class*='colorModeToggle'] {
+  display: none !important;
 }
 
 /* Chrome */
@@ -191,22 +169,9 @@ h6,
   color: var(--ifm-navbar-link-hover-color);
 }
 
-.footer,
-.footer--dark {
-  background-color: var(--ifm-footer-background-color);
-  border-top: 1px solid rgb(62 204 95 / 16%);
-}
-
-.footer__link-item:hover {
-  color: var(--ifm-footer-link-hover-color);
-}
-
 /* Homepage hero */
 .hero.hero--primary {
-  background-color: var(--ifm-background-color);
-  background-image:
-    radial-gradient(900px 320px at 50% -8%, var(--hero-glow), transparent 70%),
-    radial-gradient(500px 220px at 85% 30%, rgb(15 122 77 / 8%), transparent 65%);
+  background-color: var(--uyuni-canvas);
   color: var(--hero-title-color);
 }
 
@@ -216,15 +181,36 @@ h6,
 
 .hero.hero--primary .hero__subtitle {
   color: var(--hero-subtitle-color);
+  font-weight: 400;
+}
+
+.button--primary {
+  background-color: var(--uyuni-cyan-bright);
+  border-color: var(--uyuni-cyan-bright);
+  color: var(--uyuni-canvas);
+  font-weight: 700;
+}
+
+.button--primary:hover {
+  background-color: var(--uyuni-cyan-hover);
+  border-color: var(--uyuni-cyan-hover);
+  color: var(--uyuni-canvas);
 }
 
 .hero .button--primary {
-  box-shadow: 0 8px 24px rgb(15 122 77 / 22%);
+  box-shadow: 0 8px 24px rgb(77 184 232 / 28%);
 }
 
-[data-theme='dark'] .hero .button--primary {
-  color: #0c1411;
-  box-shadow: 0 8px 24px rgb(62 204 95 / 18%);
+.button--secondary {
+  background: transparent;
+  border-color: var(--uyuni-cyan-bright);
+  color: var(--uyuni-cyan-bright);
+}
+
+.button--secondary:hover {
+  background: rgb(77 184 232 / 12%);
+  border-color: var(--uyuni-cyan-hover);
+  color: var(--uyuni-cyan-hover);
 }
 
 /* Docs: sidebar, TOC, article chrome */
@@ -236,14 +222,14 @@ h6,
   .theme-doc-sidebar-container {
     background-color: color-mix(
       in srgb,
-      var(--ifm-background-surface-color) 70%,
-      var(--ifm-background-color)
+      var(--uyuni-secondary) 82%,
+      var(--uyuni-navy)
     );
   }
 }
 
 .navbar-sidebar {
-  background: var(--ifm-background-surface-color);
+  background: var(--uyuni-canvas);
 }
 
 .menu__list-item-collapsible,
@@ -251,8 +237,13 @@ h6,
   border-radius: 8px;
 }
 
+.menu__link--active {
+  color: var(--uyuni-cyan-bright);
+}
+
 .menu__link--active:not(.menu__link--sublist) {
-  font-weight: 600;
+  font-weight: 700;
+  color: var(--uyuni-cyan-bright);
 }
 
 .table-of-contents {
@@ -260,9 +251,19 @@ h6,
   font-size: 0.85rem;
 }
 
-.table-of-contents__link--active {
-  color: var(--ifm-color-primary);
-  font-weight: 600;
+.table-of-contents__link {
+  color: var(--uyuni-text-muted);
+}
+
+.table-of-contents__link:hover,
+.table-of-contents__link:hover code {
+  color: var(--uyuni-cyan-hover);
+}
+
+.table-of-contents__link--active,
+.table-of-contents__link--active code {
+  color: var(--uyuni-cyan-bright);
+  font-weight: 700;
 }
 
 .pagination-nav__link {
@@ -272,7 +273,7 @@ h6,
 }
 
 .pagination-nav__link:hover {
-  border-color: var(--ifm-color-primary);
+  border-color: var(--uyuni-cyan-bright);
 }
 
 .pagination-nav__link--prev .pagination-nav__label::before,
@@ -281,7 +282,8 @@ h6,
 }
 
 .theme-doc-markdown {
-  --ifm-heading-color: var(--ifm-heading-color);
+  font-size: 1.0625rem;
+  line-height: 1.7;
 }
 
 .theme-doc-markdown a {
@@ -296,7 +298,7 @@ h6,
 }
 
 .theme-doc-markdown table thead tr {
-  background: color-mix(in srgb, var(--ifm-color-primary) 8%, var(--ifm-background-surface-color));
+  background: color-mix(in srgb, var(--uyuni-cyan-bright) 16%, var(--uyuni-secondary));
 }
 
 .theme-doc-markdown table th,
@@ -305,7 +307,7 @@ h6,
 }
 
 .theme-doc-markdown blockquote {
-  background: color-mix(in srgb, var(--ifm-color-primary) 6%, transparent);
+  background: color-mix(in srgb, var(--uyuni-chameleon) 8%, transparent);
   border-radius: 0 8px 8px 0;
 }
 
@@ -317,6 +319,12 @@ h6,
   box-shadow: none;
   border: 1px solid var(--ifm-toc-border-color);
   border-radius: var(--ifm-code-border-radius);
+  background: var(--uyuni-navy);
+}
+
+.theme-code-block pre,
+.theme-code-block pre > code {
+  background-color: var(--uyuni-navy) !important;
 }
 
 code {
@@ -332,11 +340,11 @@ code {
 
 .card:hover,
 .theme-doc-card:hover {
-  border-color: var(--ifm-color-primary);
+  border-color: var(--uyuni-chameleon);
 }
 
 .breadcrumbs__item--active .breadcrumbs__link {
-  color: var(--ifm-color-primary);
+  color: var(--uyuni-cyan-bright);
   background: var(--ifm-menu-color-background-active);
 }
 
@@ -344,4 +352,17 @@ code {
   background: var(--docsearch-searchbox-background);
   border: 1px solid var(--ifm-toc-border-color);
   color: var(--ifm-font-color-base);
+}
+
+.DocSearch-Button {
+  background: var(--uyuni-secondary) !important;
+  border: 1px solid var(--ifm-toc-border-color);
+}
+
+.DocSearch-Button-Key {
+  background: var(--uyuni-navy) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  border: 1px solid var(--ifm-toc-border-color) !important;
+  color: var(--uyuni-cyan-bright) !important;
 }
