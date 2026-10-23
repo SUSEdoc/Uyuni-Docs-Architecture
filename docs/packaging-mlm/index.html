@@ -4,15 +4,16 @@
 <meta charset="UTF-8">
 <meta name="generator" content="Docusaurus v3.9.2">
 <title data-rh="true">Packaging Multi-Linux Manager | Uyuni Contributors Handbook</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://susedoc.github.io/Uyuni-Docs-Architecture/img/uyuni-architecture-og.svg"><meta data-rh="true" name="twitter:image" content="https://susedoc.github.io/Uyuni-Docs-Architecture/img/uyuni-architecture-og.svg"><meta data-rh="true" property="og:url" content="https://susedoc.github.io/Uyuni-Docs-Architecture/docs/packaging-mlm/"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="Packaging Multi-Linux Manager | Uyuni Contributors Handbook"><meta data-rh="true" name="description" content="Package English Multi-Linux Manager documentation for manager-5.2 (src.suse.de) and manager-5.1 (OBS)."><meta data-rh="true" property="og:description" content="Package English Multi-Linux Manager documentation for manager-5.2 (src.suse.de) and manager-5.1 (OBS)."><link data-rh="true" rel="icon" href="/Uyuni-Docs-Architecture/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://susedoc.github.io/Uyuni-Docs-Architecture/docs/packaging-mlm/"><link data-rh="true" rel="alternate" href="https://susedoc.github.io/Uyuni-Docs-Architecture/docs/packaging-mlm/" hreflang="en"><link data-rh="true" rel="alternate" href="https://susedoc.github.io/Uyuni-Docs-Architecture/docs/packaging-mlm/" hreflang="x-default"><link data-rh="true" rel="preconnect" href="https://TUSPP0C84U-dsn.algolia.net" crossorigin="anonymous"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Build and publish","item":"https://susedoc.github.io/Uyuni-Docs-Architecture/docs/category/building-and-publishing"},{"@type":"ListItem","position":2,"name":"Multi-Linux Manager (enterprise)","item":"https://susedoc.github.io/Uyuni-Docs-Architecture/docs/category/mlm"},{"@type":"ListItem","position":3,"name":"Packaging","item":"https://susedoc.github.io/Uyuni-Docs-Architecture/docs/packaging-mlm"}]}</script><link rel="search" type="application/opensearchdescription+xml" title="Uyuni Contributors Handbook" href="/Uyuni-Docs-Architecture/opensearch.xml">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <script>document.documentElement.setAttribute("data-theme","dark"),document.documentElement.setAttribute("data-theme-choice","dark");try{localStorage.setItem("theme","dark")}catch(t){}</script>
 <meta name="algolia-site-verification" content="153334437E571506">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="googlebot" content="index, follow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&amp;family=Noto+Emoji:wght@300..700&amp;display=swap"><link rel="stylesheet" href="/Uyuni-Docs-Architecture/assets/css/styles.06215441.css">
-<script src="/Uyuni-Docs-Architecture/assets/js/runtime~main.a0d63ee0.js" defer="defer"></script>
-<script src="/Uyuni-Docs-Architecture/assets/js/main.ac89d200.js" defer="defer"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&amp;family=Noto+Emoji:wght@300..700&amp;display=swap"><link rel="stylesheet" href="/Uyuni-Docs-Architecture/assets/css/styles.cfdd3b05.css">
+<script src="/Uyuni-Docs-Architecture/assets/js/runtime~main.84c48905.js" defer="defer"></script>
+<script src="/Uyuni-Docs-Architecture/assets/js/main.a3096fda.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
 <svg style="display: none;"><defs>
@@ -28,14 +29,10 @@
 <p>For setup, see <a class="" href="/Uyuni-Docs-Architecture/docs/documentation-container/">Container setup</a>.</p>
 <hr>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="1-update-configyml">1. Update config.yml<a href="#1-update-configyml" class="hash-link" aria-label="Direct link to 1. Update config.yml" title="Direct link to 1. Update config.yml" translate="no">​</a></h2>
-<p>On the branch you are packaging (<code>manager-5.2</code> or <code>manager-5.1</code>), set the MLM fields in <code>config.yml</code> before you build. At minimum:</p>
-<ul>
-<li class=""><code>products.mlm.asciidoc.attributes.productnumber</code> (quoted, for example <code>&quot;5.2&quot;</code> or <code>&quot;5.1&quot;</code>)</li>
-<li class=""><code>productchartversion</code> and <code>gitchartsbranch</code></li>
-<li class=""><code>copyrightdate</code> if the year range changed</li>
-<li class="">Supported client versions in the shared <code>asciidoc:</code> block. Confirm these with the release managers and the product owner.</li>
-</ul>
-<p>Details: <a class="" href="/Uyuni-Docs-Architecture/docs/config-yml/">config.yml</a>.</p>
+<p>On the branch you are packaging (<code>manager-5.2</code> or <code>manager-5.1</code>), update <code>config.yml</code> before you build. Field reference: <a class="" href="/Uyuni-Docs-Architecture/docs/config-yml/">config.yml</a>.</p>
+<p>Under <code>products.mlm.asciidoc.attributes</code>:</p>
+<table><thead><tr><th>Field</th><th>What to set</th></tr></thead><tbody><tr><td><code>productnumber</code></td><td>Release number, quoted so a trailing zero is kept (<code>&quot;5.2&quot;</code> or <code>&quot;5.1&quot;</code>)</td></tr><tr><td><code>productchartversion</code></td><td>Helm chart version for this release</td></tr><tr><td><code>gitchartsbranch</code></td><td>Charts branch for this release</td></tr><tr><td><code>copyrightdate</code></td><td>Copyright range, when the year has changed</td></tr></tbody></table>
+<p>Then review supported client versions in the shared <code>asciidoc:</code> block. Confirm the list and versions with the release managers and the product owner before you package.</p>
 <hr>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="2-build-the-english-obs-packages">2. Build the English OBS packages<a href="#2-build-the-english-obs-packages" class="hash-link" aria-label="Direct link to 2. Build the English OBS packages" title="Direct link to 2. Build the English OBS packages" translate="no">​</a></h2>
 <div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#d6deeb;--prism-background-color:#011627"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#d6deeb;background-color:#011627"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#d6deeb"><span class="token builtin class-name" style="color:rgb(255, 203, 139)">cd</span><span class="token plain"> uyuni-docs</span><br></span><span class="token-line" style="color:#d6deeb"><span class="token plain">task container:build                 </span><span class="token comment" style="color:rgb(99, 119, 119);font-style:italic"># once, or after Dockerfile.bci changes</span><span class="token plain"></span><br></span><span class="token-line" style="color:#d6deeb"><span class="token plain">task container:obs:mlm </span><span class="token assign-left variable" style="color:rgb(214, 222, 235)">LANGUAGES</span><span class="token operator" style="color:rgb(127, 219, 202)">=</span><span class="token plain">en</span><br></span></code></pre></div></div>
@@ -45,14 +42,24 @@
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="manager-52">manager-5.2<a href="#manager-52" class="hash-link" aria-label="Direct link to manager-5.2" title="Direct link to manager-5.2" translate="no">​</a></h2>
 <p>Packaging for manager-5.2 happens on internal GitLab: <a href="https://src.suse.de/Galaxy/susemanager-docs_en" target="_blank" rel="noopener noreferrer" class="">src.suse.de/Galaxy/susemanager-docs_en</a>.</p>
 <ol>
-<li class="">Fork <a href="https://src.suse.de/Galaxy/susemanager-docs_en" target="_blank" rel="noopener noreferrer" class="">src.suse.de/Galaxy/susemanager-docs_en</a> and clone your fork.</li>
-<li class="">Copy the English packages from <code>uyuni-docs/build/packages/</code> into the package directory in your fork. Ship the <strong>en</strong> build only.</li>
-<li class="">Update the <code>.spec</code> file <code>Version:</code> to the release version.</li>
-<li class="">Format and add the changelog from <code>uyuni-docs/.changelog</code>:</li>
-</ol>
+<li class="">
+<p>Fork <a href="https://src.suse.de/Galaxy/susemanager-docs_en" target="_blank" rel="noopener noreferrer" class="">src.suse.de/Galaxy/susemanager-docs_en</a> and clone your fork.</p>
+</li>
+<li class="">
+<p>Copy the English packages from <code>uyuni-docs/build/packages/</code> into the package directory in your fork. Ship the <strong>en</strong> build only.</p>
+</li>
+<li class="">
+<p>Update the <code>.spec</code> file <code>Version:</code> to the release version.</p>
+</li>
+<li class="">
+<p>Add the changelog with <code>osc vc</code>. Always use this command. It inserts the build-service header: the dashed line, then the date, name, and email. Do not write that header by hand.</p>
 <div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#d6deeb;--prism-background-color:#011627"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#d6deeb;background-color:#011627"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#d6deeb"><span class="token plain">osc vc susemanager-docs_en.changes</span><br></span></code></pre></div></div>
-<ol start="5">
-<li class="">Commit and open a pull request against the upstream package repo.</li>
+<p>Under the header, add the entries from <code>uyuni-docs/.changelog</code>. The entry must match the existing <code>susemanager-docs_en.changes</code> syntax: a <code>* Version</code> line, then <code>-</code> bullets. Indent wrapped lines, and put a Bugzilla reference at the end of a bullet when you have one.</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#d6deeb;--prism-background-color:#011627"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#d6deeb;background-color:#011627"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#d6deeb"><span class="token plain">-------------------------------------------------------------------</span><br></span><span class="token-line" style="color:#d6deeb"><span class="token plain">Wed Aug 19 12:52:39 UTC 2026 - Your Name &lt;your.name@suse.com&gt;</span><br></span><span class="token-line" style="color:#d6deeb"><span class="token plain" style="display:inline-block"></span><br></span><span class="token-line" style="color:#d6deeb"><span class="token plain">* Version 5.2.1</span><br></span><span class="token-line" style="color:#d6deeb"><span class="token plain">  - Documented requirements and limitations for container image</span><br></span><span class="token-line" style="color:#d6deeb"><span class="token plain">    inspection on SLES 15 and SLES 16 (bsc#1274720)</span><br></span><span class="token-line" style="color:#d6deeb"><span class="token plain">  - Documented proxy certificate replacement using spacecmd</span><br></span><span class="token-line" style="color:#d6deeb"><span class="token plain">    (bsc#1271329)</span><br></span></code></pre></div></div>
+</li>
+<li class="">
+<p>Commit and open a pull request against the upstream package repo.</p>
+</li>
 </ol>
 <hr>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="manager-51">manager-5.1<a href="#manager-51" class="hash-link" aria-label="Direct link to manager-5.1" title="Direct link to manager-5.1" translate="no">​</a></h2>
