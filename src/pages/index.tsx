@@ -17,22 +17,23 @@ function HomepageHeader() {
       style={{
         backgroundImage: `linear-gradient(180deg, rgb(14 26 30 / 38%) 0%, rgb(14 26 30 / 62%) 100%), url('${saltFlats}')`,
       }}>
-      <div className={styles.heroInner}>
-        <Heading as="h1" className={styles.title}>
-          <span className={styles.titleBrand}>Uyuni</span>
-          <span className={styles.titleRest}>Contributors Handbook</span>
-        </Heading>
-        <p className={styles.intro}>
-          <Translate
-            id="homepage.intro"
-            description="Homepage intro for the contributors handbook">
-            How the community writes, builds, and publishes documentation for
-            Uyuni and Multi-Linux Manager.
-          </Translate>
-        </p>
-        <HomepageFeatures />
+      <div className={styles.heroFrame}>
+        <div className={styles.heroInner}>
+          <Heading as="h1" className={styles.title}>
+            <span className={styles.eyebrow}>Contributors Handbook</span>
+            <span className={styles.titleBrand}>Uyuni</span>
+          </Heading>
+          <p className={styles.intro}>
+            <Translate
+              id="homepage.intro"
+              description="Homepage intro for the contributors handbook">
+              Documentation authoring, build, and publication for Uyuni and Multi-Linux Manager.
+            </Translate>
+          </p>
+          <HomepageFeatures />
+        </div>
         <div className={styles.buttons}>
-          <Link className="button button--primary button--lg" to="/docs/intro">
+          <Link className={styles.handbook} to="/docs/intro">
             <Translate
               id="homepage.toolchain.button"
               description="The homepage button to toolchain guides">

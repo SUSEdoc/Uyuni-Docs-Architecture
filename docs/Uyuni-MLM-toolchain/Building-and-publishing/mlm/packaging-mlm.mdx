@@ -23,14 +23,18 @@ For setup, see [Container setup](../../Deployment-and-Installation/Use-our-doc-c
 
 ## 1. Update config.yml
 
-On the branch you are packaging (`manager-5.2` or `manager-5.1`), set the MLM fields in `config.yml` before you build. At minimum:
+On the branch you are packaging (`manager-5.2` or `manager-5.1`), update `config.yml` before you build. Field reference: [config.yml](../config-yml.mdx).
 
-- `products.mlm.asciidoc.attributes.productnumber` (quoted, for example `"5.2"` or `"5.1"`)
-- `productchartversion` and `gitchartsbranch`
-- `copyrightdate` if the year range changed
-- Supported client versions in the shared `asciidoc:` block. Confirm these with the release managers and the product owner.
+Under `products.mlm.asciidoc.attributes`:
 
-Details: [config.yml](../config-yml.mdx).
+| Field | What to set |
+| --- | --- |
+| `productnumber` | Release number, quoted so a trailing zero is kept (`"5.2"` or `"5.1"`) |
+| `productchartversion` | Helm chart version for this release |
+| `gitchartsbranch` | Charts branch for this release |
+| `copyrightdate` | Copyright range, when the year has changed |
+
+Then review supported client versions in the shared `asciidoc:` block. Confirm the list and versions with the release managers and the product owner before you package.
 
 ---
 
@@ -55,11 +59,24 @@ Packaging for manager-5.2 happens on internal GitLab: [src.suse.de/Galaxy/susema
 1. Fork [src.suse.de/Galaxy/susemanager-docs_en](https://src.suse.de/Galaxy/susemanager-docs_en) and clone your fork.
 2. Copy the English packages from `uyuni-docs/build/packages/` into the package directory in your fork. Ship the **en** build only.
 3. Update the `.spec` file `Version:` to the release version.
-4. Format and add the changelog from `uyuni-docs/.changelog`:
+4. Add the changelog with `osc vc`. Always use this command. It inserts the build-service header: the dashed line, then the date, name, and email. Do not write that header by hand.
 
-```bash
-osc vc susemanager-docs_en.changes
-```
+   ```bash
+   osc vc susemanager-docs_en.changes
+   ```
+
+   Under the header, add the entries from `uyuni-docs/.changelog`. The entry must match the existing `susemanager-docs_en.changes` syntax: a `* Version` line, then `-` bullets. Indent wrapped lines, and put a Bugzilla reference at the end of a bullet when you have one.
+
+   ```text
+   -------------------------------------------------------------------
+   Wed Aug 19 12:52:39 UTC 2026 - Your Name <your.name@suse.com>
+
+   * Version 5.2.1
+     - Documented requirements and limitations for container image
+       inspection on SLES 15 and SLES 16 (bsc#1274720)
+     - Documented proxy certificate replacement using spacecmd
+       (bsc#1271329)
+   ```
 
 5. Commit and open a pull request against the upstream package repo.
 

@@ -13,6 +13,13 @@ const config: Config = {
   // Add meta tags for Algolia site verification and SEO
   headTags: [
     {
+      tagName: 'meta',
+      attributes: {
+        name: 'viewport',
+        content: 'width=device-width, initial-scale=1.0',
+      },
+    },
+    {
       tagName: 'script',
       attributes: {},
       innerHTML:

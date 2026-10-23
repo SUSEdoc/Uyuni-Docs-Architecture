@@ -14,6 +14,35 @@ The current documentation toolchain lives in [uyuni-project/uyuni-docs](https://
 
 Official source for this procedure: [docs/container-setup.md](https://github.com/uyuni-project/uyuni-docs/blob/master/docs/container-setup.md) in uyuni-docs.
 
+The builder image is created on your machine with `task container:build`. There is no separate registry image to pull.
+
+---
+
+## Download a host system
+
+SUSE hosts for the `zypper` commands on this page:
+
+| System | Download |
+| --- | --- |
+| openSUSE Leap 16.0 | [get.opensuse.org/leap](https://get.opensuse.org/leap/) |
+| openSUSE Tumbleweed | [get.opensuse.org/tumbleweed](https://get.opensuse.org/tumbleweed/) |
+| SUSE Linux Enterprise 16 | [suse.com/download/sles](https://www.suse.com/download/sles/) |
+
+Other widely used distributions. Ubuntu 26.04 LTS is covered in [Ubuntu](#ubuntu). The rest of this table is download pages only.
+
+| Distribution | Download |
+| --- | --- |
+| Ubuntu | [ubuntu.com/download](https://ubuntu.com/download) |
+| Debian | [debian.org/download](https://www.debian.org/download) |
+| Linux Mint | [linuxmint.com/download.php](https://linuxmint.com/download.php) |
+| Fedora | [fedoraproject.org/workstation/download](https://fedoraproject.org/workstation/download/) |
+| Arch Linux | [archlinux.org/download](https://archlinux.org/download/) |
+| Manjaro | [manjaro.org/download](https://manjaro.org/download/) |
+| Pop!_OS | [system76.com/pop](https://system76.com/pop/) |
+| Zorin OS | [zorin.com/os/download](https://zorin.com/os/download/) |
+| Rocky Linux | [rockylinux.org/download](https://rockylinux.org/download) |
+| AlmaLinux | [almalinux.org/get-almalinux](https://almalinux.org/get-almalinux/) |
+
 ---
 
 ## 1. Install Podman or Docker
@@ -21,22 +50,10 @@ Official source for this procedure: [docs/container-setup.md](https://github.com
 **openSUSE Leap 16.0 / SLES 16.0 / Tumbleweed:**
 
 ```bash
-sudo zypper install podman
+sudo zypper install podman git curl
 ```
 
-**Ubuntu 26.04 LTS:**
-
-```bash
-sudo apt-get install -y podman
-```
-
-Or install Docker instead:
-
-```bash
-sudo apt-get install -y docker.io
-sudo systemctl enable --now docker
-sudo usermod -aG docker $USER   # log out and back in after this
-```
+**Ubuntu 26.04 LTS:** see [Ubuntu](#ubuntu) below. That section is the full path: requirements, the builder image, and a first docs build.
 
 Verify:
 
@@ -45,6 +62,58 @@ podman --version
 # or
 docker --version
 ```
+
+---
+
+## Ubuntu
+
+Ubuntu 26.04 LTS can host the same container workflow. Download the image from [ubuntu.com/download/server](https://ubuntu.com/download/server) (or the [desktop image](https://ubuntu.com/download/desktop) if this is a workstation).
+
+### Install requirements
+
+Git clones the docs. Curl runs the Task install script. Podman or Docker runs the builder.
+
+```bash
+sudo apt-get update
+sudo apt-get install -y git curl podman
+```
+
+Docker is fine instead of Podman:
+
+```bash
+sudo apt-get install -y git curl docker.io
+sudo systemctl enable --now docker
+sudo usermod -aG docker $USER
+```
+
+Log out and back in after joining the `docker` group.
+
+```bash
+podman --version
+# or
+docker --version
+git --version
+```
+
+### Build the container and work with the docs
+
+```bash
+git clone https://github.com/uyuni-project/uyuni-docs.git
+cd uyuni-docs
+sh -c "$(curl --location https://taskfile.dev/install.sh)" -- -d -b ~/.local/bin
+echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
+source ~/.bashrc
+task --version
+task container:build
+```
+
+`task container:build` builds `uyuni-docs-builder` from `Dockerfile.bci`. Do this once, and again after that file changes. Then build the docs, for example the English Uyuni site:
+
+```bash
+task container:publish:uyuni LANGUAGES=en
+```
+
+HTML lands in `build/en/` on the host. The full target list is in [Build targets](#5-build-targets) below. Do not install Task with `apt` if the packaged version is older than the script above.
 
 ---
 
