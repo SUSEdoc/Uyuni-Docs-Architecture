@@ -10,7 +10,7 @@ sidebar_custom_props:
 
 # Packaging Uyuni
 
-Package the **English** Uyuni documentation after you update [config.yml](../config-yml.mdx) and run `task container:obs:uyuni`. Submit the packages only to [src.opensuse.org/uyuni/uyuni-docs_en](https://src.opensuse.org/uyuni/uyuni-docs_en): fork the repo and open a pull request.
+Package the **English** Uyuni documentation from a maintenance branch. Update [config.yml](../config-yml.mdx) and run `task container:obs:uyuni`. Submit the packages only to [src.opensuse.org/uyuni/uyuni-docs_en](https://src.opensuse.org/uyuni/uyuni-docs_en): fork the repo and open a pull request.
 
 Do **not** submit Uyuni docs packages to build.opensuse.org.
 
@@ -20,20 +20,45 @@ For setup, see [Container setup](../../Deployment-and-Installation/Use-our-doc-c
 
 ---
 
-## 1. Update config.yml
+## 1. Create the maintenance branch
 
-Set the Uyuni fields in `config.yml` before you build. At minimum:
+Create the maintenance branch from `master` before you change `config.yml`. Name it `uyuni-YYYY.MM`, for example `uyuni-2026.10`.
 
-- `products.uyuni.asciidoc.attributes.releaseversion` / `productnumber` (quoted, for example `"2026.08"`)
-- `productchartversion` and `gitchartsbranch`
-- `antora.title` (for example `Uyuni 2026.08`)
-- Supported client versions in the shared `asciidoc:` block. Confirm these with the release managers and the product owner.
+```bash
+cd uyuni-docs
+git checkout master
+git pull --ff-only origin master
+git checkout -b uyuni-2026.10
+git push --set-upstream origin uyuni-2026.10
+```
 
-Details: [config.yml](../config-yml.mdx).
+Replace `2026.10` with the maintenance version you are releasing. Do the rest of this page on that branch.
 
 ---
 
-## 2. Build the English packages
+## 2. Update config.yml
+
+On the maintenance branch, set the Uyuni fields in `config.yml` before you build. Field reference: [config.yml](../config-yml.mdx).
+
+Under `products.uyuni`:
+
+| Field | What to set |
+| --- | --- |
+| `antora.title` | Antora component title, for example `Uyuni 2026.08` |
+
+Under `products.uyuni.asciidoc.attributes`:
+
+| Field | What to set |
+| --- | --- |
+| `releaseversion` / `productnumber` | Release label, quoted so it is kept as written (for example `"2026.08"`) |
+| `productchartversion` | Helm chart version for this release |
+| `gitchartsbranch` | Charts branch for this release |
+
+Then review supported client versions in the shared `asciidoc:` block. Confirm the list and versions with the release managers and the product owner before you package.
+
+---
+
+## 3. Build the English packages
 
 ```bash
 cd uyuni-docs
@@ -45,7 +70,7 @@ English packages land in `build/packages/` on the host (`uyuni-docs_en.tar.gz` a
 
 ---
 
-## 3. Update src.opensuse.org
+## 4. Update src.opensuse.org
 
 1. Fork [src.opensuse.org/uyuni/uyuni-docs_en](https://src.opensuse.org/uyuni/uyuni-docs_en) and clone your fork.
 2. Copy the English packages from `uyuni-docs/build/packages/` into the package directory in your fork. Ship the **en** build only.
@@ -57,24 +82,25 @@ Version:        2026.08
 Release:        0
 ```
 
-4. Format the changelog. The release number must be the topmost entry and must be bumped for every new release:
+4. Add the changelog with `osc vc`. Always use this command. It inserts the build-service header: the dashed line, then the date, name, and email. Do not write that header by hand.
 
-```bash
-osc vc uyuni-docs_en.changes
-```
+   ```bash
+   osc vc uyuni-docs_en.changes
+   ```
 
-Copy the latest entries from `uyuni-docs/CHANGELOG.md` under the timestamp. Do not use acronyms. Example:
+   Under the header, add the entries from `uyuni-docs/.changelog`. The release number must be the topmost entry and must be bumped for every new release. The entry must match the existing `uyuni-docs_en.changes` syntax: a `* Version` line, then `-` bullets. Indent wrapped lines, and put a Bugzilla reference at the end of a bullet when you have one.
 
-```
--------------------------------------------------------------------
-Wed Oct  7 09:16:07 UTC 2026 - FirstName LastName <user@suse.com>
+   ```text
+   -------------------------------------------------------------------
+   Wed Oct  7 09:16:07 UTC 2026 - Your Name <your.name@suse.com>
 
-- Version 2026.08
-  * Updated client support matrix for the 2026.08 release
-  * Documented container host requirements
-  * Fixed installation procedure for the proxy
--------------------------------------------------------------------
-```
+   * Version 2026.08
+     - Updated the client support matrix for the 2026.08
+       release
+     - Documented container host requirements
+     - Fixed the installation procedure for the proxy
+       (bsc#1234567)
+   ```
 
 5. Commit and open a pull request against [uyuni/uyuni-docs_en](https://src.opensuse.org/uyuni/uyuni-docs_en).
 

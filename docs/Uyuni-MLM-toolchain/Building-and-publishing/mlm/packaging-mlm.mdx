@@ -10,7 +10,7 @@ sidebar_custom_props:
 
 # Packaging Multi-Linux Manager
 
-Package the **English** Multi-Linux Manager documentation after you update [config.yml](../config-yml.mdx) and run `task container:obs:mlm`.
+Package the **English** Multi-Linux Manager documentation from a maintenance branch. Update [config.yml](../config-yml.mdx) and run `task container:obs:mlm`.
 
 - **manager-5.2** — update packages on [src.suse.de/Galaxy/susemanager-docs_en](https://src.suse.de/Galaxy/susemanager-docs_en)
 - **manager-5.1** — update packages on OBS at [build.suse.de](https://build.suse.de) in `Devel:Galaxy:Manager:5.1`
@@ -21,9 +21,25 @@ For setup, see [Container setup](../../Deployment-and-Installation/Use-our-doc-c
 
 ---
 
-## 1. Update config.yml
+## 1. Create the maintenance branch
 
-On the branch you are packaging (`manager-5.2` or `manager-5.1`), update `config.yml` before you build. Field reference: [config.yml](../config-yml.mdx).
+Create the maintenance branch from the major branch before you change `config.yml`. Check out the major branch, such as `manager-5.2` or `manager-5.1`, then create the release branch. Name it `manager-X.Y-MU-X.Y.Z`, for example `manager-5.2-MU-5.2.2`.
+
+```bash
+cd uyuni-docs
+git checkout manager-5.2
+git pull --ff-only origin manager-5.2
+git checkout -b manager-5.2-MU-5.2.2
+git push --set-upstream origin manager-5.2-MU-5.2.2
+```
+
+Replace `manager-5.2` with the major branch for this release, and `5.2.2` with the maintenance version. Do the rest of this page on that branch.
+
+---
+
+## 2. Update config.yml
+
+On the maintenance branch, update `config.yml` before you build. Field reference: [config.yml](../config-yml.mdx).
 
 Under `products.mlm.asciidoc.attributes`:
 
@@ -38,7 +54,7 @@ Then review supported client versions in the shared `asciidoc:` block. Confirm t
 
 ---
 
-## 2. Build the English OBS packages
+## 3. Build the English OBS packages
 
 ```bash
 cd uyuni-docs
@@ -86,7 +102,7 @@ Packaging for manager-5.2 happens on internal GitLab: [src.suse.de/Galaxy/susema
 
 Packaging for manager-5.1 happens on OBS: `Devel:Galaxy:Manager:5.1` at [build.suse.de](https://build.suse.de).
 
-The [SUMA product docs IBS wiki](https://github.com/uyuni-project/uyuni-docs/wiki/suma-product-docs-ibs) still describes the older helper-script build. Use it only as a reference for the OBS checkout, changelog, and service-request steps below. Do **not** use `uyuni-docs-helper` or `parameters.yml` — build with Task and [config.yml](../config-yml.mdx) as in steps 1 and 2.
+The [SUMA product docs IBS wiki](https://github.com/uyuni-project/uyuni-docs/wiki/suma-product-docs-ibs) still describes the older helper-script build. Use it only as a reference for the OBS checkout, changelog, and service-request steps below. Do **not** use `uyuni-docs-helper` or `parameters.yml` — build with Task and [config.yml](../config-yml.mdx) as in the config.yml and build sections above.
 
 ### Check out the OBS package
 

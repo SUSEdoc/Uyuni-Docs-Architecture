@@ -125,8 +125,6 @@ body {
   background-color: var(--uyuni-canvas);
 }
 
-.navbar__title,
-.navbar__brand,
 h1,
 h2,
 h3,
@@ -162,6 +160,45 @@ h6,
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--ifm-toc-border-color);
+}
+
+.navbar__title {
+  color: var(--ifm-navbar-link-color);
+  font-weight: var(--ifm-font-weight-semibold);
+}
+
+.navbar__logo {
+  flex: 0 0 2rem;
+  width: 2rem;
+}
+
+.navbar__logo img {
+  display: block;
+  width: 2rem;
+  height: 2rem;
+  object-fit: contain;
+}
+
+@media screen and (max-width: 996px) {
+  .navbar > .navbar__inner > .navbar__items:first-child {
+    padding-right: 3.25rem;
+  }
+
+  .navbar__brand {
+    min-width: 0;
+    margin-right: 0;
+  }
+
+  .navbar__logo {
+    margin-right: 0.65rem;
+  }
+
+  .navbar__title {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }
 
 .navbar__link:hover,
