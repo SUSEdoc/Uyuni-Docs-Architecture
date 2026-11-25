@@ -18,7 +18,31 @@ For setup, see [Container setup](../../Deployment-and-Installation/Use-our-doc-c
 
 ## 1. Update config.yml
 
-Before a Uyuni release, set the Uyuni version fields in `config.yml` (`releaseversion` / `productnumber`, chart version, site title). Also review supported client versions in the shared `asciidoc:` block with the release managers and the product owner. Details: [config.yml](../config-yml.mdx).
+If not already updated during the packaging step, set the Uyuni fields in `config.yml` on your branch before you build. Field reference: [config.yml](../config-yml.mdx).
+
+Under `products.uyuni`:
+
+| Field | What to set |
+| --- | --- |
+| `antora.title` | Antora component title, for example `Uyuni 2026.11` |
+
+Under `products.uyuni.asciidoc.attributes`:
+
+| Field | What to set |
+| --- | --- |
+| `releaseversion` / `productnumber` | Release label, quoted so it is kept as written (for example `"2026.11"`) |
+| `productchartversion` | Helm chart version for this release |
+| `gitchartsbranch` | Charts branch for this release |
+
+Then review supported client versions in the shared `asciidoc:` block. Confirm the list and versions with the release managers and the product owner before you publish.
+
+:::info AsciiDoc Attribute Software Versions
+We will be automating these software version updates in the future. For now, check with release engineers or review the [SUSE Product End of Life / Lifecycle list](https://www.suse.com/lifecycle/) to see which versions we currently support.
+
+You can also prompt an AI to quickly check supported versions against the following reference files in the Uyuni repository:
+- [`mgr_bootstrap_data.py`](https://github.com/uyuni-project/uyuni/blob/master/susemanager/src/mgr_bootstrap_data.py)
+- [`spacewalk-common-channels.ini`](https://github.com/uyuni-project/uyuni/blob/master/utils/spacewalk-common-channels.ini)
+:::
 
 ---
 
@@ -38,5 +62,17 @@ task container:publish:uyuni LANGUAGES="en ja" JOBS=4
 ```
 
 Output lands in `build/` on the host.
+
+---
+
+## 3. Verify output
+
+After the build completes, verify the generated documentation:
+
+- **Check debug logs**: Review the build logs for missing AsciiDoc attributes, unresolved cross-references, or broken links. Correct any missing attributes in `config.yml` or the source files, then rebuild if required.
+- **Review content and formatting**: Inspect major updates and newly added pages for formatting issues, table rendering defects, or glaring layout problems.
+- **Inspect PDF output**: Check the generated PDF files in `build/` to ensure cover pages are intact, metadata/branding is correct, and there are no rendering errors or orphan elements across documents.
+
+---
 
 For English RPM packages, see [Packaging Uyuni](./packaging-uyuni.mdx) (`task container:obs:uyuni`).
