@@ -18,7 +18,7 @@ For setup, see [Container setup](../../Deployment-and-Installation/Use-our-doc-c
 
 ## 1. Update config.yml
 
-If not already updated during the packaging step, set the Uyuni fields in `config.yml` on your branch before you build. Field reference: [config.yml](../config-yml.mdx).
+If not already updated during the packaging step, set the Uyuni fields in `config.yml` on your branch before you build.
 
 Under `products.uyuni`:
 
@@ -75,4 +75,57 @@ After the build completes, verify the generated documentation:
 
 ---
 
+## 4. Deploy to gh-pages
+
+Once verification is complete, deploy the build to the `gh-pages` branch:
+
+1. **Back up the build to a temporary directory:**
+
+   ```bash
+   cp -r build/ /tmp/uyuni-build-temp/
+   ```
+
+2. **Check out the `gh-pages` branch and pull the latest changes:**
+
+   ```bash
+   git checkout gh-pages
+   git pull origin gh-pages
+   ```
+
+3. **Create and check out a new feature branch:**
+
+   Replace `YYYY.MM` with the target release (for example, `2026.11`):
+
+   ```bash
+   git checkout -b uyuni-YYYY.MM-ghpages-update
+   ```
+
+4. **Copy the build content from the temporary directory into your repository root:**
+
+   ```bash
+   cp -r /tmp/uyuni-build-temp/* .
+   ```
+
+   *(Ensure untracked build artifacts or translation folders like `build/`, `builds/`, and `translations/` are included in `.gitignore` if present).*
+
+5. **Commit and push your changes to your feature branch upstream:**
+
+   ```bash
+   git add .
+   git commit -m "Update Uyuni documentation for YYYY.MM release"
+   git push -u origin uyuni-YYYY.MM-ghpages-update
+   ```
+
+6. **Create a Pull Request:**
+
+   In the GitHub Web UI, open a pull request targeting the `gh-pages` base branch from your `uyuni-YYYY.MM-ghpages-update` branch.
+
+7. **Notify Release Engineers:**
+
+   Share the pull request link with the release engineers (RelEng) so they can review and coordinate the release.
+
+---
+
 For English RPM packages, see [Packaging Uyuni](./packaging-uyuni.mdx) (`task container:obs:uyuni`).
+
+

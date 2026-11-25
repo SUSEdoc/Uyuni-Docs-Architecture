@@ -1,0 +1,157 @@
+---
+id: publish-uyuni-api
+slug: /publish-uyuni-api
+title: Publish Uyuni API Documentation
+sidebar_label: Publish API docs
+description: Build and publish Uyuni API documentation from upstream apidoc RPMs to uyuni-docs-api.
+sidebar_custom_props:
+  icon: /img/publish-logo.svg
+---
+
+# Publish Uyuni API Documentation
+
+Uyuni API documentation is maintained and published from [uyuni-project/uyuni-docs-api](https://github.com/uyuni-project/uyuni-docs-api). API source files are generated upstream into an `apidoc` RPM during Uyuni project builds.
+
+For prerequisites and toolchain setup, see [Container setup](../../Deployment-and-Installation/Use-our-doc-container.mdx).
+
+---
+
+## 1. Obtain the API Documentation RPM
+
+The API content is packaged in an RPM produced by Uyuni project builds:
+
+1. Browse to the openSUSE repository for Uyuni Master:
+   [download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Master/](https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Master/)
+   
+   :::note Distribution Version
+   Select the correct distribution version for the current release (for example, `openSUSE_Leap_16.0/noarch/`). The distribution segment changes across major releases, so navigate from the `Master/` root to find the current target distribution tree.
+   :::
+
+2. Once in the `noarch/` directory:
+   - Click **Show all entries**.
+   - Search for `apidoc` (for example, `spacewalk-java-apidoc-*.noarch.rpm`).
+   - Download the `apidoc` RPM for the latest release.
+
+---
+
+## 2. Extract and Update API Content
+
+1. Extract the downloaded RPM into a temporary directory:
+
+   ```bash
+   mkdir -p /tmp/uyuni-apidoc-extract
+   cd /tmp/uyuni-apidoc-extract
+   rpm2cpio /path/to/spacewalk-java-apidoc-*.noarch.rpm | cpio -idmv
+   ```
+
+2. In your local clone of [uyuni-docs-api](https://github.com/uyuni-project/uyuni-docs-api), ensure you are on `master`:
+
+   ```bash
+   cd uyuni-docs-api
+   git checkout master
+   git pull origin master
+   ```
+
+3. Copy the extracted AsciiDoc content into `modules/api/pages/`:
+
+   ```bash
+   cp -r /tmp/uyuni-apidoc-extract/usr/share/doc/packages/spacewalk-java/asciidoc/* modules/api/pages/
+   ```
+
+4. Remove the `handlers` directory if present:
+
+   ```bash
+   rm -rf modules/api/pages/handlers
+   ```
+
+5. Stage, commit, and push the updated content to `master`:
+
+   ```bash
+   git add modules/api/pages/
+   git commit -m "Update API documentation sources from latest apidoc RPM"
+   git push origin master
+   ```
+
+---
+
+## 3. Update config.yaml
+
+Update the release attributes in `config.yaml`. 
+
+:::tip API Version Number
+Consult with the release engineers to check if an API version number bump is required for this release.
+:::
+
+Update the following attributes under the Uyuni product definition:
+
+```yaml
+        productnumber: "2026.11"
+        apiversion: "30"
+```
+
+Commit and push your configuration changes:
+
+```bash
+git add config.yaml
+git commit -m "Bump productnumber and apiversion for release"
+git push origin master
+```
+
+---
+
+## 4. Build the API Documentation
+
+Run the publish build using the documentation container:
+
+```bash
+task container:publish:uyuni
+```
+
+Output is generated into the `build/` directory on your host. Verify the generated output and debug logs for missing attributes or errors before continuing.
+
+---
+
+## 5. Deploy to gh-pages
+
+Publish the built site by pushing to a feature branch targeting `gh-pages`:
+
+1. **Back up the build output to a temporary directory:**
+
+   ```bash
+   cp -r build/ /tmp/uyuni-api-build-temp/
+   ```
+
+2. **Check out the `gh-pages` branch and pull latest changes:**
+
+   ```bash
+   git checkout gh-pages
+   git pull origin gh-pages
+   ```
+
+3. **Create and check out a new feature branch:**
+
+   ```bash
+   git checkout -b uyuni-YYYY.MM-ghpages-update
+   ```
+
+4. **Copy the build contents from the temporary directory into your repository root:**
+
+   ```bash
+   cp -r /tmp/uyuni-api-build-temp/* .
+   ```
+
+5. **Commit and push your changes to upstream:**
+
+   ```bash
+   git add .
+   git commit -m "Deploy Uyuni API documentation for release"
+   git push -u origin uyuni-YYYY.MM-ghpages-update
+   ```
+
+6. **Create a Pull Request:**
+
+   In GitHub, open a pull request with base `gh-pages` and compare `uyuni-YYYY.MM-ghpages-update`.
+
+7. **Notify Release Engineers:**
+
+   Share the pull request link with the release engineers so they can review and complete the release.

@@ -44,7 +44,6 @@ const sidebars: SidebarsConfig = {
         slug: '/category/building-and-publishing',
       },
       items: [
-        'Uyuni-MLM-toolchain/Building-and-publishing/config-yml',
         {
           type: 'category',
           label: 'Multi-Linux Manager (enterprise)',
@@ -60,6 +59,7 @@ const sidebars: SidebarsConfig = {
           items: [
             'Uyuni-MLM-toolchain/Building-and-publishing/mlm/packaging-mlm',
             'Uyuni-MLM-toolchain/Building-and-publishing/mlm/publish-mlm-dsc',
+            'Uyuni-MLM-toolchain/Building-and-publishing/mlm/publish-mlm-api',
           ],
         },
         {
@@ -77,6 +77,7 @@ const sidebars: SidebarsConfig = {
           items: [
             'Uyuni-MLM-toolchain/Building-and-publishing/uyuni/packaging-uyuni',
             'Uyuni-MLM-toolchain/Building-and-publishing/uyuni/publish-uyuni',
+            'Uyuni-MLM-toolchain/Building-and-publishing/uyuni/publish-uyuni-api',
           ],
         },
       ],

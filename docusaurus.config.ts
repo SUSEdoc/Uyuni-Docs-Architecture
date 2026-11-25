@@ -161,7 +161,7 @@ const config: Config = {
       },
       items: [
         {
-          href: 'https://github.com/uyuni-project/uyuni-docs',
+          href: 'https://github.com/SUSEdoc/Uyuni-Docs-Architecture',
           label: 'GitHub',
           position: 'right',
         },

@@ -1,0 +1,143 @@
+---
+id: publish-mlm-api
+slug: /publish-mlm-api
+title: Publish Multi-Linux Manager API Documentation
+sidebar_label: Publish API docs
+description: Build and publish Multi-Linux Manager API documentation from internal IBS apidoc RPMs.
+sidebar_custom_props:
+  icon: /img/publish-logo.svg
+---
+
+# Publish Multi-Linux Manager API Documentation
+
+SUSE Multi-Linux Manager API documentation is maintained and published from the `manager-5.2` branch in the API documentation repository ([uyuni-project/uyuni-docs-api](https://github.com/uyuni-project/uyuni-docs-api)). API source files are generated upstream into an `apidoc` RPM during internal IBS builds.
+
+For prerequisites and toolchain setup, see [Container setup](../../Deployment-and-Installation/Use-our-doc-container.mdx).
+
+---
+
+## 1. Obtain the API Documentation RPM
+
+The API content is packaged in an RPM produced by internal IBS builds:
+
+1. Browse to the internal IBS repository for Multi-Linux Manager 5.2:
+   [download.suse.de/ibs/Devel:/Galaxy:/Manager:/5.2/](https://download.suse.de/ibs/Devel:/Galaxy:/Manager:/5.2/)
+
+   :::note Distribution Version
+   Select the correct distribution version for the target release (for example, `images/` or the matching OS distribution tree such as `SLE_15_SP6/` or SLES/openSUSE distribution). In the chosen distribution section, navigate to the `noarch/` directory.
+   :::
+
+2. Once in the `noarch/` directory:
+   - Click **Show all entries** (or display all files).
+   - Search for `apidoc` (for example, `spacewalk-java-apidoc-*.noarch.rpm`).
+   - Download the `apidoc` RPM for the latest release.
+
+---
+
+## 2. Extract and Update API Content
+
+1. Extract the downloaded RPM into a temporary directory:
+
+   ```bash
+   mkdir -p /tmp/mlm-apidoc-extract
+   cd /tmp/mlm-apidoc-extract
+   rpm2cpio /path/to/spacewalk-java-apidoc-*.noarch.rpm | cpio -idmv
+   ```
+
+2. In your local clone of [uyuni-docs-api](https://github.com/uyuni-project/uyuni-docs-api), check out the `manager-5.2` branch:
+
+   ```bash
+   cd uyuni-docs-api
+   git checkout manager-5.2
+   git pull origin manager-5.2
+   ```
+
+3. Copy the extracted AsciiDoc content into `modules/api/pages/`:
+
+   ```bash
+   cp -r /tmp/mlm-apidoc-extract/usr/share/doc/packages/spacewalk-java/asciidoc/* modules/api/pages/
+   ```
+
+4. Remove the `handlers` directory if present:
+
+   ```bash
+   rm -rf modules/api/pages/handlers
+   ```
+
+5. Stage, commit, and push the updated content to `manager-5.2`:
+
+   ```bash
+   git add modules/api/pages/
+   git commit -m "Update MLM API documentation sources from latest apidoc RPM"
+   git push origin manager-5.2
+   ```
+
+---
+
+## 3. Update config.yaml
+
+Update the release attributes in `config.yaml` on the `manager-5.2` branch.
+
+:::tip API Version Number
+Consult with the release engineers to check if an API version number bump is required for this release.
+:::
+
+Update the product attributes:
+
+```yaml
+        productnumber: "5.2"
+        apiversion: "30"
+```
+
+Commit and push your configuration changes:
+
+```bash
+git add config.yaml
+git commit -m "Bump productnumber and apiversion for MLM release"
+git push origin manager-5.2
+```
+
+---
+
+## 4. Build the API Documentation
+
+Run the publish build using the documentation container:
+
+```bash
+task container:publish:mlm
+```
+
+Output is generated into the `build/` directory on your host. Verify the generated output and debug logs for missing attributes or errors before continuing.
+
+---
+
+## 5. Copy Output to Docserv Tree
+
+For Multi-Linux Manager, API documentation is published directly to the internal Docserv tree rather than GitHub Pages.
+
+1. In your local clone of [gitlab.suse.de/susedoc/docserv-external-tree-suma](https://gitlab.suse.de/susedoc/docserv-external-tree-suma), navigate to the corresponding document version directory (for example, `5.2/`):
+
+   ```bash
+   cd docserv-external-tree-suma/5.2/
+   ```
+
+2. Drop the generated API build content into the `api/` subdirectory:
+
+   ```bash
+   mkdir -p api
+   cp -r /path/to/uyuni-docs-api/build/* api/
+   ```
+
+3. Commit and submit your update on [gitlab.suse.de](https://gitlab.suse.de):
+
+   ```bash
+   git add api/
+   git commit -m "Update Multi-Linux Manager 5.2 API documentation"
+   git push origin <your-branch-or-master>
+   ```
+
+4. Open a merge request on GitLab if working from a branch.
+
+:::tip Synchronized Release Workflow
+API documentation updates are usually performed at the same time as updating the product documentation. Send one combined request for a sync to the SUSE doc team using the **release workflow channel on Slack**.
+:::
