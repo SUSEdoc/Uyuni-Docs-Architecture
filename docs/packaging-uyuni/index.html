@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&amp;family=Noto+Emoji:wght@300..700&amp;display=swap"><link rel="stylesheet" href="/Uyuni-Docs-Architecture/assets/css/styles.0b5cb3fc.css">
-<script src="/Uyuni-Docs-Architecture/assets/js/runtime~main.835d4bbb.js" defer="defer"></script>
+<script src="/Uyuni-Docs-Architecture/assets/js/runtime~main.b34c301e.js" defer="defer"></script>
 <script src="/Uyuni-Docs-Architecture/assets/js/main.3884032d.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -26,7 +26,7 @@
 <p>For setup, see <a class="" href="/Uyuni-Docs-Architecture/docs/documentation-container/">Container setup</a>.</p>
 <hr>
 <h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="1-create-the-maintenance-branch">1. Create the maintenance branch<a href="#1-create-the-maintenance-branch" class="hash-link" aria-label="Direct link to 1. Create the maintenance branch" title="Direct link to 1. Create the maintenance branch" translate="no">​</a></h2>
-<p>Create the maintenance branch from <code>master</code> before you change <code>config.yml</code>. Name it <code>uyuni-YYYY.MM</code>, for example <code>uyuni-2026.10</code>.</p>
+<p>Create the maintenance branch from <code>master</code> before you change <code>config.yml</code>. Name it <code>uyuni-YYYY.MM</code>, for example <code>uyuni-2026.11</code>.</p>
 <div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#d6deeb;--prism-background-color:#011627"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#d6deeb;background-color:#011627"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#d6deeb"><span class="token builtin class-name" style="color:rgb(255, 203, 139)">cd</span><span class="token plain"> uyuni-docs</span><br></span><span class="token-line" style="color:#d6deeb"><span class="token plain"></span><span class="token function" style="color:rgb(130, 170, 255)">git</span><span class="token plain"> checkout master</span><br></span><span class="token-line" style="color:#d6deeb"><span class="token plain"></span><span class="token function" style="color:rgb(130, 170, 255)">git</span><span class="token plain"> pull --ff-only origin master</span><br></span><span class="token-line" style="color:#d6deeb"><span class="token plain"></span><span class="token function" style="color:rgb(130, 170, 255)">git</span><span class="token plain"> checkout </span><span class="token parameter variable" style="color:rgb(214, 222, 235)">-b</span><span class="token plain"> uyuni-2026.11</span><br></span><span class="token-line" style="color:#d6deeb"><span class="token plain"></span><span class="token function" style="color:rgb(130, 170, 255)">git</span><span class="token plain"> push --set-upstream origin uyuni-2026.11</span><br></span></code></pre></div></div>
 <p>Replace <code>2026.10</code> with the maintenance version you are releasing. Do the rest of this page on that branch.</p>
 <hr>
