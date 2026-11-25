@@ -28,8 +28,8 @@ Create the maintenance branch from `master` before you change `config.yml`. Name
 cd uyuni-docs
 git checkout master
 git pull --ff-only origin master
-git checkout -b uyuni-2026.10
-git push --set-upstream origin uyuni-2026.10
+git checkout -b uyuni-2026.11
+git push --set-upstream origin uyuni-2026.11
 ```
 
 Replace `2026.10` with the maintenance version you are releasing. Do the rest of this page on that branch.
@@ -44,17 +44,28 @@ Under `products.uyuni`:
 
 | Field | What to set |
 | --- | --- |
-| `antora.title` | Antora component title, for example `Uyuni 2026.08` |
+| `antora.title` | Antora component title, for example `Uyuni 2026.11` |
 
 Under `products.uyuni.asciidoc.attributes`:
 
 | Field | What to set |
 | --- | --- |
-| `releaseversion` / `productnumber` | Release label, quoted so it is kept as written (for example `"2026.08"`) |
+| `releaseversion`  `productnumber` | Release label, quoted so it is kept as written (for example `"2026.11"`) |
 | `productchartversion` | Helm chart version for this release |
 | `gitchartsbranch` | Charts branch for this release |
 
 Then review supported client versions in the shared `asciidoc:` block. Confirm the list and versions with the release managers and the product owner before you package.
+
+:::info AsciiDoc Attribute Software Versions
+We will be automating these software version updates in the future. For now, check with release engineers or review the [SUSE Product End of Life / Lifecycle list](https://www.suse.com/lifecycle/) to see which versions we currently support.
+
+You can also prompt an AI to quickly check supported versions against the following reference files in the Uyuni repository:
+- [`mgr_bootstrap_data.py`](https://github.com/uyuni-project/uyuni/blob/master/susemanager/src/mgr_bootstrap_data.py)
+- [`spacewalk-common-channels.ini`](https://github.com/uyuni-project/uyuni/blob/master/utils/spacewalk-common-channels.ini)
+:::
+
+
+
 
 ---
 
